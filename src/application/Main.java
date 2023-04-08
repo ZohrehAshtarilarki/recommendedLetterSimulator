@@ -1,21 +1,27 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
+	
+	
 	@Override
 	public void start(Stage primaryStage) {
+		
 		try {
-			VBox root = (VBox)FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getClassLoader().getResource("css/application.css").toExternalForm());
-			primaryStage.setScene(scene);
+			
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
+			primaryStage.setScene(new Scene(root));
+			root.getStylesheets().add(getClass().getClassLoader().getResource("css/application.css").toExternalForm());
 			primaryStage.show();
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

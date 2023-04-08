@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="application.controller.MainController">
-	<!-- TODO Add Nodes -->
-</VBox>
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainController">
+   <children>
+      <AnchorPane prefHeight="1080.0" prefWidth="1920.0">
+         <children>
+            <ImageView fitHeight="1080.0" fitWidth="1920.0" layoutX="-1.0" layoutY="-3.0">
+               <image>
+                  <Image url="@../../../Project%20Image/96-962236_gaussian-abstract-wallpapers-colors-background-full-hd-simple%20(1).jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="resetPasswordButton" layoutX="805.0" layoutY="451.0" mnemonicParsing="false" onAction="#resetPasswordOp" prefHeight="49.0" prefWidth="230.0" text="Reset Password" AnchorPane.bottomAnchor="580.0" AnchorPane.leftAnchor="805.0" AnchorPane.rightAnchor="885.0" AnchorPane.topAnchor="451.0">
+               <font>
+                  <Font name="Arial Bold" size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>

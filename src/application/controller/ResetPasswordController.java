@@ -9,19 +9,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class MainController {
+public class ResetPasswordController {
 	
 	@FXML
-	private Button resetPasswordButton;
+	private Button logoutButton;
 
-
-	@FXML public void resetPasswordOp() {
+	@FXML public void logOutOp() {
 		
 		try {
-			Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
+			Stage stage = (Stage) logoutButton.getScene().getWindow();
 			stage.close();
 			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
 			

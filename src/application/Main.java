@@ -45,14 +45,8 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
-	}
-	
-	
-	
-	
-//	Testing DB stuff can delete
-	public void testDBStuff() {
+		
+//		##################### Testing DB stuff can delete #####################
 		DbSqlite db = new DbSqlite("");
 		FacultyDAOImpl facultyDAO = new FacultyDAOImpl(db.getConnection(), "faculty");
 		CourseDAOImpl courseDAO = new CourseDAOImpl(db.getConnection(), "course");
@@ -105,5 +99,12 @@ public class Main extends Application {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
+		
+//		##################### END DB test #####################
+
+		launch(args);
 	}
+	
+	
+	
 }

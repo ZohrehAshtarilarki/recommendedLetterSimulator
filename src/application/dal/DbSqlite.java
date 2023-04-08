@@ -14,13 +14,6 @@ public class DbSqlite implements DbConnectionInt {
 //			should create .db file if it has not be already created
 			this.connection = DriverManager.getConnection(url);
 			
-//			this.connection = DriverManager.getConnection(urlStr);
-			
-//			String sqlCreateDB = "CREATE DATABASE recommendationLetterSimulator";
-//			Statement stmt = this.connection.createStatement();
-//			stmt.executeUpdate(sqlCreateDB);
-//			System.out.println("Database 'recommendationLetterSimulator' created successfully");
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

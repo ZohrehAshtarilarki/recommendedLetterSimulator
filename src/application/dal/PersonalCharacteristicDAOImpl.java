@@ -14,6 +14,15 @@ import application.utils.DbUtils;
 public class PersonalCharacteristicDAOImpl implements PersonalCharacteristicDAOInt {
 	private Connection connection;
 	private String tableName;
+	
+	/**
+	 * Use this constructor for interacting with DB
+	 * @param connection
+	 */
+	public PersonalCharacteristicDAOImpl(Connection connection) {
+		this.connection = connection;
+		this.tableName = "personalCharacteristic";
+	}
 
 	public PersonalCharacteristicDAOImpl(Connection connection, String tableName) {
 		this.connection = connection;

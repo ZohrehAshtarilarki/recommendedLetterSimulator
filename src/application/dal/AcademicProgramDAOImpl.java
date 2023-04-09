@@ -15,6 +15,20 @@ public class AcademicProgramDAOImpl implements AcademicProgramDAOInt {
 	private Connection connection;
 	private String tableName;
 	
+	/**
+	 * Use this constructor for interacting with DB
+	 * @param connection
+	 */
+	public AcademicProgramDAOImpl(Connection connection) {
+		this.connection = connection;
+		this.tableName = "academicProgram";
+	}
+	
+	/**
+	 * Use this one for initial DB table set up
+	 * @param connection
+	 * @param tableName name of table to create for this model
+	 */
 	public AcademicProgramDAOImpl(Connection connection, String tableName) {
 		this.connection = connection;
 		this.tableName = tableName;

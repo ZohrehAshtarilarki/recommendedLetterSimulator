@@ -10,9 +10,11 @@ public class DbSqlite implements DbConnectionInt {
 	
 	public DbSqlite(String urlStr) {
 		try {
-			String url = "jdbc:sqlite:test.db";
+//			String url = "jdbc:sqlite:test.db";
+			
 //			should create .db file if it has not be already created
-			this.connection = DriverManager.getConnection(url);
+			this.connection = DriverManager.getConnection(urlStr);
+			createDefaultDBData();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -21,14 +23,12 @@ public class DbSqlite implements DbConnectionInt {
 
 	@Override
 	public Connection getConnection() {
-		// TODO Auto-generated method stub
 		return this.connection;
 	}
 
 	@Override
 	public void closeConnection() throws SQLException {
-		// TODO Auto-generated method stub
-
+		this.connection.close();
 	}
 
 	@Override
@@ -41,6 +41,22 @@ public class DbSqlite implements DbConnectionInt {
 	public void endTransaction() throws SQLException {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void createDefaultDBData() {
+		String facultyDBTableName = "faculty";
+		String courseDBTableName = "course";
+		String academicProgramDBTableName = "academicProgram";
+		String academicCharacteristicDBTableName = "academicCharacteristic";
+		String personalCharacteristicDBTableName = "personalCharacteristic";
+		String userDBTableName = "user";
+		
+		new UserDAOImpl(connection, userDBTableName);
+		new FacultyDAOImpl(connection, facultyDBTableName);
+		new CourseDAOImpl(connection, courseDBTableName);
+		new AcademicProgramDAOImpl(connection, academicProgramDBTableName);
+		new PersonalCharacteristicDAOImpl(connection, personalCharacteristicDBTableName);
+		new AcademicCharacteristicDAOImpl(connection, academicCharacteristicDBTableName);
 	}
 
 }

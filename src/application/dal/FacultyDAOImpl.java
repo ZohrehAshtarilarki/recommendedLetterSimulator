@@ -14,6 +14,14 @@ public class FacultyDAOImpl implements FacultyDAOInt {
 	private Connection connection;
 	private String tableName;
 	
+	/**
+	 * Use this constructor for interacting with DB
+	 * @param connection
+	 */
+	public FacultyDAOImpl(Connection connection) {
+		this.connection = connection;
+		this.tableName = "faculty";
+	}
 	
 //	make DB connection a singleton?
 	public FacultyDAOImpl(Connection connection, String tableName) {

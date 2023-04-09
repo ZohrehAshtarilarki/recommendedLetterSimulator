@@ -14,6 +14,14 @@ public class UserDAOImpl implements UserDAOInt {
 	private Connection connection;
 	private String tableName;
 	
+	/**
+	 * Use this constructor for interacting with DB
+	 * @param connection
+	 */
+	public UserDAOImpl(Connection connection) {
+		this.connection = connection;
+		this.tableName = "user";
+	}
 	public UserDAOImpl(Connection connection, String tableName) {
 		this.connection = connection;
 		this.tableName = tableName;

@@ -1,5 +1,8 @@
 package application;
 	
+import application.controller.CommonObjs;
+import application.dal.DbSqlite;
+import application.dal.DbConnectionInt;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +17,11 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		
+		String uri = "jdbc:sqlite:test.db";
+		DbConnectionInt dataBaseObj = new DbSqlite(uri);
+		CommonObjs commonObjs = CommonObjs.getInstance();
+		commonObjs.setDataBaseObj(dataBaseObj);
 		
 		try {
 			

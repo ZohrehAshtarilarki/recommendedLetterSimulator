@@ -132,17 +132,19 @@ public class ResetPasswordController {
 
 	@FXML public void newRecommendationOp() {
 		
-		try {
+		//try {
 			Stage stage = (Stage) logoutButton.getScene().getWindow();
 			stage.close();
 			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("application/RecommendationLetterSimulator.java"));
-			primaryStage.setScene(new Scene(root));
+			primaryStage = RecommendationLetterSimulator.show(primaryStage);
+		
+		
 			primaryStage.show();
 			
-		} catch (IOException e) {
 			
-			e.printStackTrace();
-		}
+	//	} catch (IOException e) {
+			
+		//	e.printStackTrace();
+		//}
 	}
 }

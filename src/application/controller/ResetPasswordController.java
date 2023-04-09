@@ -2,6 +2,9 @@ package application.controller;
 
 import java.io.IOException;
 
+import application.dal.UserDAOImpl;
+import application.dal.UserDAOInt;
+import application.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,6 +46,11 @@ public class ResetPasswordController {
 	@FXML public Boolean oldPasswordOp() {
 		
 		try {
+			
+			CommonObjs commonObjs = CommonObjs.getInstance(); 
+			UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
+			User user = userDAO.getUser();
+			
 			String oldPassw = oldPasswordButton.getText(); // Get old password from user
 			if(oldPassw.isEmpty()) {
 				Alert alert = new Alert(AlertType.ERROR);
@@ -50,14 +58,16 @@ public class ResetPasswordController {
 				alert.setContentText("Please fill out all the requierd fields");
 				alert.showAndWait();
 			}
-			//else if(oldPassw.equals("p") || oldPassw.equals(user.getPassword())) {
-			else if(oldPassw.equals("p") || oldPassw.equals("Zohreh")) {
+			
+			
+			else if (oldPassw.equals("p") || oldPassw.equals(user.getPassword())) {
 				oldPasswValidation = true;
 				}
 		
 		} catch (Exception e) {
 			e.printStackTrace();
 			}
+		
 		return oldPasswValidation;
 	}
 	
@@ -72,12 +82,8 @@ public class ResetPasswordController {
 				alert.setContentText("Please fill out all the requierd fields");
 				alert.showAndWait();
 			}
-			else if (newPasswordButton.getText().equals("Sasan")){
-				oldPasswValidation = true;
-				//user.setPassword();
-			}
 			else {
-				oldPasswValidation = false;
+				oldPasswValidation = true;
 			}
 					
 		} catch (Exception e) {

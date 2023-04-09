@@ -14,6 +14,15 @@ public class CourseDAOImpl implements CourseDAOInt {
 	private Connection connection;
 	private String tableName;
 	
+	/**
+	 * Use this constructor for interacting with DB
+	 * @param connection
+	 */
+	public CourseDAOImpl(Connection connection) {
+		this.tableName = "course";
+		this.connection = connection;
+	}
+	
 	public CourseDAOImpl(Connection connection, String tableName) {
 		this.tableName = tableName;
 		this.connection = connection;

@@ -15,6 +15,23 @@ public class AcademicCharacteristicDAOImpl implements AcademicCharacteristicDAOI
 	private Connection connection;
 	private String tableName;
 	
+	
+	/**
+	 * Use this constructor one for database interactions
+	 * 
+	 * @param connection Db connection
+	 */
+	public AcademicCharacteristicDAOImpl(Connection connection) {
+		this.connection = connection;
+		this.tableName = "academicCharacteristic";
+	}
+	
+	/**
+	 * Not need to be called after DB has been initialized,
+	 * most likely the one you need to use the 1 parameter constructor
+	 * @param connection
+	 * @param tableName name of table in DB
+	 */
 	public AcademicCharacteristicDAOImpl(Connection connection, String tableName) {
 		this.connection = connection;
 		this.tableName = tableName;

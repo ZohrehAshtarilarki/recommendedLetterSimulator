@@ -59,7 +59,7 @@ public class MainController {
 		if(passwordEnterOp()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setHeaderText(null);
-			//alert.setContentText("Successfully logged into the application");
+			alert.setContentText("Successfully logged into the application");
 			alert.showAndWait();
 		}
 		else {

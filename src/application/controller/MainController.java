@@ -13,17 +13,7 @@ public class MainController {
 	
 	@FXML
 	private Button resetPasswordButton;
-	private Button login;
-	
-	@FXML public void loginClicked() throws IOException {
-		Stage stage = (Stage) login.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-		
-	}
+
 
 	@FXML public void resetPasswordOp() {
 		

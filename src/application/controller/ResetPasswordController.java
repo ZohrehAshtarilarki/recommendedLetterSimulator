@@ -21,9 +21,11 @@ public class ResetPasswordController {
 	@FXML PasswordField newPasswordButton;
 	@FXML PasswordField oldPasswordButton;
 	@FXML Button resetPasswordButton;
+	@FXML Button newRecommendationButton;
 	@FXML Button goBackButton;
 	
 	Boolean oldPasswValidation = false;
+	
 	
 
 	@FXML public void logOutOp() {
@@ -118,6 +120,23 @@ public class ResetPasswordController {
 			stage.close();
 			Stage primaryStage = new Stage();
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
+			primaryStage.setScene(new Scene(root));
+			primaryStage.show();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	}
+
+
+	@FXML public void newRecommendationOp() {
+		
+		try {
+			Stage stage = (Stage) logoutButton.getScene().getWindow();
+			stage.close();
+			Stage primaryStage = new Stage();
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("application/RecommendationLetterSimulator.java"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
 			

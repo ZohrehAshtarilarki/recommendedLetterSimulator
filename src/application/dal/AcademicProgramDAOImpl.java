@@ -37,21 +37,21 @@ public class AcademicProgramDAOImpl implements AcademicProgramDAOInt {
 
 	@Override
 	public List<AcademicProgram> getAllAcademicPrograms() throws SQLException {
-		List<AcademicProgram> courses = new ArrayList<>();
+		List<AcademicProgram> academicPrograms = new ArrayList<>();
 		
 		String sqlSelectAllCourse = String.format("SELECT * FROM %s", tableName);
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sqlSelectAllCourse);
         
         while (resultSet.next()) {
-        	AcademicProgram course = new AcademicProgram();
-        	course.setAcademicProgramId(resultSet.getInt("id"));
-        	course.setName(resultSet.getString("name"));
-        	courses.add(course);
+        	AcademicProgram academicProgram = new AcademicProgram();
+        	academicProgram.setAcademicProgramId(resultSet.getInt("id"));
+        	academicProgram.setName(resultSet.getString("name"));
+        	academicPrograms.add(academicProgram);
         }
         resultSet.close();
         statement.close();
-		return courses;
+		return academicPrograms;
 	}
 
 	@Override

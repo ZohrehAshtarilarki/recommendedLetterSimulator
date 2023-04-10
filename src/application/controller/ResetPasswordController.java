@@ -1,6 +1,7 @@
 package application.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import application.dal.UserDAOImpl;
 import application.dal.UserDAOInt;
@@ -99,10 +100,26 @@ public class ResetPasswordController {
 	@FXML public void resetPasswordOp() {
 		
 		if(oldPasswordOp() && newPasswordOp()) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setHeaderText(null);
-			alert.setContentText("Successfully reset the password");
-			alert.showAndWait();
+			
+			try {
+				CommonObjs commonObjs = CommonObjs.getInstance(); 
+				UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
+				User user = userDAO.getUser();
+				
+				String newPassw = newPasswordButton.getText();
+				user.setPassword(newPassw);
+				
+				userDAO.updateUser(user);
+				
+				this.oldPasswValidation = false;
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setHeaderText(null);
+				alert.setContentText("Successfully reset the password");
+				alert.showAndWait();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
 		}
 		else {
 			Alert alert = new Alert(AlertType.ERROR);

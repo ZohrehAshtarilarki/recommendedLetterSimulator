@@ -8,7 +8,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class RecommendationLetterSimulator extends Application {
-
     private final static String title = "Data Entry";
     @Override
     public void start(Stage primaryStage) {
@@ -87,7 +86,7 @@ public class RecommendationLetterSimulator extends Application {
     }
     
     public static Stage show(Stage primaryStage) { 
-   	 //creating interface for data entry
+    	 //creating interface for data entry
         TextField firstNameField = new TextField();
         TextField lastNameField = new TextField();
         ComboBox<String> genderComboBox = new ComboBox<>();
@@ -158,7 +157,7 @@ public class RecommendationLetterSimulator extends Application {
 
         Scene scene = new Scene(formLayout, 1200, 800);
         primaryStage.setScene(scene);
-        
+       
         return primaryStage; 
     	
     }

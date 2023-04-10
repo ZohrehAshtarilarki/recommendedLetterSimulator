@@ -1,6 +1,7 @@
 package application.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import application.dal.UserDAOImpl;
 import application.dal.UserDAOInt;
@@ -39,13 +40,16 @@ public class MainController {
 			}
 			//p is default password, it is entered, user will be redirected to reset password
 			else if (newP.equals("p")||newP.equals(user.getPassword())){
-				loginValidation = true;
-				Stage stage = (Stage) login.getScene().getWindow();
-				stage.close();
-				Stage primaryStage = new Stage();
-				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
-				primaryStage.setScene(new Scene(root));
-				primaryStage.show();
+					user.setIsFirstLogin(false);
+					userDAO.updateUser(user);
+					
+					loginValidation = true;
+					Stage stage = (Stage) login.getScene().getWindow();
+					stage.close();
+					Stage primaryStage = new Stage();
+					Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+					primaryStage.setScene(new Scene(root));
+					primaryStage.show();
 				
 			}
 		

@@ -1,26 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainController">
    <children>
-      <AnchorPane prefHeight="1080.0" prefWidth="1920.0">
+      <AnchorPane prefHeight="82.0" prefWidth="1521.0">
          <children>
-            <ImageView fitHeight="1080.0" fitWidth="1920.0" layoutX="-1.0" layoutY="-3.0">
+            <ImageView fitHeight="898.0" fitWidth="1306.0" layoutX="-16.0" layoutY="-14.0">
                <image>
-                  <Image url="@../../../Project%20Image/96-962236_gaussian-abstract-wallpapers-colors-background-full-hd-simple%20(1).jpg" />
+                  <Image url="@../image/img1.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="resetPasswordButton" layoutX="805.0" layoutY="451.0" mnemonicParsing="false" onAction="#resetPasswordOp" prefHeight="49.0" prefWidth="230.0" text="Reset Password" AnchorPane.bottomAnchor="580.0" AnchorPane.leftAnchor="805.0" AnchorPane.rightAnchor="885.0" AnchorPane.topAnchor="451.0">
+            <DialogPane cache="true" layoutX="94.0" layoutY="195.0" prefHeight="574.0" prefWidth="550.0" AnchorPane.leftAnchor="94.0" AnchorPane.topAnchor="195.0">
+               <padding>
+                  <Insets top="500.0" />
+               </padding>
+            </DialogPane>
+            <ImageView fitHeight="371.0" fitWidth="552.0" layoutX="93.0" layoutY="75.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="1288.0" AnchorPane.topAnchor="75.0">
+               <image>
+                  <Image url="@../image/sjsu.jpg" />
+               </image>
+            </ImageView>
+            <DialogPane layoutX="724.0" layoutY="71.0" prefHeight="697.0" prefWidth="490.0" AnchorPane.leftAnchor="724.0" AnchorPane.rightAnchor="719.0" AnchorPane.topAnchor="71.0">
+               <padding>
+                  <Insets left="10.0" right="10.0" top="500.0" />
+               </padding>
+               <header>
+                  <AnchorPane prefHeight="200.0" prefWidth="553.0" />
+               </header>
+            </DialogPane>
+            <Text layoutX="1377.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" AnchorPane.leftAnchor="1377.0" AnchorPane.rightAnchor="433.09375" AnchorPane.topAnchor="413.59375">
                <font>
-                  <Font name="Arial Bold" size="24.0" />
+                  <Font size="48.0" />
+               </font>
+            </Text>
+            <ListView editable="true" layoutX="767.0" layoutY="178.0" prefHeight="542.0" prefWidth="397.0" AnchorPane.leftAnchor="767.0" AnchorPane.rightAnchor="769.0" AnchorPane.topAnchor="178.0" />
+            <Button fx:id="login" layoutX="900.0" layoutY="423.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="51.0" prefWidth="125.0" text="Log In" AnchorPane.leftAnchor="900.0" AnchorPane.rightAnchor="908.0" AnchorPane.topAnchor="423.0">
+               <font>
+                  <Font size="24.0" />
                </font>
             </Button>
+            <Button fx:id="resetPasswordButton" alignment="BOTTOM_LEFT" contentDisplay="CENTER" layoutX="860.0" layoutY="601.0" mnemonicParsing="false" onAction="#resetPasswordOp" prefHeight="47.0" prefWidth="206.0" text="Reset Password" AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="867.0" AnchorPane.topAnchor="601.0">
+               <font>
+                  <Font name="System Font" size="24.0" />
+               </font>
+            </Button>
+            <PasswordField fx:id="passEnter" layoutX="856.0" layoutY="302.0" onAction="#passwordEnterOp" promptText="Enter Password Here" AnchorPane.topAnchor="302.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </PasswordField>
+            <Label layoutX="861.0" layoutY="243.0" text="Password" AnchorPane.topAnchor="243.0">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="802.0" layoutY="533.0" prefHeight="65.0" prefWidth="319.0" text="Forgot Password ?" AnchorPane.leftAnchor="802.0" AnchorPane.rightAnchor="812.0" AnchorPane.topAnchor="533.0">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Text layoutX="862.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTE: First time login requires password reset" wrappingWidth="188.6856689453125" AnchorPane.leftAnchor="862.0" AnchorPane.rightAnchor="882.3143310546875" AnchorPane.topAnchor="359.59765625">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text boundsType="LOGICAL_VERTICAL_CENTER" layoutX="86.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="About" textAlignment="CENTER" textOrigin="BOTTOM" wrappingWidth="554.1854801177979">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <Text layoutX="90.0" layoutY="564.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Student Recommender for Facutly!&#10;&#10;Site Features&#10;&#10;Access Existing Recommendations&#10;Make New Recommendations&#10;Edit Existing Recommendations" textAlignment="CENTER" wrappingWidth="558.8192749023438">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Label layoutX="895.0" layoutY="93.0" prefHeight="70.0" prefWidth="143.0" text="Login">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+            <Line endX="190.0" layoutX="974.0" layoutY="516.0" startX="-205.489990234375" />
          </children>
       </AnchorPane>
    </children>

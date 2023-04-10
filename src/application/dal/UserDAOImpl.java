@@ -46,10 +46,11 @@ public class UserDAOImpl implements UserDAOInt {
 
 	@Override
 	public void updateUser(User user) throws SQLException {
-		String sqlUpdateUser = String.format("UPDATE %s SET password=?, SET isfirstLogin=? WHERE id=?", tableName);
+		String sqlUpdateUser = String.format("UPDATE %s SET password=?, isfirstLogin=? WHERE id=?", tableName);
 		PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser);
 		preparedStatement.setString(1, user.getPassword());
-		preparedStatement.setInt(1, user.isFirstLogin() ? 1 : 0);
+		preparedStatement.setInt(2, user.isFirstLogin() ? 1 : 0);
+		preparedStatement.setInt(3, user.getUserId());
 		
         preparedStatement.executeUpdate();
         preparedStatement.close();

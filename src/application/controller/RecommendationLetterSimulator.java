@@ -8,11 +8,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class RecommendationLetterSimulator extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     private final static String title = "Data Entry";
     @Override
     public void start(Stage primaryStage) {
@@ -120,7 +115,7 @@ public class RecommendationLetterSimulator extends Application {
         Label targetSchoolLabel = new Label("Target School:");
         Label currentDateLabel = new Label("Current Date:");
         Label programLabel = new Label("Program:");
-        Label semesterLabel = new Label("Semester:");
+        Label semesterLabel = new Label("First Semester which student took course:");
         Label yearLabel = new Label("Year:");
         Label coursesLabel = new Label("Courses:");
         Label gradeLabel = new Label("Grade:");
@@ -148,18 +143,21 @@ public class RecommendationLetterSimulator extends Application {
         formLayout.add(programLabel, 0, 5);
         formLayout.add(programComboBox, 1, 5);
         formLayout.add(semesterLabel, 0, 6);
-        formLayout.add(semesterComboBox, 1, 7);
+        formLayout.add(semesterComboBox, 1, 6);
         formLayout.add(yearLabel, 2, 6);
         formLayout.add(yearField, 3, 6);
-        formLayout.add(coursesLabel, 0, 7);
-        formLayout.add(coursesListView, 1, 7);
+        formLayout.add(coursesLabel, 0, 8);
+        formLayout.add(coursesListView, 1, 8);
         formLayout.add(gradeLabel, 2, 7);
-        formLayout.add(gradeField, 3, 5);
+        formLayout.add(gradeField, 3, 7);
+        formLayout.add(personalCharacteristicsLabel, 0, 10);
+        formLayout.add(personalCharacteristicsListView, 1, 10);
+        formLayout.add(academicCharacteristicsLabel, 0, 11);
+        formLayout.add(academicCharacteristicsListView, 1, 11);
 
         Scene scene = new Scene(formLayout, 1200, 800);
         primaryStage.setScene(scene);
-      
-
+       
         return primaryStage; 
     	
     }

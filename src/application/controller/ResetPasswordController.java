@@ -46,6 +46,7 @@ public class ResetPasswordController {
 	}
 
 
+	@SuppressWarnings("unlikely-arg-type")
 	@FXML public Boolean oldPasswordOp() {
 		
 		try {
@@ -63,7 +64,7 @@ public class ResetPasswordController {
 			}
 			
 			
-			else if (oldPassw.equals("p") || oldPassw.equals(user.getPassword())) {
+			else if (oldPassw.equals(user.isFirstLogin()) || oldPassw.equals(user.getPassword())) {
 				oldPasswValidation = true;
 				}
 		
@@ -147,21 +148,14 @@ public class ResetPasswordController {
 	}
 
 
-	@FXML public void newRecommendationOp() {
+	@FXML public void newRecommendationOp() throws IOException {
 		
-		//try {
-			Stage stage = (Stage) logoutButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			primaryStage = RecommendationLetterSimulator.show(primaryStage);
-		
-		
-			primaryStage.show();
-			
-			
-	//	} catch (IOException e) {
-			
-		//	e.printStackTrace();
-		//}
+		Stage stage = (Stage) logoutButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		primaryStage = RecommendationLetterSimulator.show(primaryStage);
+
+
+		primaryStage.show();
 	}
 }

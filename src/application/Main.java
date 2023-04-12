@@ -2,6 +2,11 @@ package application;
 	
 import application.controller.CommonObjs;
 import application.dal.DbSqlite;
+import application.dal.FacultyDAOImpl;
+import application.dal.UserDAOImpl;
+import application.model.PersonalCharacteristic;
+import application.dal.CommonDAOs;
+import application.dal.CourseDAOImpl;
 import application.dal.DbConnectionInt;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +26,14 @@ public class Main extends Application {
 		DbConnectionInt dataBaseObj = new DbSqlite(uri);
 		CommonObjs commonObjs = CommonObjs.getInstance();
 		commonObjs.setDataBaseObj(dataBaseObj);
+		
+		CommonDAOs commonDAOs = CommonDAOs.getInstance();
+		commonDAOs.setDataBaseObj(dataBaseObj);
+		
+		commonDAOs.setUserDAO(new UserDAOImpl(dataBaseObj.getConnection()));
+		commonDAOs.setFacultyDAO(new FacultyDAOImpl(dataBaseObj.getConnection()));
+		commonDAOs.setCourseDAO(new CourseDAOImpl(dataBaseObj.getConnection()));
+		
 		
 		try {
 			

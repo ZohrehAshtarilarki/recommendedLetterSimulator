@@ -12,4 +12,6 @@ public interface DbConnectionInt {
 	public void startTransaction() throws SQLException;
 	
 	public void endTransaction() throws SQLException;
+	
+	public void initializeDb();
 }

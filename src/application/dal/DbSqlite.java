@@ -10,11 +10,8 @@ public class DbSqlite implements DbConnectionInt {
 	
 	public DbSqlite(String urlStr) {
 		try {
-//			String url = "jdbc:sqlite:test.db";
-			
 //			should create .db file if it has not be already created
 			this.connection = DriverManager.getConnection(urlStr);
-			createDefaultDBData();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -43,7 +40,9 @@ public class DbSqlite implements DbConnectionInt {
 
 	}
 	
-	private void createDefaultDBData() {
+	@Override
+	public void initializeDb() {
+//		default table names in db for each model
 		String facultyDBTableName = "faculty";
 		String courseDBTableName = "course";
 		String academicProgramDBTableName = "academicProgram";
@@ -51,12 +50,17 @@ public class DbSqlite implements DbConnectionInt {
 		String personalCharacteristicDBTableName = "personalCharacteristic";
 		String userDBTableName = "user";
 		
-		new UserDAOImpl(connection, userDBTableName);
-		new FacultyDAOImpl(connection, facultyDBTableName);
-		new CourseDAOImpl(connection, courseDBTableName);
-		new AcademicProgramDAOImpl(connection, academicProgramDBTableName);
-		new PersonalCharacteristicDAOImpl(connection, personalCharacteristicDBTableName);
-		new AcademicCharacteristicDAOImpl(connection, academicCharacteristicDBTableName);
+		CommonDAOs commonDAOs = CommonDAOs.getInstance();
+		commonDAOs.setDataBaseObj(this);
+		
+//		each model's table is created and default data inserted if the db has not been already created
+//		add each DAO to the commonDAO
+		commonDAOs.setUserDAO(new UserDAOImpl(connection, userDBTableName));
+		commonDAOs.setFacultyDAO(new FacultyDAOImpl(connection, facultyDBTableName));
+		commonDAOs.setCourseDAO(new CourseDAOImpl(connection, courseDBTableName));
+		commonDAOs.setAcademicaProgramDAO(new AcademicProgramDAOImpl(connection, academicProgramDBTableName));
+		commonDAOs.setPersonalCharacteristicDAO(new PersonalCharacteristicDAOImpl(connection, personalCharacteristicDBTableName));
+		commonDAOs.setAcademicCharacteristicDAO(new AcademicCharacteristicDAOImpl(connection, academicCharacteristicDBTableName));
 	}
 
 }

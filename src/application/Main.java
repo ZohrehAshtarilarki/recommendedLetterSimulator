@@ -1,12 +1,6 @@
 package application;
 	
-import application.controller.CommonObjs;
 import application.dal.DbSqlite;
-import application.dal.FacultyDAOImpl;
-import application.dal.UserDAOImpl;
-import application.model.PersonalCharacteristic;
-import application.dal.CommonDAOs;
-import application.dal.CourseDAOImpl;
 import application.dal.DbConnectionInt;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,20 +15,8 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		
-		String uri = "jdbc:sqlite:test.db";
-		DbConnectionInt dataBaseObj = new DbSqlite(uri);
-		CommonObjs commonObjs = CommonObjs.getInstance();
-		commonObjs.setDataBaseObj(dataBaseObj);
-		
-		CommonDAOs commonDAOs = CommonDAOs.getInstance();
-		commonDAOs.setDataBaseObj(dataBaseObj);
-		
-		commonDAOs.setUserDAO(new UserDAOImpl(dataBaseObj.getConnection()));
-		commonDAOs.setFacultyDAO(new FacultyDAOImpl(dataBaseObj.getConnection()));
-		commonDAOs.setCourseDAO(new CourseDAOImpl(dataBaseObj.getConnection()));
-		
-		
+		initializeApp();
+				
 		try {
 			
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
@@ -46,6 +28,12 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void initializeApp() {
+		String uri = "jdbc:sqlite:test.db";
+		DbConnectionInt dataBaseObj = new DbSqlite(uri);
+		dataBaseObj.initializeDb();
 	}
 	
 	public static void main(String[] args) {

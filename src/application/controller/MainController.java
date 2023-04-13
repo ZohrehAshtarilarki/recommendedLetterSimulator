@@ -1,6 +1,5 @@
 package application.controller;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import application.dal.UserDAOImpl;
@@ -11,9 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class MainController {
@@ -21,73 +20,83 @@ public class MainController {
 	@FXML private Button resetPasswordButton;
 	@FXML private Button login;
 	@FXML PasswordField passEnter;
+	@FXML Label showMessage;
 	
 	Boolean loginValidation = false;
 	
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@FXML public Boolean passwordEnterOp(){
+		
 		try {
 			CommonObjs commonObjs = CommonObjs.getInstance(); 
 			UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
 			User user = userDAO.getUser();
 			
-			String newP = passEnter.getText(); // Get new password from user
-			if(newP.isEmpty()) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setHeaderText(null);
-				alert.setContentText("Please fill out all the requierd fields");
-				alert.showAndWait();
-			}
+			String passw = passEnter.getText(); // Get password from the user
+
 			//p is default password, it is entered, user will be redirected to reset password
-			else if (newP.equals("p")||newP.equals(user.getPassword())){
-					user.setIsFirstLogin(false);
-					userDAO.updateUser(user);
-					
-					loginValidation = true;
-					Stage stage = (Stage) login.getScene().getWindow();
-					stage.close();
-					Stage primaryStage = new Stage();
-					Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
-					primaryStage.setScene(new Scene(root));
-					primaryStage.show();
+			if (passw.equals("p") && passw.equals(user.isFirstLogin())){
+				user.setIsFirstLogin(false);
+				userDAO.updateUser(user);
 				
+				loginValidation = true;
+				
+			}
+			else if(passw.equals(user.getPassword())){
+			
+				loginValidation = true;
 			}
 		
 		} catch(Exception e) {
 			e.printStackTrace();
 			}
+		
 		return loginValidation;
 	}
 	
-	@FXML public void loginClicked() {
-		if(passwordEnterOp()) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setHeaderText(null);
-			alert.setContentText("Successfully logged into the application");
-			alert.showAndWait();
-		}
-		else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setHeaderText(null);
-			alert.setContentText("The password is incorrect");
-			alert.showAndWait();
-		}
-	}
-	
-	@FXML public void resetPasswordOp() {
+	@FXML public void loginClicked() throws SQLException {
+		
+		CommonObjs commonObjs = CommonObjs.getInstance(); 
+		UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
+		User user = userDAO.getUser();
+		
+		String passw = passEnter.getText();
 		
 		try {
-			Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.show();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			if(passw.isEmpty()) {
+				showMessage.setText("Please fill out the required field!");
+				showMessage.setTextFill(Color.web("red"));
+			}
+			else if((passwordEnterOp()) && (user.isFirstLogin())) {
+				showMessage.setText("Successfully logged into the application");
+				showMessage.setTextFill(Color.web("red"));
+				
+				Stage stage = (Stage) login.getScene().getWindow();
+				stage.close();
+				Stage primaryStage = new Stage();
+				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+				primaryStage.setScene(new Scene(root));
+				primaryStage.show();
+			}
+			else if(passwordEnterOp()) {
+				showMessage.setText("Successfully logged into the application");
+				showMessage.setTextFill(Color.web("red"));
+				
+				Stage stage = (Stage) login.getScene().getWindow();
+				stage.close();
+				Stage primaryStage = new Stage();
+				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+				primaryStage.setScene(new Scene(root));
+				primaryStage.show();
+			}
+			else {
+				showMessage.setText("The password is incorrect");
+				showMessage.setTextFill(Color.web("red"));
+			}
+		} catch(Exception e) {
 			e.printStackTrace();
-		}
+			}
 	}
 	
 }

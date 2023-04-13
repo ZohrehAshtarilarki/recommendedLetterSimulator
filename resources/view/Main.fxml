@@ -10,7 +10,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -47,32 +46,22 @@
                </font>
             </Text>
             <ListView editable="true" layoutX="767.0" layoutY="178.0" prefHeight="542.0" prefWidth="397.0" AnchorPane.leftAnchor="767.0" AnchorPane.rightAnchor="769.0" AnchorPane.topAnchor="178.0" />
-            <Button fx:id="login" layoutX="900.0" layoutY="423.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="51.0" prefWidth="125.0" text="Log In" AnchorPane.leftAnchor="900.0" AnchorPane.rightAnchor="908.0" AnchorPane.topAnchor="423.0">
+            <Button fx:id="login" alignment="CENTER" layoutX="900.0" layoutY="423.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="51.0" prefWidth="125.0" text="Log In" AnchorPane.leftAnchor="900.0" AnchorPane.rightAnchor="908.0" AnchorPane.topAnchor="423.0">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="resetPasswordButton" alignment="BOTTOM_LEFT" contentDisplay="CENTER" layoutX="860.0" layoutY="601.0" mnemonicParsing="false" onAction="#resetPasswordOp" prefHeight="47.0" prefWidth="206.0" text="Reset Password" AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="867.0" AnchorPane.topAnchor="601.0">
-               <font>
-                  <Font name="System Font" size="24.0" />
-               </font>
-            </Button>
-            <PasswordField fx:id="passEnter" layoutX="856.0" layoutY="302.0" onAction="#passwordEnterOp" promptText="Enter Password Here" AnchorPane.topAnchor="302.0">
+            <PasswordField fx:id="passEnter" alignment="CENTER" layoutX="856.0" layoutY="302.0" onAction="#passwordEnterOp" promptText="Enter Password Here">
                <font>
                   <Font size="18.0" />
                </font>
             </PasswordField>
-            <Label layoutX="861.0" layoutY="243.0" text="Password" AnchorPane.topAnchor="243.0">
+            <Label alignment="CENTER" layoutX="901.0" layoutY="242.0" text="Password">
                <font>
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="802.0" layoutY="533.0" prefHeight="65.0" prefWidth="319.0" text="Forgot Password ?" AnchorPane.leftAnchor="802.0" AnchorPane.rightAnchor="812.0" AnchorPane.topAnchor="533.0">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-            <Text layoutX="862.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTE: First time login requires password reset" wrappingWidth="188.6856689453125" AnchorPane.leftAnchor="862.0" AnchorPane.rightAnchor="882.3143310546875" AnchorPane.topAnchor="359.59765625">
+            <Text layoutX="875.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTE: First time login requires password reset" wrappingWidth="188.6856689453125" AnchorPane.leftAnchor="875.0" AnchorPane.rightAnchor="869.3143310546875" AnchorPane.topAnchor="359.59765625">
                <font>
                   <Font size="18.0" />
                </font>
@@ -92,7 +81,11 @@
                   <Font size="48.0" />
                </font>
             </Label>
-            <Line endX="190.0" layoutX="974.0" layoutY="516.0" startX="-205.489990234375" />
+            <Label fx:id="showMessage" alignment="CENTER" layoutX="800.0" layoutY="541.0" prefHeight="17.0" prefWidth="325.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

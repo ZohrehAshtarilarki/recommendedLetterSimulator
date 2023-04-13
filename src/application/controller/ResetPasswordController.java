@@ -13,22 +13,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ResetPasswordController {
 	
 	@FXML private Button logoutButton;
 	@FXML PasswordField newPasswordButton;
-	@FXML PasswordField oldPasswordButton;
+	@FXML PasswordField confirmPasswordButton;
 	@FXML Button resetPasswordButton;
 	@FXML Button newRecommendationButton;
 	@FXML Button goBackButton;
+	@FXML Label showMessage;
 	
-	Boolean oldPasswValidation = false;
 	
 	
-
 	@FXML public void logOutOp() {
 		
 		try {
@@ -46,88 +47,38 @@ public class ResetPasswordController {
 	}
 
 
-	@FXML public Boolean oldPasswordOp() {
+	@FXML public void resetPasswordOp() {
 		
 		try {
-			
 			CommonObjs commonObjs = CommonObjs.getInstance(); 
 			UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
 			User user = userDAO.getUser();
 			
-			String oldPassw = oldPasswordButton.getText(); // Get old password from user
-			if(oldPassw.isEmpty()) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setHeaderText(null);
-				alert.setContentText("Please fill out all the requierd fields");
-				alert.showAndWait();
-			}
+			String newPassw = newPasswordButton.getText();
+			String confirmPassw = confirmPasswordButton.getText();
+			user.setPassword(newPassw);
+			
+			userDAO.updateUser(user);
 			
 			
-			else if (oldPassw.equals("p") || oldPassw.equals(user.getPassword())) {
-				oldPasswValidation = true;
-				}
-		
-		} catch (Exception e) {
-			e.printStackTrace();
+			if (newPassw.isEmpty() || confirmPassw.isEmpty()){
+				showMessage.setText("Please fill out all the required fields!");
+				showMessage.setTextFill(Color.web("red"));
 			}
-		
-		return oldPasswValidation;
-	}
+			else if (newPassw.isEmpty() && confirmPassw.isEmpty()){
+				showMessage.setText("Please fill out all the required fields!");
+				showMessage.setTextFill(Color.web("red"));
+			}
+			else if(newPassw.equals(confirmPassw)) {
+					showMessage.setText("Successfully reset the password");
+					showMessage.setTextFill(Color.web("red"));	
+			} 
 	
-	
-	@FXML public Boolean newPasswordOp() {
-		
-		try {
-			String newPassw = newPasswordButton.getText(); // Get new password from user
-			if(newPassw.isEmpty()) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setHeaderText(null);
-				alert.setContentText("Please fill out all the requierd fields");
-				alert.showAndWait();
-			}
-			else {
-				oldPasswValidation = true;
-			}
-					
-		} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
-		return oldPasswValidation;
-	}
-
-
-	@FXML public void resetPasswordOp() {
-		
-		if(oldPasswordOp() && newPasswordOp()) {
-			
-			try {
-				CommonObjs commonObjs = CommonObjs.getInstance(); 
-				UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
-				User user = userDAO.getUser();
-				
-				String newPassw = newPasswordButton.getText();
-				user.setPassword(newPassw);
-				
-				userDAO.updateUser(user);
-				
-				this.oldPasswValidation = false;
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setHeaderText(null);
-				alert.setContentText("Successfully reset the password");
-				alert.showAndWait();
-			} catch (SQLException e) {
+		} catch (SQLException e) {
 				e.printStackTrace();
 				System.out.println(e.getMessage());
 			}
-		}
-		else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setHeaderText(null);
-			alert.setContentText("The credentials entered are not correct");
-			alert.showAndWait();
-		}
-	}
+		} 
 
 
 	@FXML public void goBackOp() {
@@ -147,21 +98,14 @@ public class ResetPasswordController {
 	}
 
 
-	@FXML public void newRecommendationOp() {
+	@FXML public void newRecommendationOp() throws IOException {
 		
-		//try {
-			Stage stage = (Stage) logoutButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			primaryStage = RecommendationLetterSimulator.show(primaryStage);
-		
-		
-			primaryStage.show();
-			
-			
-	//	} catch (IOException e) {
-			
-		//	e.printStackTrace();
-		//}
+		Stage stage = (Stage) logoutButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		primaryStage = RecommendationLetterSimulator.show(primaryStage);
+
+
+		primaryStage.show();
 	}
 }

@@ -86,7 +86,7 @@ public class MainController {
 				Stage stage = (Stage) login.getScene().getWindow();
 				stage.close();
 				Stage primaryStage = new Stage();
-				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("application/RecommendationLetterSimulator.java"));
+				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
 				primaryStage.setScene(new Scene(root));
 				primaryStage.show();
 			}

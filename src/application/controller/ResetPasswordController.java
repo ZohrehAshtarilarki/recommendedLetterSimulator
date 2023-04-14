@@ -25,9 +25,7 @@ public class ResetPasswordController {
 	@FXML Button goBackButton;
 	@FXML Label showMessage;
 	private CommonDAOs comDAO = CommonDAOs.getInstance();
-	
-	
-	
+	private Authentication auth = Authentication.getInstance();
 	
 	@FXML public void logOutOp() {
 		
@@ -38,6 +36,7 @@ public class ResetPasswordController {
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
+			auth.logout();
 			
 		} catch (IOException e) {
 			

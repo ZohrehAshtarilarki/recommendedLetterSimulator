@@ -21,11 +21,11 @@ public class ResetPasswordController {
 	@FXML private Button logoutButton;
 	@FXML PasswordField newPasswordButton;
 	@FXML PasswordField confirmPasswordButton;
-	@FXML Button resetPasswordButton;
-	@FXML Button newRecommendationButton;
+	@FXML Button savePasswordButton;
 	@FXML Button goBackButton;
 	@FXML Label showMessage;
 	private CommonDAOs comDAO = CommonDAOs.getInstance();
+	
 	
 	
 	
@@ -46,7 +46,7 @@ public class ResetPasswordController {
 	}
 
 
-	@FXML public void resetPasswordOp() {
+	@FXML public void savePasswordOp() {
 		
 		try {
 			
@@ -94,17 +94,5 @@ public class ResetPasswordController {
 			
 			e.printStackTrace();
 		}
-	}
-
-
-	@FXML public void newRecommendationOp() throws IOException {
-		
-		Stage stage = (Stage) logoutButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		primaryStage = RecommendationLetterSimulator.show(primaryStage);
-
-
-		primaryStage.show();
 	}
 }

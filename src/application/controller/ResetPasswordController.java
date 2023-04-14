@@ -53,7 +53,6 @@ public class ResetPasswordController {
 			String confirmPassw = confirmPasswordButton.getText();
 			User user = comDAO.getUserDAO().getUser();
 			
-			
 			user.setPassword(newPassw);
 			
 			comDAO.getUserDAO().updateUser(user);

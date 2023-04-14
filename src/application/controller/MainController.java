@@ -45,8 +45,6 @@ public class MainController {
 				User user = auth.getLoggedInUser();
 				loginValidation = true;
 				if (user.isFirstLogin()) {
-					user.setIsFirstLogin(false);
-					commDAOs.getUserDAO().updateUser(user);
 					routeToResetPasswordView();
 				} else {
 					routeToHomePage();					

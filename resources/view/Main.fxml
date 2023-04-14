@@ -17,6 +17,11 @@
    <children>
       <AnchorPane prefHeight="82.0" prefWidth="1521.0">
          <children>
+            <ImageView fitHeight="800.0" fitWidth="1400.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/img1.jpg" />
+               </image>
+            </ImageView>
             <DialogPane cache="true" layoutX="94.0" layoutY="195.0" prefHeight="574.0" prefWidth="550.0" AnchorPane.leftAnchor="94.0" AnchorPane.topAnchor="195.0">
                <padding>
                   <Insets top="500.0" />

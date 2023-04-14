@@ -77,14 +77,14 @@
             <Insets right="20.0" />
          </padding>
       </TextField>
-      <ComboBox fx:id="genderButton" layoutX="25.0" layoutY="189.0" onAction="#genderButtonOp" prefWidth="150.0" promptText="Gender" />
+      <ComboBox fx:id="genderButton" layoutX="25.0" layoutY="189.0" prefWidth="150.0" promptText="Gender" />
       <TextField fx:id="schoolName" alignment="CENTER" layoutX="25.0" layoutY="285.0" prefHeight="30.0" prefWidth="200.0" promptText="Target School">
          <padding>
             <Insets right="10.0" />
          </padding>
       </TextField>
       <DatePicker fx:id="currentDate" layoutX="245.0" layoutY="285.0" prefHeight="30.0" prefWidth="180.0" promptText="Current Date" />
-      <ComboBox layoutX="25.0" layoutY="333.0" prefHeight="30.0" prefWidth="200.0" promptText="Program" />
+      <ComboBox fx:id="programButton" layoutX="25.0" layoutY="333.0" prefHeight="30.0" prefWidth="200.0" promptText="Program" />
       <Label layoutX="26.0" layoutY="392.0" prefHeight="30.0" prefWidth="309.0" text="Courses and Years Taken">
          <font>
             <Font name="Arial Bold" size="24.0" />
@@ -95,26 +95,24 @@
             <Font name="Arial Bold" size="24.0" />
          </font>
       </Label>
-      <ComboBox layoutX="30.0" layoutY="443.0" prefWidth="150.0" promptText="Semester Taken" />
-      <ComboBox layoutX="30.0" layoutY="494.0" prefHeight="27.0" prefWidth="200.0" promptText="Course Taken" />
+      <ComboBox fx:id="semesterTaken" layoutX="30.0" layoutY="443.0" prefWidth="150.0" promptText="Semester Taken" />
+      <ComboBox fx:id="courseTaken" layoutX="30.0" layoutY="494.0" prefHeight="27.0" prefWidth="200.0" promptText="Course Taken" />
       <TextField alignment="CENTER" layoutX="260.0" layoutY="443.0" prefHeight="27.0" prefWidth="89.0" promptText="Year" />
-      <TextField alignment="CENTER" layoutX="261.0" layoutY="494.0" prefHeight="27.0" prefWidth="89.0" promptText="Grade" />
-      <ComboBox layoutX="30.0" layoutY="549.0" prefHeight="27.0" prefWidth="200.0" promptText="Other Corses Taken" />
-      <TextField alignment="CENTER" layoutX="264.0" layoutY="549.0" prefHeight="27.0" prefWidth="89.0" promptText="Grade" />
-      <Button layoutX="376.0" layoutY="549.0" mnemonicParsing="false" text="Add Course" />
-      <TextArea layoutX="30.0" layoutY="586.0" prefHeight="200.0" prefWidth="325.0" />
+      <TextField fx:id="gradeField" alignment="CENTER" layoutX="261.0" layoutY="494.0" prefHeight="27.0" prefWidth="89.0" promptText="Grade" />
+      <Button fx:id="addCourseButton" layoutX="30.0" layoutY="545.0" mnemonicParsing="false" onAction="#addCourseOp" text="Add Course" />
+      <TextArea fx:id="courseTextArea" layoutX="30.0" layoutY="586.0" onDragDetected="#courseTextAreaOp" prefHeight="200.0" prefWidth="325.0" />
       <Separator layoutX="616.0" layoutY="60.0" orientation="VERTICAL" prefHeight="740.0" />
       <Label layoutX="640.0" layoutY="77.0" prefHeight="29.0" prefWidth="396.0" text="Student Personal Characteristics">
          <font>
             <Font name="Arial Bold" size="24.0" />
          </font>
       </Label>
-      <ComboBox layoutX="646.0" layoutY="132.0" prefHeight="27.0" prefWidth="180.0" promptText="Personal Characteristic" />
-      <Button layoutX="884.0" layoutY="132.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="71.0" text="Add" />
-      <TextArea layoutX="646.0" layoutY="189.0" prefHeight="200.0" prefWidth="325.0" />
-      <ComboBox layoutX="646.0" layoutY="443.0" prefHeight="27.0" prefWidth="180.0" promptText="Academic Charactristic" />
-      <Button layoutX="884.0" layoutY="443.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="71.0" text="Add" />
-      <TextArea layoutX="646.0" layoutY="501.0" prefHeight="200.0" prefWidth="325.0" />
+      <ComboBox fx:id="personalChar" layoutX="646.0" layoutY="132.0" prefHeight="27.0" prefWidth="180.0" promptText="Personal Characteristic" />
+      <Button fx:id="addPersonalChar" layoutX="884.0" layoutY="132.0" mnemonicParsing="false" onAction="#addPersonalCharOp" prefHeight="27.0" prefWidth="71.0" text="Add" />
+      <TextArea fx:id="personalArea" layoutX="646.0" layoutY="189.0" prefHeight="200.0" prefWidth="325.0" />
+      <ComboBox fx:id="academicChar" layoutX="646.0" layoutY="443.0" prefHeight="27.0" prefWidth="180.0" promptText="Academic Charactristic" />
+      <Button fx:id="achademicArea" layoutX="884.0" layoutY="443.0" mnemonicParsing="false" onAction="#achademicAreaOp" prefHeight="27.0" prefWidth="71.0" text="Add" />
+      <TextArea fx:id="achademicField" layoutX="646.0" layoutY="501.0" prefHeight="200.0" prefWidth="325.0" />
       <Button layoutX="920.0" layoutY="750.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="71.0" text="Canclel" />
       <Button layoutX="1020.0" layoutY="750.0" mnemonicParsing="false" prefWidth="71.0" text="Compile" />
    </children>

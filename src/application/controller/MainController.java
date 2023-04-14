@@ -41,17 +41,19 @@ public class MainController {
 		} 
 		
 		try {
-			User user;
 			if (auth.login(passw)) {
-				user = auth.getLoggedInUser();
-				user.setIsFirstLogin(false);
-				commDAOs.getUserDAO().updateUser(user);
+				User user = auth.getLoggedInUser();
 				loginValidation = true;
 				if (user.isFirstLogin()) {
+					user.setIsFirstLogin(false);
+					commDAOs.getUserDAO().updateUser(user);
 					routeToResetPasswordView();
 				} else {
 					routeToHomePage();					
 				}
+			} else {
+				showMessage.setText("The password is incorrect!");
+				showMessage.setTextFill(Color.web("red"));
 			}
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();

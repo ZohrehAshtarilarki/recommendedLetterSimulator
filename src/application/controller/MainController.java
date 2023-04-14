@@ -1,7 +1,9 @@
 package application.controller;
+import java.io.IOException;
+import java.sql.SQLException;
 
-import application.dal.UserDAOImpl;
-import application.dal.UserDAOInt;
+import application.dal.Authentication;
+import application.dal.CommonDAOs;
 import application.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,34 +22,10 @@ public class MainController {
 	@FXML Label showMessage;
 	
 	Boolean loginValidation = false;
+	private Authentication auth = Authentication.getInstance();
+	private CommonDAOs commDAOs = CommonDAOs.getInstance();
 	
-	
-	@SuppressWarnings("unlikely-arg-type")
 	@FXML public Boolean passwordEnterOp(){
-		
-		try {
-			CommonObjs commonObjs = CommonObjs.getInstance(); 
-			UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
-			User user = userDAO.getUser();
-			
-			String passw = passEnter.getText(); // Get password from the user
-
-			//p is default password, it is entered, user will be redirected to reset password
-			if (passw.equals("p") && passw.equals(user.isFirstLogin())){
-				user.setIsFirstLogin(false);
-				userDAO.updateUser(user);
-				
-				loginValidation = true;
-				
-			}
-			else if(passw.equals(user.getPassword())){
-			
-				loginValidation = true;
-			}
-		
-		} catch(Exception e) {
-			e.printStackTrace();
-			}
 		
 		return loginValidation;
 	}
@@ -56,39 +34,46 @@ public class MainController {
 		
 		String passw = passEnter.getText();
 		
+		if(passw.isEmpty()) {
+			showMessage.setText("Please fill out the required field!");
+			showMessage.setTextFill(Color.web("red"));
+			return;
+		} 
+		
 		try {
-			
-			CommonObjs commonObjs = CommonObjs.getInstance(); 
-			UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
-			User user = userDAO.getUser();
-			
-			if(passw.isEmpty()) {
-				showMessage.setText("Please fill out the required field!");
-				showMessage.setTextFill(Color.web("red"));
+			User user;
+			if (auth.login(passw)) {
+				user = auth.getLoggedInUser();
+				user.setIsFirstLogin(false);
+				commDAOs.getUserDAO().updateUser(user);
+				loginValidation = true;
+				if (user.isFirstLogin()) {
+					routeToResetPasswordView();
+				} else {
+					routeToHomePage();					
+				}
 			}
-			else if((passwordEnterOp()) && (user.isFirstLogin())) {
-				Stage stage = (Stage) loginButton.getScene().getWindow();
-				stage.close();
-				Stage primaryStage = new Stage();
-				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
-				primaryStage.setScene(new Scene(root));
-				primaryStage.show();
-			}
-			else if(passwordEnterOp()) {
-				Stage stage = (Stage) loginButton.getScene().getWindow();
-				stage.close();
-				Stage primaryStage = new Stage();
-				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
-				primaryStage.setScene(new Scene(root));
-				primaryStage.show();
-			}
-			else {
-				showMessage.setText("The password is incorrect");
-				showMessage.setTextFill(Color.web("red"));
-			}
-		} catch(Exception e) {
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
-			}
+			System.out.println(e.getMessage());
+		}
 	}
 	
+	private void routeToResetPasswordView() throws IOException {
+		Stage stage = (Stage) loginButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
+	
+	private void routeToHomePage() throws IOException {
+		Stage stage = (Stage) loginButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
 }

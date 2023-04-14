@@ -78,7 +78,6 @@ public class ResetPasswordController {
 			}
 		} 
 
-
 	@FXML public void goBackOp() {
 		
 		try {

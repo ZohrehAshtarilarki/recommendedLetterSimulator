@@ -1,7 +1,5 @@
 package application.controller;
 
-import java.sql.SQLException;
-
 import application.dal.UserDAOImpl;
 import application.dal.UserDAOInt;
 import application.model.User;
@@ -17,9 +15,8 @@ import javafx.stage.Stage;
 
 public class MainController {
 	
-	@FXML private Button resetPasswordButton;
-	@FXML private Button login;
 	@FXML PasswordField passEnter;
+	@FXML Button loginButton;
 	@FXML Label showMessage;
 	
 	Boolean loginValidation = false;
@@ -55,24 +52,22 @@ public class MainController {
 		return loginValidation;
 	}
 	
-	@FXML public void loginClicked() throws SQLException {
-		
-		CommonObjs commonObjs = CommonObjs.getInstance(); 
-		UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
-		User user = userDAO.getUser();
+	@FXML public void loginOp() {
 		
 		String passw = passEnter.getText();
 		
 		try {
+			
+			CommonObjs commonObjs = CommonObjs.getInstance(); 
+			UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
+			User user = userDAO.getUser();
+			
 			if(passw.isEmpty()) {
 				showMessage.setText("Please fill out the required field!");
 				showMessage.setTextFill(Color.web("red"));
 			}
 			else if((passwordEnterOp()) && (user.isFirstLogin())) {
-				showMessage.setText("Successfully logged into the application");
-				showMessage.setTextFill(Color.web("red"));
-				
-				Stage stage = (Stage) login.getScene().getWindow();
+				Stage stage = (Stage) loginButton.getScene().getWindow();
 				stage.close();
 				Stage primaryStage = new Stage();
 				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
@@ -80,13 +75,10 @@ public class MainController {
 				primaryStage.show();
 			}
 			else if(passwordEnterOp()) {
-				showMessage.setText("Successfully logged into the application");
-				showMessage.setTextFill(Color.web("red"));
-				
-				Stage stage = (Stage) login.getScene().getWindow();
+				Stage stage = (Stage) loginButton.getScene().getWindow();
 				stage.close();
 				Stage primaryStage = new Stage();
-				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+				Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
 				primaryStage.setScene(new Scene(root));
 				primaryStage.show();
 			}

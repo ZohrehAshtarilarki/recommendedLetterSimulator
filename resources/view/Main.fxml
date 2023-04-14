@@ -17,11 +17,6 @@
    <children>
       <AnchorPane prefHeight="82.0" prefWidth="1521.0">
          <children>
-            <ImageView fitHeight="898.0" fitWidth="1306.0" layoutX="-16.0" layoutY="-14.0">
-               <image>
-                  <Image url="@../image/img1.jpg" />
-               </image>
-            </ImageView>
             <DialogPane cache="true" layoutX="94.0" layoutY="195.0" prefHeight="574.0" prefWidth="550.0" AnchorPane.leftAnchor="94.0" AnchorPane.topAnchor="195.0">
                <padding>
                   <Insets top="500.0" />
@@ -46,12 +41,12 @@
                </font>
             </Text>
             <ListView editable="true" layoutX="767.0" layoutY="178.0" prefHeight="542.0" prefWidth="397.0" AnchorPane.leftAnchor="767.0" AnchorPane.rightAnchor="769.0" AnchorPane.topAnchor="178.0" />
-            <Button fx:id="login" alignment="CENTER" layoutX="900.0" layoutY="423.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="51.0" prefWidth="125.0" text="Log In" AnchorPane.leftAnchor="900.0" AnchorPane.rightAnchor="908.0" AnchorPane.topAnchor="423.0">
+            <Button fx:id="loginButton" alignment="CENTER" layoutX="900.0" layoutY="423.0" mnemonicParsing="false" onAction="#loginOp" prefHeight="51.0" prefWidth="125.0" text="Login" AnchorPane.leftAnchor="900.0" AnchorPane.rightAnchor="908.0" AnchorPane.topAnchor="423.0">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <PasswordField fx:id="passEnter" alignment="CENTER" layoutX="856.0" layoutY="302.0" onAction="#passwordEnterOp" promptText="Enter Password Here">
+            <PasswordField fx:id="passEnter" alignment="CENTER" layoutX="856.0" layoutY="302.0" promptText="Enter Password Here">
                <font>
                   <Font size="18.0" />
                </font>
@@ -68,22 +63,22 @@
             </Text>
             <Text boundsType="LOGICAL_VERTICAL_CENTER" layoutX="86.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="About" textAlignment="CENTER" textOrigin="BOTTOM" wrappingWidth="554.1854801177979">
                <font>
-                  <Font size="36.0" />
+                  <Font name="Arial Bold" size="36.0" />
                </font>
             </Text>
-            <Text layoutX="90.0" layoutY="564.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Student Recommender for Facutly!&#10;&#10;Site Features&#10;&#10;Access Existing Recommendations&#10;Make New Recommendations&#10;Edit Existing Recommendations" textAlignment="CENTER" wrappingWidth="558.8192749023438">
+            <Text layoutX="90.0" layoutY="564.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Student Recommender for Facutly!&#10;&#10;Application Features&#10;&#10;Access Existing Recommendations&#10;Make New Recommendations&#10;Edit Existing Recommendations" textAlignment="CENTER" wrappingWidth="558.8192749023438">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Label layoutX="895.0" layoutY="93.0" prefHeight="70.0" prefWidth="143.0" text="Login">
-               <font>
-                  <Font size="48.0" />
-               </font>
-            </Label>
             <Label fx:id="showMessage" alignment="CENTER" layoutX="800.0" layoutY="541.0" prefHeight="17.0" prefWidth="325.0">
                <font>
                   <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="894.0" layoutY="96.0" text="Login">
+               <font>
+                  <Font name="Arial Bold" size="48.0" />
                </font>
             </Label>
          </children>

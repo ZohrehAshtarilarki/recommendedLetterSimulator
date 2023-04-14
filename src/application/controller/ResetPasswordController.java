@@ -51,24 +51,21 @@ public class ResetPasswordController {
 			
 			String newPassw = newPasswordButton.getText();
 			String confirmPassw = confirmPasswordButton.getText();
-			User user = comDAO.getUserDAO().getUser();
-			
-			user.setPassword(newPassw);
-			
-			comDAO.getUserDAO().updateUser(user);
-			
+			User user = auth.getLoggedInUser();
 			
 			if (newPassw.isEmpty() || confirmPassw.isEmpty()){
 				showMessage.setText("Please fill out all the required fields!");
 				showMessage.setTextFill(Color.web("red"));
 			}
-			else if (newPassw.isEmpty() && confirmPassw.isEmpty()){
-				showMessage.setText("Please fill out all the required fields!");
+			else if(newPassw.equals(confirmPassw) && auth.getIsAuthentication()) {
+				if (user.isFirstLogin()) {
+					user.setIsFirstLogin(false);
+				}
+				user.setPassword(newPassw);
+				comDAO.getUserDAO().updateUser(user);
+				
+				showMessage.setText("Successfully reset the password");
 				showMessage.setTextFill(Color.web("red"));
-			}
-			else if(newPassw.equals(confirmPassw)) {
-					showMessage.setText("Successfully reset the password");
-					showMessage.setTextFill(Color.web("red"));	
 			} 
 	
 		} catch (SQLException e) {
@@ -86,6 +83,7 @@ public class ResetPasswordController {
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
+			auth.logout();
 			
 		} catch (IOException e) {
 			

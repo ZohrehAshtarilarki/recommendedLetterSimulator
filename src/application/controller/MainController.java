@@ -2,6 +2,7 @@ package application.controller;
 
 import java.sql.SQLException;
 
+import application.dal.Authentication;
 import application.dal.UserDAOImpl;
 import application.dal.UserDAOInt;
 import application.model.User;
@@ -23,6 +24,7 @@ public class MainController {
 	@FXML Label showMessage;
 	
 	Boolean loginValidation = false;
+	private Authentication auth = Authentication.getInstance();
 	
 	
 	@SuppressWarnings("unlikely-arg-type")

@@ -3,15 +3,13 @@ package application.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import application.dal.UserDAOImpl;
-import application.dal.UserDAOInt;
+import application.dal.Authentication;
+import application.dal.CommonDAOs;
 import application.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -27,6 +25,7 @@ public class ResetPasswordController {
 	@FXML Button newRecommendationButton;
 	@FXML Button goBackButton;
 	@FXML Label showMessage;
+	private CommonDAOs comDAO = CommonDAOs.getInstance();
 	
 	
 	
@@ -50,15 +49,15 @@ public class ResetPasswordController {
 	@FXML public void resetPasswordOp() {
 		
 		try {
-			CommonObjs commonObjs = CommonObjs.getInstance(); 
-			UserDAOInt userDAO = new UserDAOImpl(commonObjs.getDataBaseObj().getConnection());
-			User user = userDAO.getUser();
 			
 			String newPassw = newPasswordButton.getText();
 			String confirmPassw = confirmPasswordButton.getText();
+			User user = comDAO.getUserDAO().getUser();
+			
+			
 			user.setPassword(newPassw);
 			
-			userDAO.updateUser(user);
+			comDAO.getUserDAO().updateUser(user);
 			
 			
 			if (newPassw.isEmpty() || confirmPassw.isEmpty()){

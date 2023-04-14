@@ -19,6 +19,11 @@ public final class Authentication {
 		}
 	}
 	
+	public static Authentication getInstance() {
+		return auth;
+	}
+	
+	
 	/**
 	 * On log in success, stores reference to logged in user in user attribute
 	 * 

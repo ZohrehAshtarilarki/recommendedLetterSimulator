@@ -7,7 +7,14 @@ import application.model.PersonalCharacteristic;
 
 public interface PersonalCharacteristicDAOInt {
 	public List<PersonalCharacteristic> getAllPersonalCharacteristics() throws SQLException;
-	public void addPersonalCharacteristic(PersonalCharacteristic personalCharacteristic) throws SQLException;
+	
+	/**
+	 * 
+	 * @param characteristic
+	 * @return PersonalCharacteristic or null if retrieving ID from DB after insertion failed
+	 * @throws SQLException
+	 */
+	public PersonalCharacteristic addPersonalCharacteristic(String characteristic) throws SQLException;
 	public void updatePersonalCharacteristic(PersonalCharacteristic personalCharacteristic) throws SQLException;
 	public void deletePersonalCharacteristic(int personalCharacteristicId) throws SQLException;
 }

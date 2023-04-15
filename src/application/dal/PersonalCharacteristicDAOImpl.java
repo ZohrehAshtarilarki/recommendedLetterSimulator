@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.model.AcademicProgram;
 import application.model.PersonalCharacteristic;
 import application.utils.DbUtils;
 
@@ -50,21 +51,47 @@ public class PersonalCharacteristicDAOImpl implements PersonalCharacteristicDAOI
 	}
 
 	@Override
-	public void addPersonalCharacteristic(PersonalCharacteristic personalCharacteristic) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public PersonalCharacteristic addPersonalCharacteristic(String characteristic) throws SQLException {
+        String sqlInsertDataQuery = String.format("INSERT INTO %s (characteristic) VALUES (?)", tableName);
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertDataQuery, Statement.RETURN_GENERATED_KEYS);
+    	preparedStatement.setString(1, characteristic);
+    	
+    	preparedStatement.executeUpdate();
+    	
+    	PersonalCharacteristic newPersonalCharacteristic = new PersonalCharacteristic();
+    	newPersonalCharacteristic.setCharacteristic(characteristic);;
+//    	gets the Id of new inserted course from DB
+    	try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+    		if (generatedKeys.next()) {
+    			newPersonalCharacteristic.setPersonalCharacteristicId(generatedKeys.getInt(1));
+    		} else {
+    			throw new SQLException("Failed to create new PersonalCharacteristic, no ID found.");
+    		}
+    	}
+    	
+    	preparedStatement.close();
+    	
+    	return newPersonalCharacteristic.getPersonalCharacteristicId() == -1 ? null : newPersonalCharacteristic;
 	}
 
 	@Override
 	public void updatePersonalCharacteristic(PersonalCharacteristic personalCharacteristic) throws SQLException {
-		// TODO Auto-generated method stub
-
+		String sqlUpdateUser = String.format("UPDATE %s SET characteristic=? WHERE id=?", tableName);
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser);
+    	preparedStatement.setString(1, personalCharacteristic.getCharacteristic());
+    	preparedStatement.setInt(2, personalCharacteristic.getPersonalCharacteristicId());
+    	
+    	int numberOfUpdatedRows = preparedStatement.executeUpdate();
+    	
+    	if (numberOfUpdatedRows == 0) {
+    		throw new SQLException("Updating PersonalCharacteristic failed, no rows affected.");
+    	}
+		preparedStatement.close();
 	}
 
 	@Override
 	public void deletePersonalCharacteristic(int personalCharacteristicId) throws SQLException {
-		// TODO Auto-generated method stub
-
+		new DbUtils().deleteRowById(personalCharacteristicId, this.tableName, this.connection);
 	}
 	
 	private void initPersonalCharacteristicDAO(DbUtils dbUtils) {

@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.model.AcademicCharacteristic;
 import application.model.AcademicProgram;
 import application.utils.DbUtils;
 
@@ -77,7 +76,6 @@ public class AcademicProgramDAOImpl implements AcademicProgramDAOInt {
     	preparedStatement.close();
     	
     	return newAcademicProgram.getAcademicProgramId() == -1 ? null : newAcademicProgram;
-
 	}
 
 	@Override

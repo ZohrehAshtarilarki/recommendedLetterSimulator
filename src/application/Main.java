@@ -2,6 +2,7 @@ package application;
 	
 import java.sql.SQLException;
 
+import application.dal.AcademicCharacteristicDAOInt;
 import application.dal.CommonDAOs;
 import application.dal.CourseDAOInt;
 import application.dal.DbConnectionInt;
@@ -9,6 +10,7 @@ import application.dal.DbSqlite;
 import application.dal.FacultyDAOInt;
 import application.model.Course;
 import application.model.Faculty;
+import application.model.AcademicCharacteristic;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -55,7 +57,7 @@ public class Main extends Application {
 			CourseDAOInt courseDAOs = CommonDAOs.getInstance().getCourseDAO();
 			Course newCourse1 = courseDAOs.addCourses("Python", "CS", 9876);
 			Course newCourse2 = courseDAOs.addCourses("Python II", "SWE", 1329);
-			Course newCourse3 = courseDAOs.addCourses("C++ II", "SCI", 999);
+			Course newCourse3 = courseDAOs.addCourses("C+++++++ II", "SCI", 999);
 			
 			newCourse1.setName("NEW Py course");
 			newCourse1.setPrefix("NEW");
@@ -66,6 +68,17 @@ public class Main extends Application {
 			courseDAOs.deleteCourses(newCourse2.getCourseId());
 			courseDAOs.deleteCourses(newCourse3.getCourseId());
 			
+			AcademicCharacteristicDAOInt acadCharDAO = CommonDAOs.getInstance().getAcademicCharacteristicDAO();
+			AcademicCharacteristic acadChar1 = acadCharDAO.addAcademicCharacteristic("SUper Fast Learner");
+			AcademicCharacteristic acadChar2 = acadCharDAO.addAcademicCharacteristic("SLOW Fast Learner");
+			AcademicCharacteristic acadChar3 = acadCharDAO.addAcademicCharacteristic("LAZY!!");
+			
+			acadChar1.setCharacteristic("SUper Fast Learner III");
+			acadCharDAO.updateAcademicCharacteristic(acadChar1);
+			
+			acadCharDAO.deleteAcademicCharacteristic(acadChar1.getAcademicCharacteristicId());
+			acadCharDAO.deleteAcademicCharacteristic(acadChar2.getAcademicCharacteristicId());
+			acadCharDAO.deleteAcademicCharacteristic(acadChar3.getAcademicCharacteristicId());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

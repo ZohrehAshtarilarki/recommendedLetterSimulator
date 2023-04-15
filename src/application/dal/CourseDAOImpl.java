@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.model.Course;
+import application.utils.DbUtils;
 
 public class CourseDAOImpl implements CourseDAOInt {
 	private Connection connection;
@@ -92,12 +93,8 @@ public class CourseDAOImpl implements CourseDAOInt {
 	}
 
 	@Override
-	public void deleteCourses(int courseId) throws SQLException {
-		 String sqlDelete = String.format("DELETE FROM %s WHERE id = ?", tableName);
-		 PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
-		 preparedStatement.setInt(1, courseId);
-		 preparedStatement.executeUpdate();
-		 preparedStatement.close();
+	public void deleteCourses(int courseId) throws SQLException {	 
+		 new DbUtils().deleteRowById(courseId, this.tableName, this.connection);
 	}
 	
 	private void initCourseDAO() {

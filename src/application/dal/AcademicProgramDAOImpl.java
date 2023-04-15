@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.model.AcademicCharacteristic;
 import application.model.AcademicProgram;
 import application.utils.DbUtils;
 
@@ -55,21 +56,48 @@ public class AcademicProgramDAOImpl implements AcademicProgramDAOInt {
 	}
 
 	@Override
-	public void addAcademicProgram(AcademicProgram academicProgram) throws SQLException {
-		// TODO Auto-generated method stub
+	public AcademicProgram addAcademicProgram(String academicProgram) throws SQLException {
+        String sqlInsertDataQuery = String.format("INSERT INTO %s (name) VALUES (?)", tableName);
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertDataQuery, Statement.RETURN_GENERATED_KEYS);
+    	preparedStatement.setString(1, academicProgram);
+    	
+    	preparedStatement.executeUpdate();
+    	
+    	AcademicProgram newAcademicProgram = new AcademicProgram();
+    	newAcademicProgram.setName(academicProgram);
+//    	gets the Id of new inserted course from DB
+    	try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+    		if (generatedKeys.next()) {
+    			newAcademicProgram.setAcademicProgramId(generatedKeys.getInt(1));
+    		} else {
+    			throw new SQLException("Failed to create new AcademicProgram, no ID found.");
+    		}
+    	}
+    	
+    	preparedStatement.close();
+    	
+    	return newAcademicProgram.getAcademicProgramId() == -1 ? null : newAcademicProgram;
 
 	}
 
 	@Override
 	public void updateAcademicProgram(AcademicProgram academicProgram) throws SQLException {
-		// TODO Auto-generated method stub
-
+		String sqlUpdateUser = String.format("UPDATE %s SET name=? WHERE id=?", tableName);
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser);
+    	preparedStatement.setString(1, academicProgram.getName());
+    	preparedStatement.setInt(2, academicProgram.getAcademicProgramId());
+    	
+    	int numberOfUpdatedRows = preparedStatement.executeUpdate();
+    	
+    	if (numberOfUpdatedRows == 0) {
+    		throw new SQLException("Updating AcademicProgram failed, no rows affected.");
+    	}
+		preparedStatement.close();
 	}
 
 	@Override
 	public void deleteAcademicProgram(int academicProgramId) throws SQLException {
-		// TODO Auto-generated method stub
-
+		new DbUtils().deleteRowById(academicProgramId, this.tableName, this.connection);
 	}
 	
 	private void initAcademicProgramDAO(DbUtils dbUtils) {

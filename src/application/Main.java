@@ -3,6 +3,7 @@ package application;
 import java.sql.SQLException;
 
 import application.dal.AcademicCharacteristicDAOInt;
+import application.dal.AcademicProgramDAOInt;
 import application.dal.CommonDAOs;
 import application.dal.CourseDAOInt;
 import application.dal.DbConnectionInt;
@@ -11,6 +12,7 @@ import application.dal.FacultyDAOInt;
 import application.model.Course;
 import application.model.Faculty;
 import application.model.AcademicCharacteristic;
+import application.model.AcademicProgram;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -79,6 +81,18 @@ public class Main extends Application {
 			acadCharDAO.deleteAcademicCharacteristic(acadChar1.getAcademicCharacteristicId());
 			acadCharDAO.deleteAcademicCharacteristic(acadChar2.getAcademicCharacteristicId());
 			acadCharDAO.deleteAcademicCharacteristic(acadChar3.getAcademicCharacteristicId());
+			
+			AcademicProgramDAOInt acadProgramDAO = CommonDAOs.getInstance().getAcademicaProgramDAO();
+			AcademicProgram acadProgram1 = acadProgramDAO.addAcademicProgram("English Program");
+			AcademicProgram acadProgram2 = acadProgramDAO.addAcademicProgram("Math Program");
+			AcademicProgram acadProgram3 = acadProgramDAO.addAcademicProgram("Master of Sleep");
+			
+			acadProgram1.setName("MASTER of ART");
+			acadProgramDAO.updateAcademicProgram(acadProgram1);
+			
+			acadProgramDAO.deleteAcademicProgram(acadProgram1.getAcademicProgramId());
+			acadProgramDAO.deleteAcademicProgram(acadProgram2.getAcademicProgramId());
+			acadProgramDAO.deleteAcademicProgram(acadProgram3.getAcademicProgramId());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

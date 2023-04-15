@@ -58,21 +58,43 @@ public class AcademicCharacteristicDAOImpl implements AcademicCharacteristicDAOI
 	}
 
 	@Override
-	public void addAcademicCharacteristic(AcademicCharacteristic academicCharacteristic) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public AcademicCharacteristic addAcademicCharacteristic(String characteristic) throws SQLException {
+        String sqlDataQuery = String.format("INSERT INTO %s (characteristic) VALUES (?)", tableName);
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlDataQuery, Statement.RETURN_GENERATED_KEYS);
+    	preparedStatement.setString(1, characteristic);
+    	
+    	preparedStatement.executeUpdate();
+    	
+    	AcademicCharacteristic newAcademicCharacteristic = new AcademicCharacteristic();
+    	newAcademicCharacteristic.setCharacteristic(characteristic);
+//    	gets the Id of new inserted course from DB
+    	try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+    		if (generatedKeys.next()) {
+    			newAcademicCharacteristic.setAcademicCharacteristicId(generatedKeys.getInt(1));
+    		} else {
+    			throw new SQLException("Failed to create new AcademicCharacteristic, no ID found.");
+    		}
+    	}
+    	
+    	preparedStatement.close();
+    	
+    	return newAcademicCharacteristic.getAcademicCharacteristicId() == -1 ? null : newAcademicCharacteristic;
 	}
 
 	@Override
 	public void updateAcademicCharacteristic(AcademicCharacteristic academicCharacteristic) throws SQLException {
-		// TODO Auto-generated method stub
-
+		String sqlUpdateUser = String.format("UPDATE %s SET characteristic=? WHERE id=?", tableName);
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser);
+    	preparedStatement.setString(1, academicCharacteristic.getCharacteristic());
+    	preparedStatement.setInt(2, academicCharacteristic.getAcademicCharacteristicId());
+    	
+		preparedStatement.executeUpdate();
+		preparedStatement.close();
 	}
 
 	@Override
 	public void deleteAcademicCharacteristic(int academicCharacteristicId) throws SQLException {
-		// TODO Auto-generated method stub
-
+		new DbUtils().deleteRowById(academicCharacteristicId, this.tableName, this.connection);
 	}
 	
 	private void initAcademicCharacteristicDAO(DbUtils dbUtils) {

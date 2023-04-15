@@ -79,4 +79,12 @@ public class DbUtils {
 		}
 		System.out.println("inital/default Data inserted successfully, NumOfValuesPerRow = " + numOfValuesPerRow);
 	}
+	
+	public void deleteRowById(int rowId, String tableName, Connection connection) throws SQLException {
+		 String sqlDelete = String.format("DELETE FROM %s WHERE id = ?", tableName);
+		 PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
+		 preparedStatement.setInt(1, rowId);
+		 preparedStatement.executeUpdate();
+		 preparedStatement.close();
+	}
 }

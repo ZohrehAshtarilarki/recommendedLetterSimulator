@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.model.Course;
+import application.utils.DbUtils;
 
 public class CourseDAOImpl implements CourseDAOInt {
 	private Connection connection;
@@ -51,21 +52,49 @@ public class CourseDAOImpl implements CourseDAOInt {
 	}
 
 	@Override
-	public void addCourses(Course course) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public Course addCourses(String name, String prefix, int prefixNumber) throws SQLException {
+        String sqlInitalCourseData = String.format("INSERT INTO %s (name, prefix, prefixNumber) VALUES (?, ?, ?)", tableName);
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlInitalCourseData, Statement.RETURN_GENERATED_KEYS);
+    	preparedStatement.setString(1, name);
+    	preparedStatement.setString(2, prefix);
+    	preparedStatement.setInt(3, prefixNumber);
+    	
+    	preparedStatement.executeUpdate();
+    	
+    	Course newCourse = new Course();
+    	newCourse.setName(name);
+    	newCourse.setPrefix(prefix);
+    	newCourse.setPrefixNumber(prefixNumber);
+//    	gets the Id of new inserted course from DB
+    	try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+    		if (generatedKeys.next()) {
+    			newCourse.setCourseId(generatedKeys.getInt(1));
+    		} else {
+    			throw new SQLException("Failed to create new Coursem, no ID found.");
+    		}
+    	}
+    	
+    	preparedStatement.close();
+    	
+    	return newCourse.getCourseId() == -1 ? null : newCourse;
 	}
 
 	@Override
 	public void updateCourses(Course course) throws SQLException {
-		// TODO Auto-generated method stub
-
+		String sqlUpdateUser = String.format("UPDATE %s SET name=?, prefix=?, prefixNumber=? WHERE id=?", tableName);
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser);
+    	preparedStatement.setString(1, course.getName());
+    	preparedStatement.setString(2, course.getPrefix());
+    	preparedStatement.setInt(3, course.getPrefixNumber());
+    	preparedStatement.setInt(4, course.getCourseId());
+    	
+		preparedStatement.executeUpdate();
+		preparedStatement.close();
 	}
 
 	@Override
-	public void deleteCourses(Course course) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public void deleteCourses(int courseId) throws SQLException {	 
+		 new DbUtils().deleteRowById(courseId, this.tableName, this.connection);
 	}
 	
 	private void initCourseDAO() {

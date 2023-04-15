@@ -1,7 +1,12 @@
 package application;
 	
+import java.sql.SQLException;
+
+import application.dal.CommonDAOs;
 import application.dal.DbConnectionInt;
 import application.dal.DbSqlite;
+import application.dal.FacultyDAOInt;
+import application.model.Faculty;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,6 +38,22 @@ public class Main extends Application {
 		String uri = "jdbc:sqlite:test.db";
 		DbConnectionInt dataBaseObj = new DbSqlite(uri);
 		dataBaseObj.initializeDb();
+		
+		try {
+			FacultyDAOInt facDAOs = CommonDAOs.getInstance().getFacultyDAO();
+			Faculty fac = facDAOs.getFaculty();
+			fac.setFullName("Jose Velasco");
+			fac.setTitle("CS Student");
+			fac.setSchoolName("SJSU");
+			fac.setDepartment("Comp Sci");
+			fac.setEmail("jose.velasco@gmail.com");
+			fac.setPhoneNumber("987-456-1234");
+			facDAOs.updateFaculty(fac);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+
 	}
 	
 	public static void main(String[] args) {

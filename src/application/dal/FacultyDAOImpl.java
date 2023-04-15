@@ -31,9 +31,21 @@ public class FacultyDAOImpl implements FacultyDAOInt {
 	}
 
 	@Override
-	public void updateFaculty() throws SQLException {
-		// TODO Auto-generated method stub
-
+	public void updateFaculty(Faculty faculty) throws SQLException {
+		String sqlUpdateUser = String.format("UPDATE %s SET fullName=?, title=?, schoolName=?, department=?, email=?, phonenumber=? WHERE id=?", tableName);
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser);
+		preparedStatement.setString(1, faculty.getFullName());
+		preparedStatement.setString(2, faculty.getTitle());
+		preparedStatement.setString(3, faculty.getSchoolName());
+		preparedStatement.setString(4, faculty.getDepartment());
+		preparedStatement.setString(5, faculty.getEmail());
+		preparedStatement.setString(6, faculty.getPhoneNumber());
+		preparedStatement.setInt(7, faculty.getFacultyId());
+		
+		preparedStatement.executeUpdate();
+		preparedStatement.close();
+		
+		System.out.println("Updated Faculty successfully.");
 	}
 
 	@Override
@@ -45,6 +57,7 @@ public class FacultyDAOImpl implements FacultyDAOInt {
 		
 		while (resultSet.next()) {
 			faculty = new Faculty();
+			faculty.setFacultyId(resultSet.getInt("id"));
 			faculty.setFullName(resultSet.getString("fullName"));
 			faculty.setTitle(resultSet.getString("title"));
 			faculty.setSchoolName(resultSet.getString("schoolName"));

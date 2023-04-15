@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Faculty {
+	private int facultyId;
 	private String fullName;
 	private String title;
 	private String schoolName;
@@ -23,6 +24,14 @@ public class Faculty {
 	}
 	
 	public Faculty() {}
+	
+	public int getFacultyId() {
+		return facultyId;
+	}
+	
+	public void setFacultyId(int id) {
+		facultyId = id;
+	}
 
 	public String getFullName() {
 		return fullName;

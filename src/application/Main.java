@@ -3,9 +3,11 @@ package application;
 import java.sql.SQLException;
 
 import application.dal.CommonDAOs;
+import application.dal.CourseDAOInt;
 import application.dal.DbConnectionInt;
 import application.dal.DbSqlite;
 import application.dal.FacultyDAOInt;
+import application.model.Course;
 import application.model.Faculty;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +51,22 @@ public class Main extends Application {
 			fac.setEmail("jose.velasco@gmail.com");
 			fac.setPhoneNumber("987-456-1234");
 			facDAOs.updateFaculty(fac);
+			
+			CourseDAOInt courseDAOs = CommonDAOs.getInstance().getCourseDAO();
+			Course newCourse1 = courseDAOs.addCourses("Python", "CS", 9876);
+			Course newCourse2 = courseDAOs.addCourses("Python II", "SWE", 1329);
+			Course newCourse3 = courseDAOs.addCourses("C++ II", "SCI", 999);
+			
+			newCourse1.setName("NEW Py course");
+			newCourse1.setPrefix("NEW");
+			newCourse1.setPrefixNumber(-1);
+			courseDAOs.updateCourses(newCourse2);
+			
+			courseDAOs.deleteCourses(newCourse1.getCourseId());
+			courseDAOs.deleteCourses(newCourse2.getCourseId());
+			courseDAOs.deleteCourses(newCourse3.getCourseId());
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());

@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.model.AcademicProgram;
 import application.model.PersonalCharacteristic;
 import application.utils.DbUtils;
 

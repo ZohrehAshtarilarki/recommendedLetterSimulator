@@ -1,20 +1,7 @@
 package application;
-	
-import java.sql.SQLException;
 
-import application.dal.AcademicCharacteristicDAOInt;
-import application.dal.AcademicProgramDAOInt;
-import application.dal.CommonDAOs;
-import application.dal.CourseDAOInt;
 import application.dal.DbConnectionInt;
 import application.dal.DbSqlite;
-import application.dal.FacultyDAOInt;
-import application.dal.PersonalCharacteristicDAOInt;
-import application.model.Course;
-import application.model.Faculty;
-import application.model.AcademicCharacteristic;
-import application.model.AcademicProgram;
-import application.model.PersonalCharacteristic;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -46,73 +33,6 @@ public class Main extends Application {
 		String uri = "jdbc:sqlite:test.db";
 		DbConnectionInt dataBaseObj = new DbSqlite(uri);
 		dataBaseObj.initializeDb();
-		
-		try {
-			FacultyDAOInt facDAOs = CommonDAOs.getInstance().getFacultyDAO();
-			Faculty fac = facDAOs.getFaculty();
-			fac.setFullName("Jose Velasco");
-			fac.setTitle("CS Student");
-			fac.setSchoolName("SJSU");
-			fac.setDepartment("Comp Sci");
-			fac.setEmail("jose.velasco@gmail.com");
-			fac.setPhoneNumber("987-456-1234");
-			facDAOs.updateFaculty(fac);
-			
-			CourseDAOInt courseDAOs = CommonDAOs.getInstance().getCourseDAO();
-			Course newCourse1 = courseDAOs.addCourses("Python", "CS", 9876);
-			Course newCourse2 = courseDAOs.addCourses("Python II", "SWE", 1329);
-			Course newCourse3 = courseDAOs.addCourses("C+++++++ II", "SCI", 999);
-			
-			newCourse1.setName("NEW Py course");
-			newCourse1.setPrefix("NEW");
-			newCourse1.setPrefixNumber(-1);
-			courseDAOs.updateCourses(newCourse2);
-			
-//			courseDAOs.deleteCourses(newCourse1.getCourseId());
-//			courseDAOs.deleteCourses(newCourse2.getCourseId());
-//			courseDAOs.deleteCourses(newCourse3.getCourseId());
-			
-			AcademicCharacteristicDAOInt acadCharDAO = CommonDAOs.getInstance().getAcademicCharacteristicDAO();
-			AcademicCharacteristic acadChar1 = acadCharDAO.addAcademicCharacteristic("SUper Fast Learner");
-			AcademicCharacteristic acadChar2 = acadCharDAO.addAcademicCharacteristic("SLOW Fast Learner");
-			AcademicCharacteristic acadChar3 = acadCharDAO.addAcademicCharacteristic("LAZY!!");
-			
-			acadChar1.setCharacteristic("SUper Fast Learner III");
-			acadCharDAO.updateAcademicCharacteristic(acadChar1);
-			
-//			acadCharDAO.deleteAcademicCharacteristic(acadChar1.getAcademicCharacteristicId());
-//			acadCharDAO.deleteAcademicCharacteristic(acadChar2.getAcademicCharacteristicId());
-//			acadCharDAO.deleteAcademicCharacteristic(acadChar3.getAcademicCharacteristicId());
-			
-			AcademicProgramDAOInt acadProgramDAO = CommonDAOs.getInstance().getAcademicaProgramDAO();
-			AcademicProgram acadProgram1 = acadProgramDAO.addAcademicProgram("English Program");
-			AcademicProgram acadProgram2 = acadProgramDAO.addAcademicProgram("Math Program");
-			AcademicProgram acadProgram3 = acadProgramDAO.addAcademicProgram("Master of Sleep");
-			
-			acadProgram1.setName("MASTER of ART");
-			acadProgramDAO.updateAcademicProgram(acadProgram1);
-			
-//			acadProgramDAO.deleteAcademicProgram(acadProgram1.getAcademicProgramId());
-//			acadProgramDAO.deleteAcademicProgram(acadProgram2.getAcademicProgramId());
-//			acadProgramDAO.deleteAcademicProgram(acadProgram3.getAcademicProgramId());
-			
-			PersonalCharacteristicDAOInt perCharDAO = CommonDAOs.getInstance().getPersonalCharacteristicDAO();
-			PersonalCharacteristic perChar1 = perCharDAO.addPersonalCharacteristic("Funny");
-			PersonalCharacteristic perChar2 = perCharDAO.addPersonalCharacteristic("Open minded");
-			PersonalCharacteristic perChar3 = perCharDAO.addPersonalCharacteristic("Is about it");
-			
-			perChar1.setCharacteristic("Has strong resolve!");
-			perCharDAO.updatePersonalCharacteristic(perChar1);
-			
-//			perCharDAO.deletePersonalCharacteristic(perChar1.getPersonalCharacteristicId());
-//			perCharDAO.deletePersonalCharacteristic(perChar2.getPersonalCharacteristicId());
-//			perCharDAO.deletePersonalCharacteristic(perChar3.getPersonalCharacteristicId());
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-
 	}
 	
 	public static void main(String[] args) {

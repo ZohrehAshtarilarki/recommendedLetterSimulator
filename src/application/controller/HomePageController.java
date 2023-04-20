@@ -15,53 +15,34 @@ public class HomePageController {
 	@FXML Button logoutButton;
 	@FXML Button resetPasswordButton;
 
-	@FXML public void newRecommendationOp() {
+	@FXML public void newRecommendationOp() throws IOException {
 		
-		try {
 		Stage stage = (Stage) newRecommendationButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/NewRecommendation.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
-		
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
 	}
 
-	@FXML public void logOutOp() {
+	@FXML public void logOutOp() throws IOException {
 		
-		try {
-			Stage stage = (Stage) logoutButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.show();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		Stage stage = (Stage) logoutButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Login.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
 	}
 
-	@FXML public void resetPasswordOp() {
+	@FXML public void resetPasswordOp() throws IOException {
 		
-		try {
-			Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.show();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-		
+		Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
 	}
 
 }

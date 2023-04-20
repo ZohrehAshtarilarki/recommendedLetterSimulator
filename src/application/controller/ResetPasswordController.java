@@ -27,67 +27,54 @@ public class ResetPasswordController {
 	private CommonDAOs comDAO = CommonDAOs.getInstance();
 	private Authentication auth = Authentication.getInstance();
 	
-	@FXML public void logOutOp() {
+	@FXML public void logOutOp() throws IOException {
 		
-		try {
 			Stage stage = (Stage) logoutButton.getScene().getWindow();
 			stage.close();
 			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Login.fxml"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
 			auth.logout();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
 	}
 
 
-	@FXML public void savePasswordOp() {
+	@FXML public void savePasswordOp() throws IOException, SQLException {
 		
-		try {
+		String newPassw = newPasswordButton.getText();
+		String confirmPassw = confirmPasswordButton.getText();
+		User user = auth.getLoggedInUser();
 			
-			String newPassw = newPasswordButton.getText();
-			String confirmPassw = confirmPasswordButton.getText();
-			User user = auth.getLoggedInUser();
-			
-			if (newPassw.isEmpty() || confirmPassw.isEmpty()){
-				showMessage.setText("Please fill out all the required fields!");
-				showMessage.setTextFill(Color.web("red"));
+		if (newPassw.isEmpty() || confirmPassw.isEmpty()){
+			showMessage.setText("Please fill out all the required fields!");
+			showMessage.setTextFill(Color.web("red"));
+		}
+		else if(newPassw.equals(confirmPassw) && auth.getIsAuthentication()) {
+			if (user.isFirstLogin()) {
+				user.setIsFirstLogin(false);
 			}
-			else if(newPassw.equals(confirmPassw) && auth.getIsAuthentication()) {
-				if (user.isFirstLogin()) {
-					user.setIsFirstLogin(false);
-				}
-				user.setPassword(newPassw);
-				comDAO.getUserDAO().updateUser(user);
+			user.setPassword(newPassw);
+			comDAO.getUserDAO().updateUser(user);
 				
-				showMessage.setText("Successfully reset the password");
-				showMessage.setTextFill(Color.web("red"));
-			} 
-	
-		} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
-		} 
-
-	@FXML public void goBackOp() {
-		
-		try {
-			Stage stage = (Stage) logoutButton.getScene().getWindow();
+				
+			Stage stage = (Stage) savePasswordButton.getScene().getWindow();
 			stage.close();
 			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Login.fxml"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
 			auth.logout();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		} 
+	} 
+
+	@FXML public void goBackOp() throws IOException {
+		
+		Stage stage = (Stage) logoutButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Login.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+		auth.logout();
 	}
 }

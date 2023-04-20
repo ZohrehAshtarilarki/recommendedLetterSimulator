@@ -41,52 +41,34 @@ public class NewRecommendationController implements Initializable{
 	@FXML Button achademicArea;
 	@FXML TextArea achademicField;
 
-	@FXML public void homePageOp() {
+	@FXML public void homePageOp() throws IOException {
 		
-		try {
-			Stage stage = (Stage) homePageButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.show();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		Stage stage = (Stage) homePageButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
 	}
 
-	@FXML public void resetPasswordOp() {
+	@FXML public void resetPasswordOp() throws IOException {
 		
-		try {
-			Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.show();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
 	}
 
-	@FXML public void logOutOp() {
+	@FXML public void logOutOp() throws IOException {
 		
-		try {
-			Stage stage = (Stage) logoutButton.getScene().getWindow();
-			stage.close();
-			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Main.fxml"));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.show();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		Stage stage = (Stage) logoutButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Login.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
 	}
 	
 	@FXML public void datePickerOp() {

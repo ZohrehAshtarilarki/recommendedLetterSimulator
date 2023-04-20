@@ -15,7 +15,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class MainController {
+public class LoginController {
 	
 	@FXML PasswordField passEnter;
 	@FXML Button loginButton;
@@ -30,7 +30,7 @@ public class MainController {
 		return loginValidation;
 	}
 	
-	@FXML public void loginOp() {
+	@FXML public void loginOp() throws SQLException, IOException {
 		
 		String passw = passEnter.getText();
 		
@@ -38,28 +38,24 @@ public class MainController {
 			showMessage.setText("Please fill out the required field!");
 			showMessage.setTextFill(Color.web("red"));
 			return;
-		} 
+		}
 		
-		try {
-			if (auth.login(passw)) {
-				User user = auth.getLoggedInUser();
-				loginValidation = true;
-				if (user.isFirstLogin()) {
-					routeToResetPasswordView();
-				} else {
-					routeToHomePage();					
-				}
+		if (auth.login(passw)) {
+			User user = auth.getLoggedInUser();
+			loginValidation = true;
+			if (user.isFirstLogin()) {
+				routeToResetPasswordView();
 			} else {
-				showMessage.setText("The password is incorrect!");
-				showMessage.setTextFill(Color.web("red"));
+				routeToHomePage();					
 			}
-		} catch (SQLException | IOException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+		} else {
+			showMessage.setText("The password is incorrect!");
+			showMessage.setTextFill(Color.web("red"));
 		}
 	}
 	
 	private void routeToResetPasswordView() throws IOException {
+		
 		Stage stage = (Stage) loginButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
@@ -69,6 +65,7 @@ public class MainController {
 	}
 	
 	private void routeToHomePage() throws IOException {
+		
 		Stage stage = (Stage) loginButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();

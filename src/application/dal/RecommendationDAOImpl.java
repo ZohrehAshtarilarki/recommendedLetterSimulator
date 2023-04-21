@@ -2,7 +2,6 @@ package application.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -48,28 +47,28 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 	}
 
 	@Override
-	public Recommendation addRecommendation() throws SQLException {
-		CommonDAOs commonDAOs = CommonDAOs.getInstance();
-		
-		String firstName = "Jose";
-		String lastName = "Velasco";
-		String targetSchoolName = "San Jose State University";
-		String currentDate = "05/23/2023";
-		String firstSemesterYear = "2023";
-		String gender = Gender.OTHER.name();
-		Semester semester = commonDAOs.getSemesterDAO().getSemesterById(1);
-		AcademicProgram academicProgram = commonDAOs.getAcademicaProgramDAO().getAcademicProgramById(1);
+	public Recommendation addRecommendation(String firstName, String lastName, String targetSchoolName,
+			String currentDate, String firstSemesterYear, Gender gender, Semester semester, AcademicProgram academicProgram,
+			ArrayList<AcademicCharacteristic> academicCharacteristics, ArrayList<PersonalCharacteristic> personalCharacteristics,
+			ArrayList<Course> coursesTaken) throws SQLException {
 
-//		many-to-many relationship
-		ArrayList<AcademicCharacteristic> academicCharacteristics = new ArrayList<>(commonDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics());
-		ArrayList<PersonalCharacteristic> personalCharacteristics = new ArrayList<>(commonDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics());
-		ArrayList<Course> coursesTaken = new ArrayList<>(commonDAOs.getCourseDAO().getAllCourses());
+//		CommonDAOs commonDAOs = CommonDAOs.getInstance();
+//		String firstName = "Jose";
+//		String lastName = "Velasco";
+//		String targetSchoolName = "San Jose State University";
+//		String currentDate = "05/23/2023";
+//		String firstSemesterYear = "2023";
+//		String gender = Gender.OTHER.name();
+//		Semester semester = commonDAOs.getSemesterDAO().getSemesterById(1);
+//		AcademicProgram academicProgram = commonDAOs.getAcademicaProgramDAO().getAcademicProgramById(1);
+//
+////		many-to-many relationship
+//		ArrayList<AcademicCharacteristic> academicCharacteristics = new ArrayList<>(commonDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics());
+//		ArrayList<PersonalCharacteristic> personalCharacteristics = new ArrayList<>(commonDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics());
+//		ArrayList<Course> coursesTaken = new ArrayList<>(commonDAOs.getCourseDAO().getAllCourses());
 
 		
 //		Start Actual logic
-		
-
-		
         String sqlAddRecommendation = String.format("INSERT INTO %s (studentFirstName, studentLastName, targetSchoolName, currentDate, firstSemesterYear, gender, semester_id, academicProgram_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", tableName);
         PreparedStatement preparedStatement = connection.prepareStatement(sqlAddRecommendation, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, firstName);
@@ -77,7 +76,7 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
         preparedStatement.setString(3, targetSchoolName);
         preparedStatement.setString(4, currentDate);
         preparedStatement.setString(5, firstSemesterYear);
-        preparedStatement.setString(6, gender);
+        preparedStatement.setString(6, gender.name());
         preparedStatement.setInt(7, semester.getSemsterId());
         preparedStatement.setInt(8, academicProgram.getAcademicProgramId());
         
@@ -100,12 +99,12 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
     	newRecommendation.setTargetSchoolName(targetSchoolName);
     	newRecommendation.setCurrentDate(currentDate);
     	newRecommendation.setFirstSemesterYear(firstSemesterYear);
-    	newRecommendation.setGender(Gender.valueOf(gender));
+    	newRecommendation.setGender(gender);
     	newRecommendation.setSemester(semester);
     	newRecommendation.setProgram(academicProgram);
     	
     	
-//    	add many-to-many stuff into DB
+//    	insert new recommendation many-to-many stuff into DB
     	insertManyToManyRecommendation_academicCharacteristics(newRecommendation.getRecommendationId(), academicCharacteristics);
     	insertManyToManyRecommendation_personalCharacteristic(newRecommendation.getRecommendationId(), personalCharacteristics);
     	insertManyToManyRecommendation_course(newRecommendation.getRecommendationId(), coursesTaken);

@@ -2,6 +2,7 @@ package application.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,24 @@ public class SemesterDAOImpl implements SemesterDAOInt {
 	public List<Semester> getAllSemesters() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public Semester getSemesterById(int semesterId) throws SQLException {
+		Semester semester = null;
+		
+		try (ResultSet resultSet = new DbUtils().getRowbyId(connection, semesterId, tableName)) {
+			while (resultSet.next()) {
+				semester = new Semester();
+				semester.setSemesterId(resultSet.getInt("id"));
+				semester.setName(resultSet.getString("name"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			System.out.println("Failed DbUtils().getRowbyId in getSemesterById in Semster Object");
+		}
+		return semester;
 	}
 
 	@Override

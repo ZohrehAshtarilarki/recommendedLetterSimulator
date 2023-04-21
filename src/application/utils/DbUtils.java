@@ -87,6 +87,22 @@ public class DbUtils {
 		 preparedStatement.close();
 	}
 	
+	/**
+	 * Make sure to closed returned ResultSet to avoid memory leaks
+	 * @param rowId
+	 * @param tableName
+	 * @param connection
+	 * @return
+	 * @throws SQLException
+	 */
+	public ResultSet getRowbyId(Connection connection, int rowId, String tableName) throws SQLException {
+		String sqlSelectRowById = String.format("SELECT * FROM %s WHERE id = ?", tableName);
+		PreparedStatement prepareStatement = connection.prepareStatement(sqlSelectRowById);
+		prepareStatement.setInt(1, rowId);
+		ResultSet resultSet = prepareStatement.executeQuery();
+		return resultSet;
+	}
+	
 	public void createManyToManyJunctionTabelBetweenModels(Connection connection, String junctionTableName, String modelIdColumnName1, String modelTableName1, String modelIdColumnName2, String modelTableName2) throws SQLException {
 		Statement statement = connection.createStatement();
 		String UnformattedbaseSQLStr = "CREATE TABLE %s (%s_id INTEGER, %s_id INTEGER, FOREIGN KEY (%s_id) REFERENCES %s(%s), FOREIGN KEY (%s_id) REFERENCES %s(%s))";
@@ -94,5 +110,24 @@ public class DbUtils {
 		statement.execute(sqlCreateJuctionTable);
 		statement.close();
 		System.out.println("Junction table created successfully: " + junctionTableName);
+	}
+	
+	/**
+	 * Statement.RETURN_GENERATED_KEYS needs to be passed as argument 
+	 * during PreparedStatement instantiation from a Connection object
+	 * @param rs
+	 * @return -1 if no id found else id extracted from ResultSet
+	 */
+	public int getIdfromResultSet(PreparedStatement ps) throws SQLException {
+//    	gets the Id of new inserted course from DB
+		int id = -1;
+    	try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+    		if (generatedKeys.next()) {
+    			id = generatedKeys.getInt(1);
+    		} else {
+    			throw new SQLException("Failed to get ID in getIdfromResultSet, no ID found.");
+    		}
+    	}
+    	return id;
 	}
 }

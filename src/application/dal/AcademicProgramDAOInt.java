@@ -7,6 +7,7 @@ import application.model.AcademicProgram;
 
 public interface AcademicProgramDAOInt {
 	public List<AcademicProgram> getAllAcademicPrograms() throws SQLException;
+	AcademicProgram getAcademicProgramById(int academicProgramId) throws SQLException;
 	
 	/**
 	 * 

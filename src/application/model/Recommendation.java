@@ -30,6 +30,7 @@ public class Recommendation {
 		studentLastName = new SimpleStringProperty();
 		targetSchoolName = new SimpleStringProperty();
 		currentDate = new SimpleStringProperty();
+		firstSemesterYear = new SimpleStringProperty();
 		academicCharacteristics = new ArrayList<>();
 		personalCharacteristics = new ArrayList<>();
 		coursesTaken = new ArrayList<>();

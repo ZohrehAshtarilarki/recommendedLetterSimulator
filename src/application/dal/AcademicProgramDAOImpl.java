@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.model.AcademicProgram;
+import application.model.Semester;
 import application.utils.DbUtils;
 
 public class AcademicProgramDAOImpl implements AcademicProgramDAOInt {
@@ -52,6 +53,23 @@ public class AcademicProgramDAOImpl implements AcademicProgramDAOInt {
         resultSet.close();
         statement.close();
 		return academicPrograms;
+	}
+	
+	@Override
+	public AcademicProgram getAcademicProgramById(int academicProgramId) throws SQLException {
+		AcademicProgram academicProgram = null;
+		try (ResultSet resultSet = new DbUtils().getRowbyId(connection, academicProgramId, tableName)) {
+			while (resultSet.next()) {
+				academicProgram = new AcademicProgram();
+				academicProgram.setAcademicProgramId(resultSet.getInt("id"));
+				academicProgram.setName(resultSet.getString("name"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			System.out.println("Failed DbUtils().getRowbyId in getAcademicProgramById in AcademicProgram Object");
+		}
+		return academicProgram;
 	}
 
 	@Override

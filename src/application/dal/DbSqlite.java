@@ -70,7 +70,12 @@ public class DbSqlite implements DbConnectionInt {
 		
 //		Testing new DB stuff many-to-many etc
 		
-		
+		try {
+			commonDAOs.getRecommendationDAO().addRecommendation();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

@@ -6,15 +6,16 @@ import java.util.List;
 import application.model.Semester;
 
 public interface SemesterDAOInt {
-	public List<Semester> getAllSemesters() throws SQLException;
-	
+	List<Semester> getAllSemesters() throws SQLException;
+	Semester getSemesterById(int semesterId)throws SQLException;
+
 	/**
 	 * 
 	 * @param Semester
 	 * @return Semester or null if retrieving ID from DB after insertion failed
 	 * @throws SQLException
 	 */
-	public Semester addSemester(String semesterName) throws SQLException;
-	public void updateSemester(Semester semester) throws SQLException;
-	public void deleteSemester(int semesterId) throws SQLException;
+	Semester addSemester(String semesterName) throws SQLException;
+	void updateSemester(Semester semester) throws SQLException;
+	void deleteSemester(int semesterId) throws SQLException;
 }

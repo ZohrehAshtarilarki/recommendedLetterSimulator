@@ -13,6 +13,7 @@ import application.model.PersonalCharacteristic;
 import application.model.Recommendation;
 import application.model.RecommendationCourse;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DbSqlite implements DbConnectionInt {
 	
@@ -123,7 +124,8 @@ public class DbSqlite implements DbConnectionInt {
 					academicCharacteristics,
 					personalCharacteristics,
 					coursesTakenWithGrade);
-			Recommendation testRec = commonDAOs.getRecommendationDAO().getRecommendation(2);
+			Recommendation searchByIdRec = commonDAOs.getRecommendationDAO().getRecommendation(2);
+			List<Recommendation> searchByLNameRec = commonDAOs.getRecommendationDAO().searchRecommendationByLastName("Velasco");
 			System.out.println("TestRec:!!");
 		} catch (SQLException e) {
 			e.printStackTrace();

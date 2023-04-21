@@ -42,35 +42,11 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 	}
 
 	@Override
-	public Recommendation getRecommendation(int recommendationId) throws SQLException {
-		Recommendation recommendation = null;
+	public Recommendation getRecommendation(int recommendationId) throws SQLException {		
 		try (ResultSet resultSet = new DbUtils().getRowbyId(connection, recommendationId, tableName)) {
-			while (resultSet.next()) {
-				recommendation = new Recommendation();
-				recommendation.setRecommendationId(resultSet.getInt("id"));
-				recommendation.setStudentFirstName(resultSet.getString("studentFirstName"));
-				recommendation.setStudentLastName(resultSet.getString("studentLastName"));
-				recommendation.setTargetSchoolName(resultSet.getString("targetSchoolName"));
-				recommendation.setCurrentDate(resultSet.getString("currentDate"));
-				recommendation.setFirstSemesterYear(resultSet.getString("firstSemesterYear"));
-				recommendation.setGender(Gender.valueOf(resultSet.getString("gender")));
-//				might be a better ways using join statement and instantiating each model and setting attributes manually
-				recommendation.setSemester(CommonDAOs.getInstance().getSemesterDAO().getSemesterById(resultSet.getInt("semester_id")));
-				recommendation.setProgram(CommonDAOs.getInstance().getAcademicaProgramDAO().getAcademicProgramById(resultSet.getInt("academicProgram_id")));
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-			System.out.println("Failed DbUtils().getRowbyId in getRecommendation in Recommendation Object");
+			List<Recommendation> extractedRecommendations = extractRecommendationsFromResultSet(resultSet);
+			return extractedRecommendations.size() > 0 ? extractedRecommendations.get(0) : null ;
 		}
-		
-//		get the many-to-many data and set
-		recommendation.setAcademicCharacteristics(getAllRecommendation_academicCharacteristicsInJunctionTable(recommendation.getRecommendationId()));
-		recommendation.setPersonalCharacteristics(getAllRecommendation_personalCharacteristicInJunctionTable(recommendation.getRecommendationId()));
-		recommendation.setCoursesTaken(getAllRecommendation_courseInJunctionTable(recommendation.getRecommendationId()));
-		
-		return recommendation;
 	}
 
 	/**
@@ -127,6 +103,8 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
     	newRecommendation.setAcademicCharacteristics(academicCharacteristics);
     	newRecommendation.setPersonalCharacteristics(personalCharacteristics);
     	newRecommendation.setCoursesTaken(coursesTaken);
+    	
+    	preparedStatement.close();
 		
 		return newRecommendation;
 	}
@@ -145,8 +123,14 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 
 	@Override
 	public List<Recommendation> searchRecommendationByLastName(String lastName) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		String columnName = "studentLastName";
+		String sqlSearchByLName = String.format("SELECT * FROM %s WHERE %s = ?", this.tableName, columnName);
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlSearchByLName);
+		preparedStatement.setString(1, lastName);
+		
+		try (ResultSet resultSet = preparedStatement.executeQuery()) {
+			return extractRecommendationsFromResultSet(resultSet);
+		}
 	}
 	
 	private void initRecommendationDAO(DbUtils dbUtils) {
@@ -335,6 +319,37 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 			}
 		}
 		return courses;
+	}
+	
+	private List<Recommendation> extractRecommendationsFromResultSet(ResultSet rs) {
+		ArrayList<Recommendation> recommendations = new ArrayList<>();
+		
+		try {
+			while (rs.next()) {
+				Recommendation recommendation = new Recommendation();
+				recommendation.setRecommendationId(rs.getInt("id"));
+				recommendation.setStudentFirstName(rs.getString("studentFirstName"));
+				recommendation.setStudentLastName(rs.getString("studentLastName"));
+				recommendation.setTargetSchoolName(rs.getString("targetSchoolName"));
+				recommendation.setCurrentDate(rs.getString("currentDate"));
+				recommendation.setFirstSemesterYear(rs.getString("firstSemesterYear"));
+				recommendation.setGender(Gender.valueOf(rs.getString("gender")));
+//				might be a better ways using join statement and instantiating each model and setting attributes manually
+				recommendation.setSemester(CommonDAOs.getInstance().getSemesterDAO().getSemesterById(rs.getInt("semester_id")));
+				recommendation.setProgram(CommonDAOs.getInstance().getAcademicaProgramDAO().getAcademicProgramById(rs.getInt("academicProgram_id")));
+//				get the many-to-many data and set
+				recommendation.setAcademicCharacteristics(getAllRecommendation_academicCharacteristicsInJunctionTable(recommendation.getRecommendationId()));
+				recommendation.setPersonalCharacteristics(getAllRecommendation_personalCharacteristicInJunctionTable(recommendation.getRecommendationId()));
+				recommendation.setCoursesTaken(getAllRecommendation_courseInJunctionTable(recommendation.getRecommendationId()));
+				recommendations.add(recommendation);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			System.out.println("Failed to Extract query result from ResultSet in extractRecommendationsFromResultSet");
+		}
+		return recommendations;
 	}
 
 }

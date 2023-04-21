@@ -13,6 +13,12 @@ import application.model.Recommendation;
 import application.model.Semester;
 
 public interface RecommendationDAOInt {
+	/**
+	 * 
+	 * @param recommendationId
+	 * @return Recommendation with Id of recommendationId else null if no Recommendation found
+	 * @throws SQLException
+	 */
 	public Recommendation getRecommendation(int recommendationId) throws SQLException;
 //	adjust parameters once model an DB stuff figure out
 	public Recommendation addRecommendation(String firstName, String lastName, String targetSchoolName,

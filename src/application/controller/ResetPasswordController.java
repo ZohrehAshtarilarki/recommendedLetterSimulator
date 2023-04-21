@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 public class ResetPasswordController {
 	
@@ -22,10 +23,13 @@ public class ResetPasswordController {
 	@FXML PasswordField newPasswordButton;
 	@FXML PasswordField confirmPasswordButton;
 	@FXML Button savePasswordButton;
-	@FXML Button goBackButton;
+	@FXML TextField oldPasswordButton;
+	@FXML Button cancelButton;
 	@FXML Label showMessage;
 	private CommonDAOs comDAO = CommonDAOs.getInstance();
 	private Authentication auth = Authentication.getInstance();
+	
+	
 	
 	@FXML public void logOutOp() throws IOException {
 		
@@ -38,23 +42,25 @@ public class ResetPasswordController {
 			auth.logout();
 	}
 
-
+	
 	@FXML public void savePasswordOp() throws IOException, SQLException {
 		
+		String oldPassw = oldPasswordButton.getText();
 		String newPassw = newPasswordButton.getText();
 		String confirmPassw = confirmPasswordButton.getText();
 		User user = auth.getLoggedInUser();
 			
-		if (newPassw.isEmpty() || confirmPassw.isEmpty()){
+		if (oldPassw.isEmpty() || newPassw.isEmpty() || confirmPassw.isEmpty()){
 			showMessage.setText("Please fill out all the required fields!");
 			showMessage.setTextFill(Color.web("red"));
 		}
-		else if(newPassw.equals(confirmPassw) && auth.getIsAuthentication()) {
-			if (user.isFirstLogin()) {
-				user.setIsFirstLogin(false);
-			}
-			user.setPassword(newPassw);
-			comDAO.getUserDAO().updateUser(user);
+		else if (oldPassw.equals(user.getPassword())) {
+			if(newPassw.equals(confirmPassw) && auth.getIsAuthentication()) {
+				if (user.isFirstLogin()) {
+					user.setIsFirstLogin(false);
+				}
+				user.setPassword(newPassw);
+				comDAO.getUserDAO().updateUser(user);
 				
 				
 			Stage stage = (Stage) savePasswordButton.getScene().getWindow();
@@ -64,17 +70,15 @@ public class ResetPasswordController {
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
 			auth.logout();
-		} 
+			} 
+		}
 	} 
 
-	@FXML public void goBackOp() throws IOException {
+
+	@FXML public void cancelOp() throws IOException { // Clear the password fields
 		
-		Stage stage = (Stage) logoutButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Login.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-		auth.logout();
+		oldPasswordButton.setText("");
+		newPasswordButton.setText("");
+		confirmPasswordButton.setText("");
 	}
 }

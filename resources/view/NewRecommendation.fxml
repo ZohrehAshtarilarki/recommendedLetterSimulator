@@ -38,7 +38,7 @@
                         <Insets top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="resetPasswordButton" alignment="CENTER" mnemonicParsing="false" onAction="#resetPasswordOp" prefHeight="36.0" prefWidth="163.0" text="Reset Password">
+                  <Button fx:id="facultyDashboardButton" alignment="CENTER" mnemonicParsing="false" prefHeight="36.0" prefWidth="163.0" text="Faculty Dashboard">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
@@ -113,7 +113,7 @@
       <ComboBox fx:id="academicChar" layoutX="646.0" layoutY="443.0" prefHeight="27.0" prefWidth="180.0" promptText="Academic Charactristic" />
       <Button fx:id="achademicArea" layoutX="884.0" layoutY="443.0" mnemonicParsing="false" onAction="#achademicAreaOp" prefHeight="27.0" prefWidth="71.0" text="Add" />
       <TextArea fx:id="achademicField" layoutX="646.0" layoutY="501.0" prefHeight="200.0" prefWidth="325.0" />
-      <Button layoutX="920.0" layoutY="750.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="71.0" text="Canclel" />
+      <Button fx:id="cancelButton" layoutX="920.0" layoutY="750.0" mnemonicParsing="false" onAction="#cancelButtonOp" prefHeight="27.0" prefWidth="71.0" text="Cancel" />
       <Button layoutX="1020.0" layoutY="750.0" mnemonicParsing="false" prefWidth="71.0" text="Compile" />
    </children>
 </AnchorPane>

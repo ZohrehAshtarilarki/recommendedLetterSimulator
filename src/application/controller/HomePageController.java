@@ -13,7 +13,7 @@ public class HomePageController {
 
 	@FXML Button newRecommendationButton;
 	@FXML Button logoutButton;
-	@FXML Button resetPasswordButton;
+	@FXML Button facultyDashboardButton;
 
 	@FXML public void newRecommendationOp() throws IOException {
 		
@@ -37,10 +37,10 @@ public class HomePageController {
 
 	@FXML public void resetPasswordOp() throws IOException {
 		
-		Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
+		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}

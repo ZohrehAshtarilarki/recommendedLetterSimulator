@@ -21,7 +21,6 @@ import javafx.scene.control.TextArea;
 public class NewRecommendationController implements Initializable{
 
 	@FXML Button homePageButton;
-	@FXML Button resetPasswordButton;
 	@FXML TextField stuFirstName;
 	@FXML TextField stuLastName;
 	@FXML Button logoutButton;
@@ -40,6 +39,8 @@ public class NewRecommendationController implements Initializable{
 	@FXML TextArea personalArea;
 	@FXML Button achademicArea;
 	@FXML TextArea achademicField;
+	@FXML Button cancelButton;
+	@FXML Button facultyDashboardButton;
 
 	@FXML public void homePageOp() throws IOException {
 		
@@ -53,7 +54,7 @@ public class NewRecommendationController implements Initializable{
 
 	@FXML public void resetPasswordOp() throws IOException {
 		
-		Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
+		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
@@ -135,6 +136,16 @@ public class NewRecommendationController implements Initializable{
 		
 		achademicField.appendText(academicCh);
 		achademicField.appendText("\n");
+	}
+
+	@FXML public void cancelButtonOp() throws IOException {
+		
+		Stage stage = (Stage) cancelButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
 	}
 
 }

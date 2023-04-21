@@ -9,6 +9,8 @@ public class CommonDAOs {
 	private FacultyDAOInt facultyDAO;
 	private PersonalCharacteristicDAOInt personalCharacteristicDAO;
 	private UserDAOInt userDAO;
+	private SemesterDAOInt semesterDAO;
+	private RecommendationDAOInt recommendationDAO;
 	
 	private CommonDAOs() { }
 	
@@ -70,5 +72,21 @@ public class CommonDAOs {
 
 	public void setUserDAO(UserDAOInt userDAO) {
 		this.userDAO = userDAO;
+	}
+	
+	public SemesterDAOInt getSemesterDAO() {
+		return this.semesterDAO;
+	}
+
+	public void setSemesterDAO(SemesterDAOInt semesterDAO) {
+		this.semesterDAO = semesterDAO;
+	}
+
+	public RecommendationDAOInt getRecommendationDAO() {
+		return recommendationDAO;
+	}
+
+	public void setRecommendationDAO(RecommendationDAOInt recommendationDAO) {
+		this.recommendationDAO = recommendationDAO;
 	}
 }

@@ -42,13 +42,15 @@ public class DbSqlite implements DbConnectionInt {
 	
 	@Override
 	public void initializeDb() {
-//		default table names in db for each model
+//		default table names in DB for each model
 		String facultyDBTableName = "faculty";
 		String courseDBTableName = "course";
 		String academicProgramDBTableName = "academicProgram";
 		String academicCharacteristicDBTableName = "academicCharacteristic";
 		String personalCharacteristicDBTableName = "personalCharacteristic";
 		String userDBTableName = "user";
+		String semsterDBTableName = "semester";
+		String recommendationDBTableName = "recommendation";
 		
 		CommonDAOs commonDAOs = CommonDAOs.getInstance();
 		commonDAOs.setDataBaseObj(this);
@@ -61,6 +63,14 @@ public class DbSqlite implements DbConnectionInt {
 		commonDAOs.setAcademicaProgramDAO(new AcademicProgramDAOImpl(connection, academicProgramDBTableName));
 		commonDAOs.setPersonalCharacteristicDAO(new PersonalCharacteristicDAOImpl(connection, personalCharacteristicDBTableName));
 		commonDAOs.setAcademicCharacteristicDAO(new AcademicCharacteristicDAOImpl(connection, academicCharacteristicDBTableName));
+		commonDAOs.setSemesterDAO(new SemesterDAOImpl(connection, semsterDBTableName));
+		
+//		must be later than the columns recommendation has a relationship with other models in DB
+		commonDAOs.setRecommendationDAO(new RecommendationDAOImpl(connection, recommendationDBTableName));
+		
+//		Testing new DB stuff many-to-many etc
+		
+		
 	}
 
 }

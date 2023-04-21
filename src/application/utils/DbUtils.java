@@ -43,12 +43,11 @@ public class DbUtils {
 		}
 		sqlCreateCourseTable = sqlCreateCourseTable + ")";
 		
+		statement.executeUpdate(sqlCreateCourseTable);
+		statement.close();
 		
 		System.out.println("Created Table with sql query:");
 		System.out.println(sqlCreateCourseTable);
-		
-		statement.executeUpdate(sqlCreateCourseTable);
-		statement.close();
 	}
 	
 	/**
@@ -86,5 +85,14 @@ public class DbUtils {
 		 preparedStatement.setInt(1, rowId);
 		 preparedStatement.executeUpdate();
 		 preparedStatement.close();
+	}
+	
+	public void createManyToManyJunctionTabelBetweenModels(Connection connection, String junctionTableName, String modelIdColumnName1, String modelTableName1, String modelIdColumnName2, String modelTableName2) throws SQLException {
+		Statement statement = connection.createStatement();
+		String UnformattedbaseSQLStr = "CREATE TABLE %s (%s_id INTEGER, %s_id INTEGER, FOREIGN KEY (%s_id) REFERENCES %s(%s), FOREIGN KEY (%s_id) REFERENCES %s(%s))";
+		String sqlCreateJuctionTable = String.format(UnformattedbaseSQLStr, junctionTableName, modelTableName1, modelTableName2, modelTableName1, modelTableName1, modelIdColumnName1, modelTableName2, modelTableName2, modelIdColumnName2);
+		statement.execute(sqlCreateJuctionTable);
+		statement.close();
+		System.out.println("Junction table created successfully: " + junctionTableName);
 	}
 }

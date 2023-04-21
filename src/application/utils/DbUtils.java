@@ -112,6 +112,14 @@ public class DbUtils {
 		System.out.println("Junction table created successfully: " + junctionTableName);
 	}
 	
+	public void createManyToManyJunctionTabelBetweenModels(Connection connection, String junctionTableName, String modelIdColumnName1, String modelTableName1, String modelIdColumnName2, String modelTableName2, String UnformattedbaseSQLStr) throws SQLException {
+		Statement statement = connection.createStatement();
+		String sqlCreateJuctionTable = String.format(UnformattedbaseSQLStr, junctionTableName, modelTableName1, modelTableName2, modelTableName1, modelTableName1, modelIdColumnName1, modelTableName2, modelTableName2, modelIdColumnName2);
+		statement.execute(sqlCreateJuctionTable);
+		statement.close();
+		System.out.println("Junction table created successfully: " + junctionTableName);
+	}
+	
 	/**
 	 * Statement.RETURN_GENERATED_KEYS needs to be passed as argument 
 	 * during PreparedStatement instantiation from a Connection object

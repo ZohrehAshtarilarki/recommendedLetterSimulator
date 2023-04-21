@@ -40,7 +40,7 @@ public class AcademicCharacteristicDAOImpl implements AcademicCharacteristicDAOI
 
 	@Override
 	public List<AcademicCharacteristic> getAllAcademicCharacteristics() throws SQLException {
-		List<AcademicCharacteristic> AcademicCharacteristics = new ArrayList<>();
+		List<AcademicCharacteristic> academicCharacteristics = new ArrayList<>();
 		
 		String sqlSelectAllAcademicCharacteristics = String.format("SELECT * FROM %s", tableName);
         Statement statement = connection.createStatement();
@@ -50,11 +50,11 @@ public class AcademicCharacteristicDAOImpl implements AcademicCharacteristicDAOI
         	AcademicCharacteristic personalCharacteristic = new AcademicCharacteristic();
         	personalCharacteristic.setAcademicCharacteristicId(resultSet.getInt("id"));
         	personalCharacteristic.setCharacteristic(resultSet.getString("characteristic"));
-        	AcademicCharacteristics.add(personalCharacteristic);
+        	academicCharacteristics.add(personalCharacteristic);
         }
         resultSet.close();
         statement.close();
-		return AcademicCharacteristics;
+		return academicCharacteristics;
 	}
 
 	@Override

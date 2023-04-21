@@ -2,6 +2,7 @@ package application.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import application.model.AcademicCharacteristic;
 import application.model.AcademicProgram;
-import application.model.Course;
+import application.model.RecommendationCourse;
 import application.model.Gender;
 import application.model.PersonalCharacteristic;
 import application.model.Recommendation;
@@ -42,31 +43,44 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 
 	@Override
 	public Recommendation getRecommendation(int recommendationId) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Recommendation recommendation = null;
+		try (ResultSet resultSet = new DbUtils().getRowbyId(connection, recommendationId, tableName)) {
+			while (resultSet.next()) {
+				recommendation = new Recommendation();
+				recommendation.setRecommendationId(resultSet.getInt("id"));
+				recommendation.setStudentFirstName(resultSet.getString("studentFirstName"));
+				recommendation.setStudentLastName(resultSet.getString("studentLastName"));
+				recommendation.setTargetSchoolName(resultSet.getString("targetSchoolName"));
+				recommendation.setCurrentDate(resultSet.getString("currentDate"));
+				recommendation.setFirstSemesterYear(resultSet.getString("firstSemesterYear"));
+				recommendation.setGender(Gender.valueOf(resultSet.getString("gender")));
+//				might be a better ways using join statement and instantiating each model and setting attributes manually
+				recommendation.setSemester(CommonDAOs.getInstance().getSemesterDAO().getSemesterById(resultSet.getInt("semester_id")));
+				recommendation.setProgram(CommonDAOs.getInstance().getAcademicaProgramDAO().getAcademicProgramById(resultSet.getInt("academicProgram_id")));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			System.out.println("Failed DbUtils().getRowbyId in getRecommendation in Recommendation Object");
+		}
+		
+//		get the many-to-many data and set
+		recommendation.setAcademicCharacteristics(getAllRecommendation_academicCharacteristicsInJunctionTable(recommendation.getRecommendationId()));
+		recommendation.setPersonalCharacteristics(getAllRecommendation_personalCharacteristicInJunctionTable(recommendation.getRecommendationId()));
+		recommendation.setCoursesTaken(getAllRecommendation_courseInJunctionTable(recommendation.getRecommendationId()));
+		
+		return recommendation;
 	}
 
+	/**
+	 * Returns null if valid Recommendation Id not found
+	 */
 	@Override
 	public Recommendation addRecommendation(String firstName, String lastName, String targetSchoolName,
 			String currentDate, String firstSemesterYear, Gender gender, Semester semester, AcademicProgram academicProgram,
 			ArrayList<AcademicCharacteristic> academicCharacteristics, ArrayList<PersonalCharacteristic> personalCharacteristics,
-			ArrayList<Course> coursesTaken) throws SQLException {
-
-//		CommonDAOs commonDAOs = CommonDAOs.getInstance();
-//		String firstName = "Jose";
-//		String lastName = "Velasco";
-//		String targetSchoolName = "San Jose State University";
-//		String currentDate = "05/23/2023";
-//		String firstSemesterYear = "2023";
-//		String gender = Gender.OTHER.name();
-//		Semester semester = commonDAOs.getSemesterDAO().getSemesterById(1);
-//		AcademicProgram academicProgram = commonDAOs.getAcademicaProgramDAO().getAcademicProgramById(1);
-//
-////		many-to-many relationship
-//		ArrayList<AcademicCharacteristic> academicCharacteristics = new ArrayList<>(commonDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics());
-//		ArrayList<PersonalCharacteristic> personalCharacteristics = new ArrayList<>(commonDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics());
-//		ArrayList<Course> coursesTaken = new ArrayList<>(commonDAOs.getCourseDAO().getAllCourses());
-
+			ArrayList<RecommendationCourse> coursesTaken) throws SQLException {
 		
 //		Start Actual logic
         String sqlAddRecommendation = String.format("INSERT INTO %s (studentFirstName, studentLastName, targetSchoolName, currentDate, firstSemesterYear, gender, semester_id, academicProgram_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", tableName);
@@ -88,6 +102,7 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
     	
     	int newRowId = new DbUtils().getIdfromResultSet(preparedStatement);
     	
+//    	Id not found
     	if(newRowId == -1) {
     		return null;
     	}
@@ -106,7 +121,7 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
     	
 //    	insert new recommendation many-to-many stuff into DB
     	insertManyToManyRecommendation_academicCharacteristics(newRecommendation.getRecommendationId(), academicCharacteristics);
-    	insertManyToManyRecommendation_personalCharacteristic(newRecommendation.getRecommendationId(), personalCharacteristics);
+    	insertManyToManyRecommendation_personalCharacteristic(newRecommendation.getRecommendationId(), personalCharacteristics);    	
     	insertManyToManyRecommendation_course(newRecommendation.getRecommendationId(), coursesTaken);
     	
     	newRecommendation.setAcademicCharacteristics(academicCharacteristics);
@@ -118,8 +133,8 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 
 	@Override
 	public void deleteRecommendation(int recommendationId) throws SQLException {
-		// TODO Auto-generated method stub
-		
+//		might not delete the junction row entries associated with the deleted recommendation
+		new DbUtils().deleteRowById(recommendationId, this.tableName, this.connection);
 	}
 
 	@Override
@@ -179,9 +194,10 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 		dbUtils.createManyToManyJunctionTabelBetweenModels(connection, personalCharacteristicsJunctionTableName, recommendationColumnIdName, this.tableName, personalCharacteristicsColumnIdName, personalCharacteristicsTableName);
 		
 		String courseJunctionTableName = "recommendation_course";
+    	String sqlJunctionCustomRecommendationCourse = "CREATE TABLE %s (%s_id INTEGER, %s_id INTEGER, grade Text, FOREIGN KEY (%s_id) REFERENCES %s(%s), FOREIGN KEY (%s_id) REFERENCES %s(%s))";
 		String courseTableName = "course";
 		String courseColumnIdName = "id";
-		dbUtils.createManyToManyJunctionTabelBetweenModels(connection, courseJunctionTableName, recommendationColumnIdName, this.tableName, courseColumnIdName, courseTableName);
+		dbUtils.createManyToManyJunctionTabelBetweenModels(connection, courseJunctionTableName, recommendationColumnIdName, this.tableName, courseColumnIdName, courseTableName, sqlJunctionCustomRecommendationCourse);
 	
 	}
 	
@@ -223,23 +239,102 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 		}
 	}
 	
-	private void insertManyToManyRecommendation_course(int newRecommendationId, List<Course> courses) throws SQLException {
+	private void insertManyToManyRecommendation_course(int newRecommendationId, List<RecommendationCourse> courses) throws SQLException {
 		String courseJunctionTableName = "recommendation_course";
 		String courseTableName = "course";
-    	for (Course course : courses) {
+    	for (RecommendationCourse course : courses) {
     		if (course.getCourseId() == -1) {
     			System.out.println("Warning: course with id -1 during addRecommendation()");
     		}
-        	String sqlManyToManyInsert = String.format("INSERT INTO %s (%s_id, %s_id) VALUES (?, ?)", courseJunctionTableName, this.tableName, courseTableName);
+        	String sqlManyToManyInsert = String.format("INSERT INTO %s (%s_id, %s_id, grade) VALUES (?, ?, ?)", courseJunctionTableName, this.tableName, courseTableName);
         	try (PreparedStatement preparedStatementManyToMany = connection.prepareStatement(sqlManyToManyInsert)) {
             	preparedStatementManyToMany.setInt(1, newRecommendationId);
             	preparedStatementManyToMany.setInt(2, course.getCourseId());
+            	preparedStatementManyToMany.setString(3, course.getGrade());
             	int numberOfUpdatedRows = preparedStatementManyToMany.executeUpdate();
             	if (numberOfUpdatedRows == 0) {
             		throw new SQLException("Adding to recommendation_course failed, no rows affected.");
             	}
         	}
 		}
+	}
+	
+	private List<AcademicCharacteristic> getAllRecommendation_academicCharacteristicsInJunctionTable(int recommendationId) throws SQLException {
+		ArrayList<AcademicCharacteristic> academicCharacteristics = new ArrayList<>();
+    	String academicCharacteristicsJunctionTableName = "recommendation_academicCharacteristics";
+    	String academicCharacteristicsTableName = "academicCharacteristic";
+		String sqlJunctionJoinAcadChar = String.format("SELECT %s.id, %s.characteristic " 
+				+ "FROM %s "
+				+ "INNER JOIN %s ON %s.id = %s.%s_id "
+				+ "WHERE %s.recommendation_id = ?", 
+				academicCharacteristicsTableName, academicCharacteristicsTableName, academicCharacteristicsTableName,
+				academicCharacteristicsJunctionTableName, academicCharacteristicsTableName, academicCharacteristicsJunctionTableName, academicCharacteristicsTableName,
+				academicCharacteristicsJunctionTableName);
+		
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sqlJunctionJoinAcadChar)) {
+			preparedStatement.setInt(1, recommendationId);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+	        	AcademicCharacteristic academicCharacteristic = new AcademicCharacteristic();
+	        	academicCharacteristic.setAcademicCharacteristicId(resultSet.getInt("id"));
+	        	academicCharacteristic.setCharacteristic(resultSet.getString("characteristic"));
+	        	academicCharacteristics.add(academicCharacteristic);
+			}
+		}
+		return academicCharacteristics;
+	}
+	
+	
+	private List<PersonalCharacteristic> getAllRecommendation_personalCharacteristicInJunctionTable(int recommendationId) throws SQLException {
+		ArrayList<PersonalCharacteristic> personalCharacteristics = new ArrayList<>();
+		String personalCharacteristicsJunctionTableName = "recommendation_personalCharacteristic";
+		String personalCharacteristicsTableName = "personalCharacteristic";
+		String sqlJunctionJoinPerChar = String.format("SELECT %s.id, %s.characteristic " 
+				+ "FROM %s "
+				+ "INNER JOIN %s ON %s.id = %s.%s_id "
+				+ "WHERE %s.recommendation_id = ?", 
+				personalCharacteristicsTableName, personalCharacteristicsTableName, personalCharacteristicsTableName,
+				personalCharacteristicsJunctionTableName, personalCharacteristicsTableName, personalCharacteristicsJunctionTableName, personalCharacteristicsTableName,
+				personalCharacteristicsJunctionTableName);
+		
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sqlJunctionJoinPerChar)) {
+			preparedStatement.setInt(1, recommendationId);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+	        	PersonalCharacteristic personalCharacteristic = new PersonalCharacteristic();
+	        	personalCharacteristic.setPersonalCharacteristicId(resultSet.getInt("id"));
+	        	personalCharacteristic.setCharacteristic(resultSet.getString("characteristic"));
+	        	personalCharacteristics.add(personalCharacteristic);
+			}
+		}
+		return personalCharacteristics;
+	}
+	
+	private List<RecommendationCourse> getAllRecommendation_courseInJunctionTable(int recommendationId) throws SQLException {
+		ArrayList<RecommendationCourse> courses = new ArrayList<>();
+		String courseJunctionTableName = "recommendation_course";
+		String courseTableName = "course";
+		String sqlJunctionJoin = String.format("SELECT %s.id, %s.name, %s.prefix, %s.prefixNumber, %s.grade " 
+				+ "FROM %s "
+				+ "INNER JOIN %s ON %s.id = %s.%s_id "
+				+ "WHERE %s.recommendation_id = ?", 
+				courseTableName, courseTableName, courseTableName, courseTableName, courseJunctionTableName, courseTableName,
+				courseJunctionTableName, courseTableName, courseJunctionTableName, courseTableName,
+				courseJunctionTableName);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sqlJunctionJoin)) {
+			preparedStatement.setInt(1, recommendationId);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				RecommendationCourse course = new RecommendationCourse();
+	        	course.setCourseId(resultSet.getInt("id"));
+	        	course.setName(resultSet.getString("name"));
+	        	course.setPrefix(resultSet.getString("prefix"));
+	        	course.setPrefixNumber(resultSet.getInt("prefixNumber"));
+	        	course.setGrade(resultSet.getString("grade"));
+	        	courses.add(course);
+			}
+		}
+		return courses;
 	}
 
 }

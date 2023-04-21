@@ -23,7 +23,7 @@ public class Recommendation {
 //	many-to-many DB relationship
 	private List<PersonalCharacteristic> personalCharacteristics;
 //	many-to-many DB relationship
-	private List<Course> coursesTaken;
+	private List<RecommendationCourse> coursesTaken;
 	
 	public Recommendation() {
 		studentFirstName = new SimpleStringProperty();
@@ -96,13 +96,13 @@ public class Recommendation {
 	public void addPersonalCharacteristics(PersonalCharacteristic personalCharacteristics) {
 		this.personalCharacteristics.add(personalCharacteristics);
 	}
-	public List<Course> getCoursesTaken() {
+	public List<RecommendationCourse> getCoursesTaken() {
 		return coursesTaken;
 	}
-	public void setCoursesTaken(List<Course> coursesTaken) {
+	public void setCoursesTaken(List<RecommendationCourse> coursesTaken) {
 		this.coursesTaken = coursesTaken;
 	}
-	public void addCourse(Course course) {
+	public void addCourse(RecommendationCourse course) {
 		this.coursesTaken.add(course);
 	}
 	public String getCurrentDate() {

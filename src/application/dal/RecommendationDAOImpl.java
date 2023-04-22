@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 import application.model.AcademicCharacteristic;
 import application.model.AcademicProgram;
@@ -117,8 +121,50 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 
 	@Override
 	public void updateRecommendation(Recommendation recommendation) throws SQLException {
-		// TODO Auto-generated method stub
+		String sqlUpdateUser = String.format("UPDATE %s SET "
+				+ "studentFirstName=?, studentLastName=?, targetSchoolName=?, "
+				+ "currentDate=?, firstSemesterYear=?, gender=?, "
+				+ "semester_id=?, academicProgram_id=? "
+				+ "WHERE id=?",
+				tableName);		
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser);
+        preparedStatement.setString(1, recommendation.getStudentFirstName());
+        preparedStatement.setString(2, recommendation.getStudentLastName());
+        preparedStatement.setString(3, recommendation.getTargetSchoolName());
+        preparedStatement.setString(4, recommendation.getCurrentDate());
+        preparedStatement.setString(5, recommendation.getFirstSemesterYear());
+        preparedStatement.setString(6, recommendation.getGender().name());
+        preparedStatement.setInt(7, recommendation.getSemester().getSemsterId());
+        preparedStatement.setInt(8, recommendation.getProgram().getAcademicProgramId());
+        preparedStatement.setInt(9, recommendation.getRecommendationId());
 		
+    	int numberOfUpdatedRows = preparedStatement.executeUpdate();
+    	
+    	if (numberOfUpdatedRows == 0) {
+    		throw new SQLException("Adding Recommendation failed, no rows affected.");
+    	}
+    	
+
+    	updateRecommendation_academicCharacteristicsInJunctionTable(
+    			recommendation.getRecommendationId(),
+    			"recommendation_academicCharacteristics",
+    			"academicCharacteristic_id",
+    			recommendation.getAcademicCharacteristics());
+    	
+    	updateRecommendation_personalCharacteristicInJunctionTable(
+    			recommendation.getRecommendationId(),
+    			"recommendation_personalCharacteristic",
+    			"personalCharacteristic_id",
+    			recommendation.getPersonalCharacteristics()
+    			);
+    	
+    	updateRecommendation_CourseInJunctionTable(
+    			recommendation.getRecommendationId(),
+    			"recommendation_course",
+    			"course_id",
+    			recommendation.getCoursesTaken());
+    	
+		preparedStatement.close();
 	}
 
 	@Override
@@ -350,6 +396,108 @@ public class RecommendationDAOImpl implements RecommendationDAOInt {
 			System.out.println("Failed to Extract query result from ResultSet in extractRecommendationsFromResultSet");
 		}
 		return recommendations;
+	}
+	
+	private void updateRecommendation_academicCharacteristicsInJunctionTable(int recId, String JuncTableName, String otherForeignKeyColumnName, List<AcademicCharacteristic> newAcademicCharacteristics) throws SQLException {
+    	List<AcademicCharacteristic> oldAcadChar = getAllRecommendation_academicCharacteristicsInJunctionTable(recId);
+    	HashMap<Integer, AcademicCharacteristic> oldAcadCharToDel = new HashMap<>();
+//    	convert to hash map, will contain the many-to-many objects to remove from DB
+    	for (AcademicCharacteristic academicCharacteristic : oldAcadChar) {
+    		oldAcadCharToDel.put(academicCharacteristic.getAcademicCharacteristicId(), academicCharacteristic);
+		}
+//    	will contain the new object to add to a Recommendation many-to-many table
+    	LinkedList<AcademicCharacteristic> newAcadCharLL = new LinkedList<>(newAcademicCharacteristics);
+    	ListIterator<AcademicCharacteristic> iter = newAcadCharLL.listIterator();
+//    	Remove intersection from both hashMap and LL
+    	while (iter.hasNext() && oldAcadCharToDel.size() != 0) {
+    		AcademicCharacteristic academicCharacteristic = iter.next();
+    		if (oldAcadCharToDel.containsKey(academicCharacteristic.getAcademicCharacteristicId())) {
+    			oldAcadCharToDel.remove(academicCharacteristic.getAcademicCharacteristicId());
+    			iter.remove();
+    		}
+    	}
+//    	delete objects no longer in many-to-many updatedRecommendation object in DB
+    	String sqlSelectManyToMany = String.format(
+    			"DELETE "
+    			+ "FROM %s WHERE "
+    			+ "recommendation_id = %s AND %s = ?", JuncTableName, recId, otherForeignKeyColumnName);
+    	
+    	try (PreparedStatement ps = connection.prepareStatement(sqlSelectManyToMany)) {
+    		for (Integer rowId : oldAcadCharToDel.keySet()) {
+    			ps.setInt(1, rowId);
+    			ps.executeUpdate();
+    		}
+		}
+//    	add new many-to-many row objects to DB
+    	insertManyToManyRecommendation_academicCharacteristics(recId, newAcadCharLL);
+	}
+	
+	private void updateRecommendation_personalCharacteristicInJunctionTable(int recId, String JuncTableName, String otherForeignKeyColumnName, List<PersonalCharacteristic> newPersonalCharacteristics) throws SQLException {
+    	List<PersonalCharacteristic> oldEntries = getAllRecommendation_personalCharacteristicInJunctionTable(recId);
+    	HashMap<Integer, PersonalCharacteristic> oldEntriesToDel = new HashMap<>();
+//    	convert to hash map, will contain the many-to-many objects to remove from DB
+    	for (PersonalCharacteristic personalCharacteristic : oldEntries) {
+    		oldEntriesToDel.put(personalCharacteristic.getPersonalCharacteristicId(), personalCharacteristic);
+		}
+//    	will contain the new object to add to a Recommendation many-to-many table
+    	LinkedList<PersonalCharacteristic> newEntiresLL= new LinkedList<>(newPersonalCharacteristics);
+    	ListIterator<PersonalCharacteristic> iter = newEntiresLL.listIterator();
+//    	Remove intersection from both hashMap and LL
+    	while (iter.hasNext() && oldEntriesToDel.size() != 0) {
+    		PersonalCharacteristic personalCharacteristic = iter.next();
+    		if (oldEntriesToDel.containsKey(personalCharacteristic.getPersonalCharacteristicId())) {
+    			oldEntriesToDel.remove(personalCharacteristic.getPersonalCharacteristicId());
+    			iter.remove();
+    		}
+    	}
+//    	delete objects no longer in many-to-many updatedRecommendation object in DB
+    	String sqlSelectManyToMany = String.format(
+    			"DELETE "
+    			+ "FROM %s WHERE "
+    			+ "recommendation_id = %s AND %s = ?", JuncTableName, recId, otherForeignKeyColumnName);
+    	
+    	try (PreparedStatement ps = connection.prepareStatement(sqlSelectManyToMany)) {
+    		for (Integer rowId : oldEntriesToDel.keySet()) {
+    			ps.setInt(1, rowId);
+    			ps.executeUpdate();
+    		}
+		}
+//    	add new many-to-many row objects to DB
+    	insertManyToManyRecommendation_personalCharacteristic(recId, newEntiresLL);
+	}
+	
+	private void updateRecommendation_CourseInJunctionTable(int recId, String JuncTableName, String otherForeignKeyColumnName, List<RecommendationCourse> newCourses) throws SQLException {
+    	List<RecommendationCourse> oldEntries = getAllRecommendation_courseInJunctionTable(recId);
+    	HashMap<Integer, RecommendationCourse> oldEntriesToDel = new HashMap<>();
+//    	convert to hash map, will contain the many-to-many objects to remove from DB
+    	for (RecommendationCourse entry : oldEntries) {
+    		oldEntriesToDel.put(entry.getCourseId(), entry);
+		}
+//    	will contain the new object to add to a Recommendation many-to-many table
+    	LinkedList<RecommendationCourse> newEntiresLL= new LinkedList<>(newCourses);
+    	ListIterator<RecommendationCourse> iter = newEntiresLL.listIterator();
+//    	Remove intersection from both hashMap and LL
+    	while (iter.hasNext() && oldEntriesToDel.size() != 0) {
+    		RecommendationCourse course = iter.next();
+    		if (oldEntriesToDel.containsKey(course.getCourseId())) {
+    			oldEntriesToDel.remove(course.getCourseId());
+    			iter.remove();
+    		}
+    	}
+//    	delete objects no longer in many-to-many updatedRecommendation object in DB
+    	String sqlSelectManyToMany = String.format(
+    			"DELETE "
+    			+ "FROM %s WHERE "
+    			+ "recommendation_id = %s AND %s = ?", JuncTableName, recId, otherForeignKeyColumnName);
+    	
+    	try (PreparedStatement ps = connection.prepareStatement(sqlSelectManyToMany)) {
+    		for (Integer rowId : oldEntriesToDel.keySet()) {
+    			ps.setInt(1, rowId);
+    			ps.executeUpdate();
+    		}
+		}
+//    	add new many-to-many row objects to DB
+    	insertManyToManyRecommendation_course(recId, newEntiresLL);
 	}
 
 }

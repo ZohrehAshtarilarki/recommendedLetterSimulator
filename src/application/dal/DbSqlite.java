@@ -124,9 +124,26 @@ public class DbSqlite implements DbConnectionInt {
 					academicCharacteristics,
 					personalCharacteristics,
 					coursesTakenWithGrade);
-			Recommendation searchByIdRec = commonDAOs.getRecommendationDAO().getRecommendation(2);
+			Recommendation searchByIdRec = commonDAOs.getRecommendationDAO().getRecommendation(6);
 			List<Recommendation> searchByLNameRec = commonDAOs.getRecommendationDAO().searchRecommendationByLastName("Velasco");
 			System.out.println("TestRec:!!");
+			searchByIdRec.setStudentFirstName("2");
+			searchByIdRec.setStudentLastName("1");
+			searchByIdRec.setTargetSchoolName("college");
+			searchByIdRec.setCurrentDate("0111");
+			searchByIdRec.setFirstSemesterYear("1");
+			searchByIdRec.setGender(Gender.OTHER);
+			searchByIdRec.setProgram(commonDAOs.getAcademicaProgramDAO().getAcademicProgramById(3));
+			searchByIdRec.getAcademicCharacteristics().clear();
+			searchByIdRec.getPersonalCharacteristics().remove(1);
+			searchByIdRec.getPersonalCharacteristics().remove(1);
+			searchByIdRec.getPersonalCharacteristics().remove(1);
+			searchByIdRec.getCoursesTaken().remove(1);
+			searchByIdRec.getCoursesTaken().remove(1);
+			searchByIdRec.getCoursesTaken().remove(1);
+			searchByIdRec.getCoursesTaken().remove(1);
+			commonDAOs.getRecommendationDAO().updateRecommendation(searchByIdRec);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());

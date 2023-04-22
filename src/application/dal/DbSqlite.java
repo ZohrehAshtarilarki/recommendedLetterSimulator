@@ -4,6 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import application.model.AcademicProgram;
+import application.model.Course;
+import application.model.Gender;
+import application.model.Semester;
+import application.model.AcademicCharacteristic;
+import application.model.PersonalCharacteristic;
+import application.model.Recommendation;
+import application.model.RecommendationCourse;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DbSqlite implements DbConnectionInt {
 	
 	private Connection connection;
@@ -42,13 +53,15 @@ public class DbSqlite implements DbConnectionInt {
 	
 	@Override
 	public void initializeDb() {
-//		default table names in db for each model
+//		default table names in DB for each model
 		String facultyDBTableName = "faculty";
 		String courseDBTableName = "course";
 		String academicProgramDBTableName = "academicProgram";
 		String academicCharacteristicDBTableName = "academicCharacteristic";
 		String personalCharacteristicDBTableName = "personalCharacteristic";
 		String userDBTableName = "user";
+		String semsterDBTableName = "semester";
+		String recommendationDBTableName = "recommendation";
 		
 		CommonDAOs commonDAOs = CommonDAOs.getInstance();
 		commonDAOs.setDataBaseObj(this);
@@ -61,6 +74,10 @@ public class DbSqlite implements DbConnectionInt {
 		commonDAOs.setAcademicaProgramDAO(new AcademicProgramDAOImpl(connection, academicProgramDBTableName));
 		commonDAOs.setPersonalCharacteristicDAO(new PersonalCharacteristicDAOImpl(connection, personalCharacteristicDBTableName));
 		commonDAOs.setAcademicCharacteristicDAO(new AcademicCharacteristicDAOImpl(connection, academicCharacteristicDBTableName));
+		commonDAOs.setSemesterDAO(new SemesterDAOImpl(connection, semsterDBTableName));
+		
+//		must be later than the columns recommendation has a relationship with other models in DB
+		commonDAOs.setRecommendationDAO(new RecommendationDAOImpl(connection, recommendationDBTableName));
 	}
 
 }

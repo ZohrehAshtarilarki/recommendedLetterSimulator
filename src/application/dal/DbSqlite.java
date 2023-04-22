@@ -124,7 +124,7 @@ public class DbSqlite implements DbConnectionInt {
 					academicCharacteristics,
 					personalCharacteristics,
 					coursesTakenWithGrade);
-			Recommendation searchByIdRec = commonDAOs.getRecommendationDAO().getRecommendation(6);
+			Recommendation searchByIdRec = commonDAOs.getRecommendationDAO().getRecommendation(8);
 			List<Recommendation> searchByLNameRec = commonDAOs.getRecommendationDAO().searchRecommendationByLastName("Velasco");
 			System.out.println("TestRec:!!");
 			searchByIdRec.setStudentFirstName("2");

@@ -2,6 +2,7 @@ package application.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Course {
 	private int courseId;
@@ -60,4 +61,8 @@ public class Course {
 		return "Course [courseId=" + courseId + ", name=" + name + ", prefix=" + prefix + ", prefixNumber="
 				+ prefixNumber + "]";
 	}
+	
+	public final StringProperty nameProperty() {
+	    return name;
+	  }
 }

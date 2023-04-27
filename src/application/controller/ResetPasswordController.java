@@ -26,9 +26,11 @@ public class ResetPasswordController {
 	@FXML TextField oldPasswordButton;
 	@FXML Button cancelButton;
 	@FXML Label showMessage;
+	@FXML Button homeButton;
+	
+	
 	private CommonDAOs comDAO = CommonDAOs.getInstance();
 	private Authentication auth = Authentication.getInstance();
-	
 	
 	
 	@FXML public void logOutOp() throws IOException {
@@ -80,5 +82,16 @@ public class ResetPasswordController {
 		oldPasswordButton.setText("");
 		newPasswordButton.setText("");
 		confirmPasswordButton.setText("");
+	}
+
+
+	@FXML public void homeButtonOp() throws IOException {
+		
+		Stage stage = (Stage) homeButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
 	}
 }

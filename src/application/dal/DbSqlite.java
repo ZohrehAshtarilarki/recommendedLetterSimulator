@@ -8,6 +8,7 @@ import application.model.AcademicProgram;
 import application.model.Course;
 import application.model.Gender;
 import application.model.Semester;
+import application.controller.CommonObjs;
 import application.model.AcademicCharacteristic;
 import application.model.PersonalCharacteristic;
 import application.model.Recommendation;

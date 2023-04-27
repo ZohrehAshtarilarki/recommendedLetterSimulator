@@ -42,7 +42,7 @@ public class NewRecommendationController implements Initializable{
 	@FXML TextArea achademicField;
 	@FXML Button cancelButton;
 	@FXML Button facultyDashboardButton;
-	
+	@FXML Button compileButton;
 	private CommonDAOs commDAOs = CommonDAOs.getInstance();
 
 	@FXML public void homePageOp() throws IOException {
@@ -148,6 +148,15 @@ public class NewRecommendationController implements Initializable{
 		stage.close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
+
+	@FXML public void compileOp() throws IOException {
+		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/compilePage.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}

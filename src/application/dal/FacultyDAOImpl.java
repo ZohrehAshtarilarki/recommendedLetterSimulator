@@ -102,7 +102,7 @@ public class FacultyDAOImpl implements FacultyDAOInt {
 	}
 	
 	private void createInitalFacultyData() throws SQLException {
-		String defaultFullName = " Ahmad Yazdankhah";
+		String defaultFullName = "Ahmad Yazdankhah";
 		String defaultTitle = "Lecturer";
 		String defaultSchoolName = "SJSU";
 		String defaultDepartment = "CS Department";

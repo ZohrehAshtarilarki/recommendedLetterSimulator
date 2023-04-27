@@ -129,13 +129,13 @@ public class CourseDAOImpl implements CourseDAOInt {
 	
 	private void createInitialCourseData() throws SQLException {
 		ArrayList<Course> defaultCourses = new ArrayList<>();
-		defaultCourses.add(new Course(-1,"Object-Oriented Design", "CS", 151));
-		defaultCourses.add(new Course(-1,"Information Security", "CS", 166));
-		defaultCourses.add(new Course(-1,"Theory of Computation", "CS", 154));
-		defaultCourses.add(new Course(-1,"Software Engineering", "CS", 160));
-		defaultCourses.add(new Course(-1,"Cryptography", "CS", 256));
-		defaultCourses.add(new Course(-1,"Data Structures and Algorithms", "CS", 146));
-		defaultCourses.add(new Course(-1,"Programming Languages Paradigm", "CS", 152));
+		defaultCourses.add(new Course(-1,"CS151: Object-Oriented Design", "CS", 151));
+		defaultCourses.add(new Course(-1,"CS166: Information Security", "CS", 166));
+		defaultCourses.add(new Course(-1,"CS154: Theory of Computation", "CS", 154));
+		defaultCourses.add(new Course(-1,"CS160: Software Engineering", "CS", 160));
+		defaultCourses.add(new Course(-1,"CS256: Cryptography", "CS", 256));
+		defaultCourses.add(new Course(-1,"CS146: Data Structures and Algorithms", "CS", 146));
+		defaultCourses.add(new Course(-1,"CS152: Programming Languages Paradigm", "CS", 152));
 		
         String sqlInitalCourseData = String.format("INSERT INTO %s (name, prefix, prefixNumber) VALUES (?, ?, ?)", tableName);
         PreparedStatement preparedStatement = connection.prepareStatement(sqlInitalCourseData);

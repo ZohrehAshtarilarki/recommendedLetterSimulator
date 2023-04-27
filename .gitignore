@@ -46,3 +46,5 @@ local.properties
 *.sqlite3
 *.db-shm
 *.db-wal
+
+*.txt

@@ -10,15 +10,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class FacultyDashboardController {
+public class SearchController {
 
 	@FXML Button resetPasswordButton;
-	@FXML Button newRecommendationButton;
-	@FXML Button facultySignatureButton;
 	@FXML Button logoutButton;
-	@FXML Button searchButton;
+	@FXML Button facultyDashboardButton;
+	
 	
 	private Authentication auth = Authentication.getInstance();
+	
 	
 
 	@FXML public void resetPasswordOp() throws IOException {
@@ -30,17 +30,7 @@ public class FacultyDashboardController {
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}
-
-	@FXML public void newRecommendationOp() throws IOException {
-		
-		Stage stage = (Stage) newRecommendationButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/NewRecommendation.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-	}
-
+	
 	@FXML public void logOutOp() throws IOException {
 		
 		Stage stage = (Stage) logoutButton.getScene().getWindow();
@@ -52,26 +42,17 @@ public class FacultyDashboardController {
 		auth.logout();
 	}
 
-	@FXML public void facultySignatureOp() throws IOException {
+
+	@FXML public void facultyDashboardOp() throws IOException {
 		
-		Stage stage = (Stage) facultySignatureButton.getScene().getWindow();
+		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultySignature.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 		auth.logout();
 	}
-
-	@FXML public void searchRecommendationOp() throws IOException {
-		
-		Stage stage = (Stage) searchButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/SearchPage.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-		auth.logout();
-	}
-
+	
+	
 }

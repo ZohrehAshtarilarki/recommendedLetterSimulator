@@ -15,9 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.scene.control.TextArea;
 
 public class NewRecommendationController implements Initializable{
 
@@ -73,7 +73,7 @@ public class NewRecommendationController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		ObservableList<String> list1 = FXCollections.observableArrayList("Male", "Female");
+		ObservableList<String> list1 = FXCollections.observableArrayList("Male", "Female", "Other");
 		genderButton.setItems(list1);
 		
 		ObservableList<String> list2 = FXCollections.observableArrayList("Master of science (MS)", 

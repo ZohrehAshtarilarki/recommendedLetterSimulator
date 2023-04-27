@@ -9,18 +9,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class HomePageController {
+public class HomeController {
 
-	@FXML Button newRecommendationButton;
 	@FXML Button logoutButton;
 	@FXML Button facultyDashboardButton;
+	@FXML Button createRecommendationButton;
+	@FXML Button resetPasswordButton;
 
-	@FXML public void newRecommendationOp() throws IOException {
+	@FXML public void createRecommendationOp() throws IOException {
 		
-		Stage stage = (Stage) newRecommendationButton.getScene().getWindow();
+		Stage stage = (Stage) createRecommendationButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/NewRecommendation.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}
@@ -36,6 +37,16 @@ public class HomePageController {
 	}
 
 	@FXML public void resetPasswordOp() throws IOException {
+		
+		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
+
+	@FXML public void facultyDashboardOp() throws IOException {
 		
 		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
 		stage.close();

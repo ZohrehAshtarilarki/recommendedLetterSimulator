@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.dal.CommonDAOs;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,23 +43,14 @@ public class NewRecommendationController implements Initializable{
 	@FXML Button cancelButton;
 	@FXML Button facultyDashboardButton;
 	@FXML Button compileButton;
+	private CommonDAOs commDAOs = CommonDAOs.getInstance();
 
 	@FXML public void homePageOp() throws IOException {
 		
 		Stage stage = (Stage) homePageButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-	}
-
-	@FXML public void resetPasswordOp() throws IOException {
-		
-		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/ResetPassword.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}
@@ -80,6 +72,7 @@ public class NewRecommendationController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 		ObservableList<String> list1 = FXCollections.observableArrayList("Male", "Female");
 		genderButton.setItems(list1);
 		
@@ -144,7 +137,17 @@ public class NewRecommendationController implements Initializable{
 		Stage stage = (Stage) cancelButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
+
+	@FXML public void facultyDashboardOp() throws IOException {
+		
+		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}

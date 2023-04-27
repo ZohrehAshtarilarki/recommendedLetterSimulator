@@ -20,10 +20,11 @@ public class LoginController {
 	@FXML PasswordField passEnter;
 	@FXML Button loginButton;
 	@FXML Label showMessage;
-	
+
 	Boolean loginValidation = false;
+	
 	private Authentication auth = Authentication.getInstance();
-	private CommonDAOs commDAOs = CommonDAOs.getInstance();
+	//private CommonDAOs commDAOs = CommonDAOs.getInstance();
 	
 	@FXML public Boolean passwordEnterOp(){
 		
@@ -69,7 +70,7 @@ public class LoginController {
 		Stage stage = (Stage) loginButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/HomePage.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}

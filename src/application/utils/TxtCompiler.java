@@ -49,15 +49,6 @@ public class TxtCompiler implements CompilerInt {
 			RecommendationCourse course = courses.get(i);
 			outputString += String.format("\"%s\" from my \"%s\"", course.getGrade(), course.getName());
 			outputString += addSentanceListRules(i, courses.size(), newLinePerElement);
-//			if (i != courses.size() - 1) {
-//				outputString += ", ";
-//			}
-//			if (courses.size() > 1 && i == courses.size() - 2) {
-//				outputString += "and ";
-//			}
-//			if ((i+1) % newLinePerCourse == 0 && i < courses.size() - 1) {
-//				outputString += "\n";
-//			}
 		}
 		outputString += courses.size() > 1 ? " courses.\n\n" : " course.\n\n";
 		
@@ -71,15 +62,6 @@ public class TxtCompiler implements CompilerInt {
 			AcademicCharacteristic acadChar = acadChars.get(i);
 			outputString += String.format("%s", acadChar.getCharacteristic());
 			outputString += addSentanceListRules(i, acadChars.size(), newLinePerElement);
-//			if (i != acadChars.size() - 1) {
-//				outputString += ", ";
-//			}
-//			if (acadChars.size() > 1 && i == acadChars.size() - 2) {
-//				outputString += "and ";
-//			}
-//			if ((i+1) % newLinePerCourse == 0 && i < acadChars.size() - 1) {
-//				outputString += "\n";
-//			}
 		}
 		outputString += ".\n\n";
 		
@@ -93,15 +75,6 @@ public class TxtCompiler implements CompilerInt {
 			PersonalCharacteristic persChar = persChars.get(i);
 			outputString += String.format("%s", persChar.getCharacteristic());
 			outputString += addSentanceListRules(i, persChars.size(), newLinePerElement);
-//			if (i != persChars.size() - 1) {
-//				outputString += ", ";
-//			}
-//			if (persChars.size() > 1 && i == persChars.size() - 2) {
-//				outputString += "and ";
-//			}
-//			if ((i+1) % newLinePerCourse == 0 && i < persChars.size() - 1) {
-//				outputString += "\n";
-//			}
 		}
 		outputString += ".\n\n";
 		return outputString;

@@ -8,6 +8,7 @@ import application.model.AcademicProgram;
 import application.model.Course;
 import application.model.Gender;
 import application.model.Semester;
+import application.controller.CommonObjs;
 import application.model.AcademicCharacteristic;
 import application.model.PersonalCharacteristic;
 import application.model.Recommendation;
@@ -78,6 +79,9 @@ public class DbSqlite implements DbConnectionInt {
 		
 //		must be later than the columns recommendation has a relationship with other models in DB
 		commonDAOs.setRecommendationDAO(new RecommendationDAOImpl(connection, recommendationDBTableName));
+		
+//		Testing out stuff for compile page below delete once done
+		
 	}
 
 }

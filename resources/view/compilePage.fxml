@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.CompileController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: #D3D3D3;">
+         <children>
+            <Label prefHeight="60.0" prefWidth="1276.0" text="Compile Page">
+               <font>
+                  <Font name="Arial Bold" size="36.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="1095.0">
+               <children>
+                  <Button fx:id="newRecommendationButton" alignment="CENTER" mnemonicParsing="false" onAction="#newRecommendationOp" prefHeight="36.0" prefWidth="171.0" text="Home">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="40.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logOutOp" prefHeight="36.0" prefWidth="118.0" text="Logout" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="40.0" right="10.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </HBox>
+         </children></HBox>
+      <HBox alignment="BOTTOM_CENTER" layoutX="255.0" layoutY="95.0" prefHeight="669.0" prefWidth="821.0">
+         <children>
+            <TextArea fx:id="textArea" prefHeight="473.0" prefWidth="624.0" />
+            <Button fx:id="compileButton" alignment="BOTTOM_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#compileOp" text="Compile">
+               <HBox.margin>
+                  <Insets left="81.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

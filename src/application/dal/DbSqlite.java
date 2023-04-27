@@ -81,7 +81,48 @@ public class DbSqlite implements DbConnectionInt {
 		commonDAOs.setRecommendationDAO(new RecommendationDAOImpl(connection, recommendationDBTableName));
 		
 //		Testing out stuff for compile page below delete once done
-		
+		try {
+			String firstName = "Jose";
+			String lastName = "Velasco";
+			String targetSchoolName = "San Jose State University";
+			String currentDate = "05/23/2023";
+			String firstSemesterYear = "2023";
+			Gender gender = Gender.OTHER;
+			Semester semester = commonDAOs.getSemesterDAO().getSemesterById(1);
+			AcademicProgram academicProgram = commonDAOs.getAcademicaProgramDAO().getAcademicProgramById(1);
+			
+			ArrayList<AcademicCharacteristic> academicCharacteristics = new ArrayList<>(commonDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics());
+			ArrayList<PersonalCharacteristic> personalCharacteristics = new ArrayList<>(commonDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics());
+			ArrayList<Course> coursesTaken = new ArrayList<>(commonDAOs.getCourseDAO().getAllCourses());
+			ArrayList<RecommendationCourse> coursesTakenWithGrade = new ArrayList<>();
+			for (Course course : coursesTaken) {
+				RecommendationCourse tmpCourseWithGrade = new RecommendationCourse();
+				tmpCourseWithGrade.setCourseId(course.getCourseId());
+				tmpCourseWithGrade.setName(course.getName());
+				tmpCourseWithGrade.setPrefix(course.getPrefix());
+				tmpCourseWithGrade.setPrefixNumber(course.getPrefixNumber());
+				tmpCourseWithGrade.setGrade("A+");
+				coursesTakenWithGrade.add(tmpCourseWithGrade);
+			}
+			
+			commonDAOs.getRecommendationDAO().addRecommendation(
+					firstName,
+					lastName,
+					targetSchoolName,
+					currentDate,
+					firstSemesterYear,
+					gender,
+					semester,
+					academicProgram,
+					academicCharacteristics,
+					personalCharacteristics,
+					coursesTakenWithGrade);
+			
+			CommonObjs.getInstance().setActiveRecommendation(commonDAOs.getRecommendationDAO().getRecommendation(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

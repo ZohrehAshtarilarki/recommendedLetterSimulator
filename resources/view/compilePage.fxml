@@ -47,9 +47,9 @@
                </children>
             </HBox>
          </children></HBox>
-      <HBox alignment="BOTTOM_CENTER" layoutX="255.0" layoutY="95.0" prefHeight="669.0" prefWidth="821.0">
+      <HBox alignment="BOTTOM_CENTER" layoutX="57.0" layoutY="95.0" prefHeight="669.0" prefWidth="1186.0">
          <children>
-            <TextArea fx:id="textArea" prefHeight="473.0" prefWidth="624.0" />
+            <TextArea fx:id="textArea" prefHeight="669.0" prefWidth="752.0" />
             <Button fx:id="compileButton" alignment="BOTTOM_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#compileOp" text="Compile">
                <HBox.margin>
                   <Insets left="81.0" />

@@ -12,6 +12,7 @@ import application.model.AcademicProgram;
 import application.model.Course;
 import application.model.Faculty;
 import application.model.PersonalCharacteristic;
+import application.model.Semester;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,17 +22,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.IndexRange;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
-import javafx.scene.control.TextField;
 
 public class FacultySignatureController implements Initializable {
 	
@@ -57,6 +55,7 @@ public class FacultySignatureController implements Initializable {
 	
 
 	private CommonDAOs commDAOs = CommonDAOs.getInstance();
+	private Authentication auth = Authentication.getInstance();
 	
 	// Configure the table
 	@FXML TableView<Course> courseTableView;
@@ -75,8 +74,8 @@ public class FacultySignatureController implements Initializable {
 	@FXML TableColumn<PersonalCharacteristic, String> personalCharColumn;
 	
 	
-	@FXML TableView semesterTableView;
-	@FXML TableColumn semesterColumn;
+	@FXML TableView<Semester> semesterTableView;
+	@FXML TableColumn<Semester, String> semesterColumn;
 	
 	
 	@FXML public void resetPasswordOp() throws IOException {
@@ -141,6 +140,12 @@ public class FacultySignatureController implements Initializable {
 			personalCharColumn.setCellValueFactory(new PropertyValueFactory<PersonalCharacteristic, String> ("characteristic"));
 			personalCharTableView.getColumns().setAll(personalCharColumn);
 			
+			// Set up Personal Semester column in the table
+			ObservableList<Semester> list5 = FXCollections.observableArrayList(commDAOs.getSemesterDAO().getAllSemesters());
+			semesterTableView.setItems(list5);
+			semesterColumn.setCellValueFactory(new PropertyValueFactory<Semester, String> ("name"));
+			semesterTableView.getColumns().setAll(semesterColumn);
+			
 			// Update all the tables to allow for editable fields
 			courseTableView.setEditable(true);
 			courseColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -153,6 +158,9 @@ public class FacultySignatureController implements Initializable {
 			
 			personalCharTableView.setEditable(true);
 			personalCharColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+			
+			semesterTableView.setEditable(true);
+			semesterColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 			
 			// The following will allow the table to select rows for deleting
 			courseTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -238,8 +246,17 @@ public class FacultySignatureController implements Initializable {
 		commDAOs.getPersonalCharacteristicDAO().updatePersonalCharacteristic(personalCharSelected);
 	}
 
-	
-	@FXML public void changeSemestersOp() {}
+	/**
+	 * This method will allow the user to double click on a cell and update
+	 * the Semester
+	 * @throws SQLException 
+	 */
+	@FXML public void changeSemestersOp(CellEditEvent edditedCell) throws SQLException {
+		
+		Semester semesterSelected = semesterTableView.getSelectionModel().getSelectedItem();
+		semesterSelected.setName(edditedCell.getNewValue().toString());
+		commDAOs.getSemesterDAO().updateSemester(semesterSelected);
+	}
 	
 	
 	
@@ -287,12 +304,34 @@ public class FacultySignatureController implements Initializable {
 		personalCharTableView.getItems().add(newPrsChar);
 	}
 
-	@FXML public void newSemesterOp() {}
+	/**
+	 * This method will create a new Semester object and 
+	 * add it to the table
+	 * @throws SQLException 
+	 */
+	@FXML public void newSemesterOp() throws SQLException {
+		
+		Semester newSemester = commDAOs.getSemesterDAO().addSemester(semesterTextField.getText());
+		semesterTableView.getItems().add(newSemester);
+	}
 
-	
-	
+	/**
+	 * This method will remove the selected semester from the table
+	 */
 	@FXML public void deleteSemesterOp() {
 		
+		ObservableList<Semester> semesterSelected, semesters;
+		semesters = semesterTableView.getItems();
+		
+		semesterSelected = semesterTableView.getSelectionModel().getSelectedItems();
+		semesterSelected.forEach((semester) -> {
+			try {
+				commDAOs.getSemesterDAO().deleteSemester(semester.getSemsterId());
+				semesters.remove(semester);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		});
 		
 	}
 

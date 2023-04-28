@@ -153,7 +153,7 @@ public class NewRecommendationController implements Initializable{
 	}
 
 	@FXML public void compileOp() throws IOException {
-		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
+		Stage stage = (Stage) compileButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/compilePage.fxml"));

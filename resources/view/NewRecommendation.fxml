@@ -7,7 +7,8 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -68,14 +69,14 @@
             <Insets right="20.0" />
          </padding>
       </TextField>
-      <ComboBox fx:id="genderButton" layoutX="25.0" layoutY="189.0" prefWidth="150.0" promptText="Gender" />
+      <ComboBox fx:id="genderCombo" layoutX="25.0" layoutY="189.0" prefWidth="150.0" promptText="Gender" />
       <TextField fx:id="schoolName" alignment="CENTER" layoutX="25.0" layoutY="285.0" prefHeight="30.0" prefWidth="200.0" promptText="Target School">
          <padding>
             <Insets right="10.0" />
          </padding>
       </TextField>
-      <DatePicker fx:id="currentDate" layoutX="245.0" layoutY="285.0" prefHeight="30.0" prefWidth="180.0" promptText="Current Date" />
-      <ComboBox fx:id="programButton" layoutX="25.0" layoutY="333.0" prefHeight="30.0" prefWidth="200.0" promptText="Program" />
+      <DatePicker fx:id="datePicker" layoutX="245.0" layoutY="285.0" prefHeight="30.0" prefWidth="180.0" promptText="Current Date" />
+      <ComboBox fx:id="programCombo" layoutX="25.0" layoutY="333.0" prefHeight="30.0" prefWidth="200.0" promptText="Program" />
       <Label layoutX="26.0" layoutY="392.0" prefHeight="30.0" prefWidth="309.0" text="Courses and Years Taken">
          <font>
             <Font name="Arial Bold" size="24.0" />
@@ -86,25 +87,31 @@
             <Font name="Arial Bold" size="24.0" />
          </font>
       </Label>
-      <ComboBox fx:id="semesterTaken" layoutX="30.0" layoutY="443.0" prefWidth="150.0" promptText="Semester Taken" />
-      <ComboBox fx:id="courseTaken" layoutX="30.0" layoutY="494.0" prefHeight="27.0" prefWidth="200.0" promptText="Course Taken" />
-      <TextField alignment="CENTER" layoutX="260.0" layoutY="443.0" prefHeight="27.0" prefWidth="89.0" promptText="Year" />
-      <TextField fx:id="gradeField" alignment="CENTER" layoutX="261.0" layoutY="494.0" prefHeight="27.0" prefWidth="89.0" promptText="Grade" />
-      <Button fx:id="addCourseButton" layoutX="30.0" layoutY="545.0" mnemonicParsing="false" onAction="#addCourseOp" text="Add Course" />
-      <TextArea fx:id="courseTextArea" layoutX="30.0" layoutY="586.0" onDragDetected="#courseTextAreaOp" prefHeight="200.0" prefWidth="325.0" />
       <Separator layoutX="616.0" layoutY="60.0" orientation="VERTICAL" prefHeight="740.0" />
-      <Label layoutX="640.0" layoutY="77.0" prefHeight="29.0" prefWidth="396.0" text="Student Personal Characteristics">
+      <Label layoutX="640.0" layoutY="77.0" prefHeight="29.0" prefWidth="396.0" text="Student Characteristics">
          <font>
             <Font name="Arial Bold" size="24.0" />
          </font>
       </Label>
-      <ComboBox fx:id="personalChar" layoutX="646.0" layoutY="132.0" prefHeight="27.0" prefWidth="180.0" promptText="Personal Characteristic" />
-      <Button fx:id="addPersonalChar" layoutX="884.0" layoutY="132.0" mnemonicParsing="false" onAction="#addPersonalCharOp" prefHeight="27.0" prefWidth="71.0" text="Add" />
-      <TextArea fx:id="personalArea" layoutX="646.0" layoutY="189.0" prefHeight="200.0" prefWidth="325.0" />
-      <ComboBox fx:id="academicChar" layoutX="646.0" layoutY="443.0" prefHeight="27.0" prefWidth="180.0" promptText="Academic Charactristic" />
-      <Button fx:id="achademicArea" layoutX="884.0" layoutY="443.0" mnemonicParsing="false" onAction="#achademicAreaOp" prefHeight="27.0" prefWidth="71.0" text="Add" />
-      <TextArea fx:id="achademicField" layoutX="646.0" layoutY="501.0" prefHeight="200.0" prefWidth="325.0" />
       <Button fx:id="cancelButton" layoutX="920.0" layoutY="750.0" mnemonicParsing="false" onAction="#cancelButtonOp" prefHeight="27.0" prefWidth="71.0" text="Cancel" />
       <Button fx:id="compileButton" layoutX="1020.0" layoutY="750.0" mnemonicParsing="false" onAction="#compileOp" prefWidth="71.0" text="Compile" />
+      <TableView fx:id="coursesTaken" layoutX="11.0" layoutY="497.0" prefHeight="292.0" prefWidth="596.0">
+        <columns>
+          <TableColumn fx:id="courseNameCol" prefWidth="482.0" text="Name" />
+          <TableColumn fx:id="courseGradeCol" prefWidth="113.0" text="Grade" />
+        </columns>
+      </TableView>
+      <TableView fx:id="personalCharacteristics" layoutX="627.0" layoutY="129.0" prefHeight="267.0" prefWidth="648.0">
+        <columns>
+          <TableColumn fx:id="personalCharacteristicsCol" prefWidth="647.0" text="Personal Characteristics" />
+        </columns>
+      </TableView>
+      <TableView fx:id="academicCharacteristics" layoutX="629.0" layoutY="440.0" prefHeight="285.0" prefWidth="648.0">
+        <columns>
+          <TableColumn fx:id="academicCharacteristicsCol" prefWidth="647.0" text="Academic Characteristics" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="firstSemester" layoutX="25.0" layoutY="440.0" prefHeight="25.0" prefWidth="235.0" promptText="Fisrt Semester" />
+      <TextField fx:id="firstYear" layoutX="285.0" layoutY="440.0" prefHeight="25.0" prefWidth="162.0" promptText="Year" />
    </children>
 </AnchorPane>

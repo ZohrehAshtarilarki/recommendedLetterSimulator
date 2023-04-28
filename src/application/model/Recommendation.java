@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Recommendation {
 	private int recommendationId;
@@ -78,6 +79,9 @@ public class Recommendation {
 	public void setProgram(AcademicProgram program) {
 		this.program = program;
 	}
+	public final StringProperty programProperty() {
+	    return program.nameProperty();
+	  }
 	public List<AcademicCharacteristic> getAcademicCharacteristics() {
 		return academicCharacteristics;
 	}

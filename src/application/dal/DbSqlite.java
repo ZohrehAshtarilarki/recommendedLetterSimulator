@@ -4,18 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import application.model.AcademicProgram;
-import application.model.Course;
-import application.model.Gender;
-import application.model.Semester;
-import application.controller.CommonObjs;
-import application.model.AcademicCharacteristic;
-import application.model.PersonalCharacteristic;
-import application.model.Recommendation;
-import application.model.RecommendationCourse;
-import java.util.ArrayList;
-import java.util.List;
-
 public class DbSqlite implements DbConnectionInt {
 	
 	private Connection connection;

@@ -16,9 +16,9 @@ public class FacultyDashboardController {
 	@FXML Button newRecommendationButton;
 	@FXML Button facultySignatureButton;
 	@FXML Button logoutButton;
+	@FXML Button searchButton;
 	
 	private Authentication auth = Authentication.getInstance();
-	
 	
 
 	@FXML public void resetPasswordOp() throws IOException {
@@ -58,6 +58,17 @@ public class FacultyDashboardController {
 		stage.close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultySignature.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+		auth.logout();
+	}
+
+	@FXML public void searchRecommendationOp() throws IOException {
+		
+		Stage stage = (Stage) searchButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/SearchPage.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 		auth.logout();

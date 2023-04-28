@@ -61,8 +61,4 @@ public class Course {
 		return "Course [courseId=" + courseId + ", name=" + name + ", prefix=" + prefix + ", prefixNumber="
 				+ prefixNumber + "]";
 	}
-	
-	public final StringProperty nameProperty() {
-	    return name;
-	  }
 }

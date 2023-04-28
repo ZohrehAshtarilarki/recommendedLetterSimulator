@@ -3,6 +3,7 @@ package application.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.dal.Authentication;
@@ -24,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableColumn;
 
 public class SearchController implements Initializable {
+	private List<Recommendation> foundRecommendations;
 
 	@FXML Button resetPasswordButton;
 	@FXML Button logoutButton;
@@ -40,52 +42,29 @@ public class SearchController implements Initializable {
 	@FXML TableColumn<Recommendation, String> lastNameColumn;
 	@FXML TableColumn<Recommendation, String> yearColumn;
 	@FXML TableColumn<Recommendation, String> targetSchoolColumn;
-	@FXML TableColumn<AcademicProgram, String> programColumn;
+	@FXML TableColumn<Recommendation, String> programColumn;
 	
 	
 	@Override
 	// Whenever scene is loaded, it calls the initialize method first
 	public void initialize(URL location, ResourceBundle resources){
-		
-		try {
+		this.foundRecommendations = CommonObjs.getInstance().getSearchedRecommendations();
+		searchTableView.setItems(FXCollections.observableArrayList(this.foundRecommendations));
+
 			// Set up the first name column in the table
-			ObservableList<Recommendation> list1 = FXCollections.observableArrayList(commDAOs.getRecommendationDAO().getRecommendation(0));
-			searchTableView.setItems(list1);
-			firstNameColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("firstName"));
-			searchTableView.getColumns().setAll(firstNameColumn);
+			firstNameColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("studentFirstName"));
 			
 			// Set up the last name column in the table
-			ObservableList<Recommendation> list2 = FXCollections.observableArrayList(commDAOs.getRecommendationDAO().getRecommendation(0));
-			searchTableView.setItems(list2);
-			lastNameColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("lastName"));
-			searchTableView.getColumns().setAll(lastNameColumn);
+			lastNameColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("studentLastName"));
 			
 			// Set up the year column in the table
-			ObservableList<Recommendation> list3 = FXCollections.observableArrayList(commDAOs.getRecommendationDAO().getRecommendation(0));
-			searchTableView.setItems(list3);
-			yearColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("year"));
-			searchTableView.getColumns().setAll(yearColumn);
+			yearColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("currentDate"));
 			
 			// Set up the target school in the table
-			ObservableList<Recommendation> list4 = FXCollections.observableArrayList(commDAOs.getRecommendationDAO().getRecommendation(0));
-			searchTableView.setItems(list4);
-			targetSchoolColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("targetSchool"));
-			searchTableView.getColumns().setAll(targetSchoolColumn);
+			targetSchoolColumn.setCellValueFactory(new PropertyValueFactory<Recommendation, String> ("targetSchoolName"));
 			
-			
-			/**
-			 * I commented out this part to prevent the application from crashing
-			 */
-//			// Set up the academic program in the table
-//			ObservableList<AcademicProgram> list5 = FXCollections.observableArrayList(commDAOs.getAcademicaProgramDAO().getAllAcademicPrograms());
-//			searchTableView.setItems(list5);
-//			programColumn.setCellValueFactory(new PropertyValueFactory<AcademicProgram, String> ("n"));
-//			searchTableView.getColumns().setAll(programColumn);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
+			programColumn.setCellValueFactory(cellData -> cellData.getValue().programProperty());
+			searchTableView.getColumns().setAll(firstNameColumn, lastNameColumn, yearColumn, targetSchoolColumn, programColumn);
 	}
 
 	@FXML public void resetPasswordOp() throws IOException {
@@ -121,9 +100,28 @@ public class SearchController implements Initializable {
 		auth.logout();
 	}
 
-	@FXML public void editRecmOp() {}
+	@FXML public void editRecmOp() throws IOException {
+		Recommendation recToEdit = searchTableView.getSelectionModel().getSelectedItem();
+		CommonObjs.getInstance().setActiveRecommendation(recToEdit);
+		
+		Stage stage = (Stage) editRecmButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/NewRecommendation.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
 
-	@FXML public void deleteRecmOp() {}
+	@FXML public void deleteRecmOp() {
+		try {
+			Recommendation recToDel = searchTableView.getSelectionModel().getSelectedItem();
+			commDAOs.getRecommendationDAO().deleteRecommendation(recToDel.getRecommendationId());
+			searchTableView.getItems().remove(recToDel);
+		}catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+	}
 	
 	
 }

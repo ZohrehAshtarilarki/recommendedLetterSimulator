@@ -1,6 +1,7 @@
 package application.model;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class AcademicProgram {
 	private int academicProgramId;
@@ -30,5 +31,9 @@ public class AcademicProgram {
 	@Override
 	public String toString() {
 		return "AcademicProgram [academicProgramId=" + academicProgramId + ", name=" + name + "]";
-	}	
+	}
+	
+	public final StringProperty nameProperty() {
+	    return name;
+	  }
 }

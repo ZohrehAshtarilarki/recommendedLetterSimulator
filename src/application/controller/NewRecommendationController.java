@@ -30,6 +30,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
@@ -149,7 +150,39 @@ public class NewRecommendationController implements Initializable{
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
+		
+		this.setExisitngRecSelection();
+	}
+	
+	/**
+	 * sets the GUI input to get entities from Recommendation if that Recommendation is being edited not created
+	 */
+	private void setExisitngRecSelection() {
+		if (isCreating && !isUpdating) {
+			return;
+		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		
+		stuFirstName.setText(rec.getStudentFirstName());
+		stuLastName.setText(rec.getStudentLastName());
+		schoolName.setText(rec.getTargetSchoolName());
+		this.datePicker.setValue(LocalDate.parse(rec.getCurrentDate(), formatter));
+		firstYear.setText(rec.getFirstSemesterYear());
+		genderCombo.setValue(rec.getGender());
+		programCombo.setValue(rec.getProgram());
+		firstSemester.setValue(rec.getSemester());
+		
+//		select updating Recommendation's course already selected
+//		still testing
+		MultipleSelectionModel<PersonalCharacteristic> selectionModel = personalCharacteristics.getSelectionModel();
+		selectionModel.clearSelection();
+		for (PersonalCharacteristic perChar : rec.getPersonalCharacteristics()) {
+			int index = personalCharacteristics.getItems().indexOf(perChar);
+			if (index >= 0) {
+				selectionModel.select(index);
+			}
+		}
 	}
 	
 	private void onCompile() {
@@ -170,7 +203,7 @@ public class NewRecommendationController implements Initializable{
 					this.stuFirstName.getText(),
 					this.stuLastName.getText(),
 					this.schoolName.getText(),
-					this.datePicker.getValue().format(DateTimeFormatter.ofPattern("MM-d-yyyy")),
+					this.datePicker.getValue().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
 					this.firstYear.getText(),
 					this.genderCombo.getValue(),
 					this.firstSemester.getValue(),
@@ -189,7 +222,7 @@ public class NewRecommendationController implements Initializable{
 		this.rec.setStudentFirstName(this.stuFirstName.getText());
 		this.rec.setStudentLastName(this.stuLastName.getText());
 		this.rec.setTargetSchoolName(this.schoolName.getText());
-		this.rec.setCurrentDate(this.datePicker.getValue().format(DateTimeFormatter.ofPattern("MM-d-yyyy")));
+		this.rec.setCurrentDate(this.datePicker.getValue().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
 		this.rec.setFirstSemesterYear(this.firstYear.getText());
 		this.rec.setGender(this.genderCombo.getValue());
 		this.rec.setSemester(this.firstSemester.getValue());

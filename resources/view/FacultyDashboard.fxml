@@ -66,7 +66,7 @@
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <TextField alignment="CENTER" layoutX="231.0" layoutY="430.0" prefHeight="35.0" prefWidth="250.0" promptText="Student last name" />
+      <TextField fx:id="searchTextField" alignment="CENTER" layoutX="231.0" layoutY="430.0" prefHeight="35.0" prefWidth="250.0" promptText="Student last name" />
       <Button fx:id="searchButton" alignment="CENTER" layoutX="513.0" layoutY="434.0" mnemonicParsing="false" onAction="#searchRecommendationOp" text="Search" />
       <Button fx:id="newRecommendationButton" alignment="CENTER" layoutX="816.0" layoutY="408.0" mnemonicParsing="false" onAction="#newRecommendationOp" prefHeight="52.0" prefWidth="271.0" text="New Recommendation">
          <font>

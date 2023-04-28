@@ -3,6 +3,10 @@ package application.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.dal.CommonDAOs;
@@ -11,6 +15,7 @@ import application.model.AcademicProgram;
 import application.model.Course;
 import application.model.Gender;
 import application.model.PersonalCharacteristic;
+import application.model.Recommendation;
 import application.model.RecommendationCourse;
 import application.model.Semester;
 import javafx.collections.FXCollections;
@@ -36,6 +41,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TableView;
 
 public class NewRecommendationController implements Initializable{
+	private Recommendation rec;
+	private boolean isCreating;
+	private boolean isUpdating;
 
 	@FXML Button homePageButton;
 	@FXML TextField stuFirstName;
@@ -43,25 +51,11 @@ public class NewRecommendationController implements Initializable{
 	@FXML Button logoutButton;
 	@FXML TextField schoolName;
 	@FXML DatePicker datePicker;
-//	@FXML ComboBox<String> genderButton;
-//	@FXML ComboBox<String> programButton;
-//	@FXML ComboBox<String> semesterTaken;
-//	@FXML ComboBox<String> courseTaken;
-//	@FXML ComboBox<String> personalChar;
-//	@FXML ComboBox<String> academicChar;
-//	@FXML TextArea courseTextArea;
-//	@FXML Button addCourseButton;
-//	@FXML TextField gradeField;
-//	@FXML Button addPersonalChar;
-//	@FXML TextArea personalArea;
-//	@FXML Button achademicArea;
-//	@FXML TextArea achademicField;
 	@FXML Button cancelButton;
 	@FXML Button facultyDashboardButton;
 	@FXML Button compileButton;
 	private CommonDAOs commDAOs = CommonDAOs.getInstance();
-	@FXML DatePicker currentDate;
-	@FXML TableView<Course> coursesTaken;
+	@FXML TableView<RecommendationCourse> coursesTaken;
 	@FXML TableView<PersonalCharacteristic> personalCharacteristics;
 	@FXML TableView<AcademicCharacteristic> academicCharacteristics;
 	@FXML ComboBox<Semester> firstSemester;
@@ -100,6 +94,11 @@ public class NewRecommendationController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		this.rec = CommonObjs.getInstance().getActiveRecommendation();
+		isUpdating = this.rec != null;
+		isCreating = this.rec == null;
+		this.datePicker.setValue(LocalDate.now());
+		
 		try {
 			firstSemester.setItems(FXCollections.observableArrayList(commDAOs.getSemesterDAO().getAllSemesters()));
 			Callback<ListView<Semester>, ListCell<Semester>> semesterFactory = lv -> new ListCell<Semester>() {
@@ -125,13 +124,20 @@ public class NewRecommendationController implements Initializable{
 			
 			genderCombo.getItems().setAll(Gender.values());
 			
-			ObservableList<Course> list1 = FXCollections.observableArrayList(commDAOs.getCourseDAO().getAllCourses());
+			ObservableList<RecommendationCourse> list1 = FXCollections.observableArrayList();
+			RecommendationCourse recCourse;
+			for (Course course : commDAOs.getCourseDAO().getAllCourses()) {
+				recCourse = new RecommendationCourse(course);
+				list1.add(recCourse);
+			}
+			
 			coursesTaken.setItems(list1);
 			coursesTaken.setEditable(true);
 			coursesTaken.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			courseNameCol.setCellValueFactory(new PropertyValueFactory<RecommendationCourse, String> ("name"));
-			courseGradeCol.setCellValueFactory(new PropertyValueFactory<RecommendationCourse, String> ("grade"));
+			courseGradeCol.setCellValueFactory(cellData -> cellData.getValue().gradeProperty());
 			courseGradeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+			coursesTaken.getColumns().setAll(courseNameCol, courseGradeCol);
 			
 			personalCharacteristics.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			personalCharacteristics.setItems(FXCollections.observableArrayList(commDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics()));
@@ -141,10 +147,62 @@ public class NewRecommendationController implements Initializable{
 			academicCharacteristics.setItems(FXCollections.observableArrayList(commDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics()));
 			academicCharacteristicsCol.setCellValueFactory(new PropertyValueFactory<AcademicCharacteristic, String>("characteristic"));
 			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
+	}
+	
+	private void onCompile() {
+		Recommendation workingRecommendation = null;
+		if (isCreating) {
+			workingRecommendation = createNewRecommendation();
+		} else if (isUpdating) {
+			updateExstingRecommendation();
+			workingRecommendation = this.rec;
+		}
+		CommonObjs.getInstance().setActiveRecommendation(workingRecommendation);
+	}
+	
+	private Recommendation createNewRecommendation() {
+		Recommendation newRec = null;
+		try {
+			newRec = commDAOs.getRecommendationDAO().addRecommendation(
+					this.stuFirstName.getText(),
+					this.stuLastName.getText(),
+					this.schoolName.getText(),
+					this.datePicker.getValue().format(DateTimeFormatter.ofPattern("MM-d-yyyy")),
+					this.firstYear.getText(),
+					this.genderCombo.getValue(),
+					this.firstSemester.getValue(),
+					this.programCombo.getValue(),
+					new ArrayList<>(this.academicCharacteristics.getSelectionModel().getSelectedItems()),
+					new ArrayList<>(this.personalCharacteristics.getSelectionModel().getSelectedItems()),
+					new ArrayList<>(this.coursesTaken.getSelectionModel().getSelectedItems()));
+		}catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return newRec;
+	}
+	
+	private void updateExstingRecommendation() {
+		this.rec.setStudentFirstName(this.stuFirstName.getText());
+		this.rec.setStudentLastName(this.stuLastName.getText());
+		this.rec.setTargetSchoolName(this.schoolName.getText());
+		this.rec.setCurrentDate(this.datePicker.getValue().format(DateTimeFormatter.ofPattern("MM-d-yyyy")));
+		this.rec.setFirstSemesterYear(this.firstYear.getText());
+		this.rec.setGender(this.genderCombo.getValue());
+		this.rec.setSemester(this.firstSemester.getValue());
+		this.rec.setProgram(this.programCombo.getValue());
+		this.rec.setAcademicCharacteristics(this.academicCharacteristics.getSelectionModel().getSelectedItems());
+		this.rec.setPersonalCharacteristics(this.personalCharacteristics.getSelectionModel().getSelectedItems());
+		this.rec.setCoursesTaken(this.coursesTaken.getSelectionModel().getSelectedItems());
+		try {
+			commDAOs.getRecommendationDAO().updateRecommendation(rec);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@FXML public void cancelButtonOp() throws IOException {
@@ -168,6 +226,7 @@ public class NewRecommendationController implements Initializable{
 	}
 
 	@FXML public void compileOp() throws IOException {
+		this.onCompile();
 		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();

@@ -141,7 +141,7 @@ public class TxtCompiler implements CompilerInt {
 		String compiledRecommendationTxt = "";
 		this.setGenderPronoun(recommendation.getGender());
 		String studentFullName = recommendation.getStudentFirstName() + " " +recommendation.getStudentLastName();
-		String todayDate = "04/26/2023";
+		String todayDate = recommendation.getCurrentDate();
 		compiledRecommendationTxt += createHeader(studentFullName, todayDate);
 		compiledRecommendationTxt += reasonOfWrittingLetter(studentFullName, recommendation.getProgram().getName());
 		compiledRecommendationTxt += metStudent(recommendation.getStudentFirstName(),

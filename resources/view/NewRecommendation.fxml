@@ -75,7 +75,7 @@
             <Insets right="10.0" />
          </padding>
       </TextField>
-      <DatePicker fx:id="currentDate" layoutX="245.0" layoutY="285.0" prefHeight="30.0" prefWidth="180.0" promptText="Current Date" />
+      <DatePicker fx:id="datePicker" layoutX="245.0" layoutY="285.0" prefHeight="30.0" prefWidth="180.0" promptText="Current Date" />
       <ComboBox fx:id="programCombo" layoutX="25.0" layoutY="333.0" prefHeight="30.0" prefWidth="200.0" promptText="Program" />
       <Label layoutX="26.0" layoutY="392.0" prefHeight="30.0" prefWidth="309.0" text="Courses and Years Taken">
          <font>

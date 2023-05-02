@@ -94,7 +94,7 @@
          </font>
       </Label>
       <Button fx:id="cancelButton" layoutX="920.0" layoutY="750.0" mnemonicParsing="false" onAction="#cancelButtonOp" prefHeight="27.0" prefWidth="71.0" text="Cancel" />
-      <Button fx:id="compileButton" layoutX="1020.0" layoutY="750.0" mnemonicParsing="false" onAction="#compileOp" prefWidth="71.0" text="Compile" />
+      <Button fx:id="saveButton" layoutX="1020.0" layoutY="750.0" mnemonicParsing="false" onAction="#saveOp" prefWidth="71.0" text="Save" />
       <TableView fx:id="coursesTaken" layoutX="11.0" layoutY="497.0" prefHeight="292.0" prefWidth="596.0">
         <columns>
           <TableColumn fx:id="courseNameCol" prefWidth="482.0" text="Name" />
@@ -113,5 +113,6 @@
       </TableView>
       <ComboBox fx:id="firstSemester" layoutX="25.0" layoutY="440.0" prefHeight="25.0" prefWidth="235.0" promptText="Fisrt Semester" />
       <TextField fx:id="firstYear" layoutX="285.0" layoutY="440.0" prefHeight="25.0" prefWidth="162.0" promptText="Year" />
+      <Label fx:id="showMessage" layoutX="640.0" layoutY="749.0" prefHeight="30.0" prefWidth="270.0" />
    </children>
 </AnchorPane>

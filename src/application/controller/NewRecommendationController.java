@@ -34,12 +34,15 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Label;
 
 public class NewRecommendationController implements Initializable{
 	private Recommendation rec;
@@ -54,7 +57,7 @@ public class NewRecommendationController implements Initializable{
 	@FXML DatePicker datePicker;
 	@FXML Button cancelButton;
 	@FXML Button facultyDashboardButton;
-	@FXML Button compileButton;
+	@FXML Button saveButton;
 	private CommonDAOs commDAOs = CommonDAOs.getInstance();
 	@FXML TableView<RecommendationCourse> coursesTaken;
 	@FXML TableView<PersonalCharacteristic> personalCharacteristics;
@@ -67,6 +70,8 @@ public class NewRecommendationController implements Initializable{
 	@FXML TableColumn<RecommendationCourse, String> courseGradeCol;
 	@FXML TableColumn<PersonalCharacteristic, String> personalCharacteristicsCol;
 	@FXML TableColumn<AcademicCharacteristic, String> academicCharacteristicsCol;
+	@FXML Label showMessage;
+	
 
 	@FXML public void homePageOp() throws IOException {
 		
@@ -96,6 +101,7 @@ public class NewRecommendationController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.rec = CommonObjs.getInstance().getActiveRecommendation();
+		CommonObjs.getInstance().setActiveRecommendation(null);
 		isUpdating = this.rec != null;
 		isCreating = this.rec == null;
 		this.datePicker.setValue(LocalDate.now());
@@ -258,14 +264,41 @@ public class NewRecommendationController implements Initializable{
 		primaryStage.show();
 	}
 
-	@FXML public void compileOp() throws IOException {
-		this.onCompile();
-		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/compilePage.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
+	@FXML public void saveOp() throws IOException {
+		
+		String lastName = stuLastName.getText();
+		String firstName = stuFirstName.getText();
+		String schName = schoolName.getText();
+		String year = firstYear.getText();
+		
+		TableViewSelectionModel<RecommendationCourse> selectionModel1 = coursesTaken.getSelectionModel();
+		TableViewSelectionModel<PersonalCharacteristic> selectionModel2 = personalCharacteristics.getSelectionModel();
+		TableViewSelectionModel<AcademicCharacteristic> selectionModel3 = academicCharacteristics.getSelectionModel();
+		
+		if(lastName.isEmpty() || firstName.isEmpty() || schName.isEmpty() || year.isEmpty()) {
+			showMessage.setText("Please fill out all the required fields!");
+			showMessage.setTextFill(Color.web("red"));
+		} else if (genderCombo.getSelectionModel().isEmpty() || programCombo.getSelectionModel().isEmpty()
+				|| firstSemester.getSelectionModel().isEmpty()) {
+			showMessage.setText("Please fill out all the required fields!");
+			showMessage.setTextFill(Color.web("red"));
+		} else if (datePicker.getValue() == null) {
+			showMessage.setText("Please fill out all the required fields!");
+			showMessage.setTextFill(Color.web("red"));
+		} else if (selectionModel1.getSelectedCells().isEmpty() || selectionModel2.getSelectedCells().isEmpty() || 
+				selectionModel3.getSelectedCells().isEmpty()) {
+			showMessage.setText("Please fill out all the required fields!");
+			showMessage.setTextFill(Color.web("red"));
+		}
+		else {
+			this.onCompile();
+			Stage stage = (Stage) saveButton.getScene().getWindow();
+			stage.close();
+			Stage primaryStage = new Stage();
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/compilePage.fxml"));
+			primaryStage.setScene(new Scene(root));
+			primaryStage.show();
+		}
 	}
 
 }

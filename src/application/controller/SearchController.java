@@ -21,8 +21,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.Label;
 
 public class SearchController implements Initializable {
 	private List<Recommendation> foundRecommendations;
@@ -43,6 +46,7 @@ public class SearchController implements Initializable {
 	@FXML TableColumn<Recommendation, String> yearColumn;
 	@FXML TableColumn<Recommendation, String> targetSchoolColumn;
 	@FXML TableColumn<Recommendation, String> programColumn;
+	@FXML Label showMessage;
 	
 	
 	@Override
@@ -104,24 +108,43 @@ public class SearchController implements Initializable {
 		Recommendation recToEdit = searchTableView.getSelectionModel().getSelectedItem();
 		CommonObjs.getInstance().setActiveRecommendation(recToEdit);
 		
-		Stage stage = (Stage) editRecmButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/NewRecommendation.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
+		// Get the table view selection model
+		TableViewSelectionModel<Recommendation> selectionModel = searchTableView.getSelectionModel();
+		
+		// The user has not selected any rows in the table view
+		if(selectionModel.getSelectedCells().isEmpty()) {
+			showMessage.setText("Please select a field!");
+			showMessage.setTextFill(Color.web("red"));
+		} else {
+			Stage stage = (Stage) editRecmButton.getScene().getWindow();
+			stage.close();
+			Stage primaryStage = new Stage();
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/NewRecommendation.fxml"));
+			primaryStage.setScene(new Scene(root));
+			primaryStage.show();
+		}
 	}
 
-	@FXML public void deleteRecmOp() {
+	@FXML public void deleteRecmOp() throws IOException {
+		
 		try {
-			Recommendation recToDel = searchTableView.getSelectionModel().getSelectedItem();
-			commDAOs.getRecommendationDAO().deleteRecommendation(recToDel.getRecommendationId());
-			searchTableView.getItems().remove(recToDel);
+			// Get the table view selection model
+			TableViewSelectionModel<Recommendation> selectionModel = searchTableView.getSelectionModel();
+			
+			// The user has not selected any rows in the table view
+			if(selectionModel.getSelectedCells().isEmpty()) {
+				showMessage.setText("Please select a field!");
+				showMessage.setTextFill(Color.web("red"));
+			} else {
+				Recommendation recToDel = searchTableView.getSelectionModel().getSelectedItem();
+				commDAOs.getRecommendationDAO().deleteRecommendation(recToDel.getRecommendationId());
+				searchTableView.getItems().remove(recToDel);
+			}
+		
 		}catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 	}
-	
 	
 }

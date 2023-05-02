@@ -32,7 +32,7 @@ public class SearchController implements Initializable {
 
 	@FXML Button resetPasswordButton;
 	@FXML Button logoutButton;
-	@FXML Button facultyDashboardButton;
+	@FXML Button homeButton;
 	@FXML Button editRecmButton;
 	@FXML Button deleteRecmButoon;
 	
@@ -47,6 +47,8 @@ public class SearchController implements Initializable {
 	@FXML TableColumn<Recommendation, String> targetSchoolColumn;
 	@FXML TableColumn<Recommendation, String> programColumn;
 	@FXML Label showMessage;
+
+	
 	
 	
 	@Override
@@ -93,12 +95,12 @@ public class SearchController implements Initializable {
 	}
 
 
-	@FXML public void facultyDashboardOp() throws IOException {
+	@FXML public void homeOp() throws IOException {
 		
-		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
+		Stage stage = (Stage) homeButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 		auth.logout();

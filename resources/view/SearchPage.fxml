@@ -14,7 +14,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: #B0C4DE;">
          <children>
-            <Label prefHeight="60.0" prefWidth="797.0" style="-fx-background-color: #B0C4DE;" text="Search">
+            <Label prefHeight="60.0" prefWidth="887.0" style="-fx-background-color: #B0C4DE;" text="Search">
                <font>
                   <Font name="Arial Bold" size="36.0" />
                </font>
@@ -22,7 +22,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Label>
-            <Button fx:id="facultyDashboardButton" mnemonicParsing="false" onAction="#facultyDashboardOp" prefHeight="36.0" prefWidth="166.0" text="Faculty Dashboard">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#homeOp" prefHeight="36.0" prefWidth="83.0" text="Home">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>
@@ -71,6 +71,9 @@
       </ScrollPane>
       <Button fx:id="editRecmButton" alignment="CENTER" layoutX="368.0" layoutY="718.0" mnemonicParsing="false" onAction="#editRecmOp" prefHeight="30.0" prefWidth="250.0" text="Edit Recommendation" />
       <Button fx:id="deleteRecmButoon" alignment="CENTER" layoutX="698.0" layoutY="718.0" mnemonicParsing="false" onAction="#deleteRecmOp" prefHeight="30.0" prefWidth="250.0" text="Delete Recommendation" />
-      <Label fx:id="showMessage" alignment="CENTER" layoutX="437.0" layoutY="756.0" prefHeight="30.0" prefWidth="424.0" />
+      <Label fx:id="showMessage" alignment="CENTER" layoutX="437.0" layoutY="756.0" prefHeight="30.0" prefWidth="424.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>

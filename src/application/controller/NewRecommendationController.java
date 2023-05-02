@@ -56,9 +56,11 @@ public class NewRecommendationController implements Initializable{
 	@FXML TextField schoolName;
 	@FXML DatePicker datePicker;
 	@FXML Button cancelButton;
-	@FXML Button facultyDashboardButton;
+	@FXML Label showMessage;
+	@FXML Button homeButton;
 	@FXML Button saveButton;
-	private CommonDAOs commDAOs = CommonDAOs.getInstance();
+	
+	
 	@FXML TableView<RecommendationCourse> coursesTaken;
 	@FXML TableView<PersonalCharacteristic> personalCharacteristics;
 	@FXML TableView<AcademicCharacteristic> academicCharacteristics;
@@ -70,18 +72,8 @@ public class NewRecommendationController implements Initializable{
 	@FXML TableColumn<RecommendationCourse, String> courseGradeCol;
 	@FXML TableColumn<PersonalCharacteristic, String> personalCharacteristicsCol;
 	@FXML TableColumn<AcademicCharacteristic, String> academicCharacteristicsCol;
-	@FXML Label showMessage;
 	
-
-	@FXML public void homePageOp() throws IOException {
-		
-		Stage stage = (Stage) homePageButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-	}
+	private CommonDAOs commDAOs = CommonDAOs.getInstance();
 
 	@FXML public void logOutOp() throws IOException {
 		
@@ -89,6 +81,16 @@ public class NewRecommendationController implements Initializable{
 		stage.close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Login.fxml"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
+	
+	@FXML public void homeOp() throws IOException {
+		
+		Stage stage = (Stage) homeButton.getScene().getWindow();
+		stage.close();
+		Stage primaryStage = new Stage();
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}
@@ -217,6 +219,7 @@ public class NewRecommendationController implements Initializable{
 					new ArrayList<>(this.academicCharacteristics.getSelectionModel().getSelectedItems()),
 					new ArrayList<>(this.personalCharacteristics.getSelectionModel().getSelectedItems()),
 					new ArrayList<>(this.coursesTaken.getSelectionModel().getSelectedItems()));
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -254,15 +257,6 @@ public class NewRecommendationController implements Initializable{
 		primaryStage.show();
 	}
 
-	@FXML public void facultyDashboardOp() throws IOException {
-		
-		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
-		stage.close();
-		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-	}
 
 	@FXML public void saveOp() throws IOException {
 		

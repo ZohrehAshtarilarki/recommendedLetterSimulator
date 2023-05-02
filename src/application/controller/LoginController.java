@@ -24,7 +24,7 @@ public class LoginController {
 	Boolean loginValidation = false;
 	
 	private Authentication auth = Authentication.getInstance();
-	//private CommonDAOs commDAOs = CommonDAOs.getInstance();
+	
 	
 	@FXML public Boolean passwordEnterOp(){
 		

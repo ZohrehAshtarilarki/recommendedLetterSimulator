@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 public class FacultySignatureController implements Initializable {
 	
 	// These instance variables are used for the navigation bar
-	@FXML Button facultyDashboardButton;
+	@FXML Button homeButton;;
 	@FXML Button resetPasswordButton;
 	@FXML Button logoutButton;
 	
@@ -78,6 +78,7 @@ public class FacultySignatureController implements Initializable {
 	@FXML TableColumn<Semester, String> semesterColumn;
 	
 	
+	
 	@FXML public void resetPasswordOp() throws IOException {
 		
 		Stage stage = (Stage) resetPasswordButton.getScene().getWindow();
@@ -99,12 +100,12 @@ public class FacultySignatureController implements Initializable {
 		auth.logout();
 	}
 	
-	@FXML public void facultyDashboardOp() throws IOException {
+	@FXML public void homeOp() throws IOException {
 		
-		Stage stage = (Stage) facultyDashboardButton.getScene().getWindow();
+		Stage stage = (Stage) homeButton.getScene().getWindow();
 		stage.close();
 		Stage primaryStage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/FacultyDashboard.fxml"));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/Home.fxml"));
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}

@@ -30,7 +30,7 @@ public class AcademicProgram {
 
 	@Override
 	public String toString() {
-		return "AcademicProgram [academicProgramId=" + academicProgramId + ", name=" + name + "]";
+		return name.getValue();
 	}
 	
 	public final StringProperty nameProperty() {

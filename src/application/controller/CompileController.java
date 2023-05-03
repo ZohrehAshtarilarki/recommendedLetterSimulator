@@ -93,7 +93,7 @@ public class CompileController implements Initializable {
 		}
 		String recommednationText = compiler.compile(faculty, currentRecommednation);
 		textArea.setText(recommednationText);
-		
+		commObj.setActiveRecommendation(null);
 	}
 
 }

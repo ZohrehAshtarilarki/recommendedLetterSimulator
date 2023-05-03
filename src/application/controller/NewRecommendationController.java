@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import application.dal.CommonDAOs;
@@ -28,21 +27,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Label;
 
 public class NewRecommendationController implements Initializable{
 	private Recommendation rec;
@@ -137,6 +134,7 @@ public class NewRecommendationController implements Initializable{
 			RecommendationCourse recCourse;
 			for (Course course : commDAOs.getCourseDAO().getAllCourses()) {
 				recCourse = new RecommendationCourse(course);
+				//recCourse.setGrade(rec.get);
 				list1.add(recCourse);
 			}
 			
@@ -160,13 +158,19 @@ public class NewRecommendationController implements Initializable{
 			e.printStackTrace();
 		}
 		
-		this.setExisitngRecSelection();
+		try {
+			this.setExisitngRecSelection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * sets the GUI input to get entities from Recommendation if that Recommendation is being edited not created
+	 * @throws SQLException 
 	 */
-	private void setExisitngRecSelection() {
+	
+	private void setExisitngRecSelection() throws SQLException {
 		if (isCreating && !isUpdating) {
 			return;
 		}
@@ -181,16 +185,47 @@ public class NewRecommendationController implements Initializable{
 		programCombo.setValue(rec.getProgram());
 		firstSemester.setValue(rec.getSemester());
 		
-//		select updating Recommendation's course already selected
-//		still testing
-		MultipleSelectionModel<PersonalCharacteristic> selectionModel = personalCharacteristics.getSelectionModel();
-		selectionModel.clearSelection();
-		for (PersonalCharacteristic perChar : rec.getPersonalCharacteristics()) {
-			int index = personalCharacteristics.getItems().indexOf(perChar);
-			if (index >= 0) {
-				selectionModel.select(index);
+		ObservableList<RecommendationCourse> list1 = FXCollections.observableArrayList();
+		RecommendationCourse recCourse = new RecommendationCourse();
+		for (Course course : commDAOs.getCourseDAO().getAllCourses()) {
+			recCourse = new RecommendationCourse(course);
+			for(RecommendationCourse course1 : rec.getCoursesTaken())
+			{
+				if(recCourse.getName().equals(course1.getName()) && course1.getGrade() != null) {
+					recCourse.setGrade(course1.getGrade());  
+					coursesTaken.getSelectionModel().select(recCourse);
+				}
 			}
+			
+			list1.add(recCourse);
 		}
+			
+		coursesTaken.setItems(list1);
+
+		ObservableList<PersonalCharacteristic> list2 = FXCollections.observableArrayList();
+		for (PersonalCharacteristic perChar : commDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics()) {
+			for(PersonalCharacteristic perChar1 : rec.getPersonalCharacteristics())
+			{
+				if(perChar.getCharacteristic().equals(perChar1.getCharacteristic())) {  
+					personalCharacteristics.getSelectionModel().select(perChar);
+				}
+			}
+			list2.add(perChar);
+		}
+		personalCharacteristics.setItems(list2);
+
+
+		ObservableList<AcademicCharacteristic> list3 = FXCollections.observableArrayList();
+		for (AcademicCharacteristic acdChar : commDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics()) {
+			for(AcademicCharacteristic acdChar1 : rec.getAcademicCharacteristics())
+			{
+				if(acdChar.getCharacteristic().equals(acdChar1.getCharacteristic())) {  
+					academicCharacteristics.getSelectionModel().select(acdChar);
+				}
+			}
+			list3.add(acdChar);
+		}
+		academicCharacteristics.setItems(list3);
 	}
 	
 	private void onCompile() {

@@ -38,6 +38,7 @@ public class FacultySignatureController implements Initializable {
 	@FXML Button resetPasswordButton;
 	@FXML Button logoutButton;
 	
+	
 	// These instance variables are used to create new objects in the tables
 	@FXML TextField courseTextField;
 	@FXML TextField academicCharTextField;

@@ -29,6 +29,6 @@ public class Semester {
 
 	@Override
 	public String toString() {
-		return "Semester [semsterId=" + semsterId + ", name=" + name + "]";
+		return name.getValue();
 	}
 }

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.dal.CommonDAOs;
@@ -105,6 +106,10 @@ public class NewRecommendationController implements Initializable{
 		isCreating = this.rec == null;
 		this.datePicker.setValue(LocalDate.now());
 		
+		coursesTaken.setStyle("-fx-selection-bar-non-focused: -fx-selection-bar ;");
+		personalCharacteristics.setStyle("-fx-selection-bar-non-focused: -fx-selection-bar ;");
+		academicCharacteristics.setStyle("-fx-selection-bar-non-focused: -fx-selection-bar ;");
+		
 		try {
 			firstSemester.setItems(FXCollections.observableArrayList(commDAOs.getSemesterDAO().getAllSemesters()));
 			Callback<ListView<Semester>, ListCell<Semester>> semesterFactory = lv -> new ListCell<Semester>() {
@@ -166,7 +171,8 @@ public class NewRecommendationController implements Initializable{
 	}
 	
 	/**
-	 * sets the GUI input to get entities from Recommendation if that Recommendation is being edited not created
+	 * sets the GUI input to get entities from Recommendation if that 
+	 * Recommendation is being edited not created
 	 * @throws SQLException 
 	 */
 	
@@ -182,50 +188,86 @@ public class NewRecommendationController implements Initializable{
 		this.datePicker.setValue(LocalDate.parse(rec.getCurrentDate(), formatter));
 		firstYear.setText(rec.getFirstSemesterYear());
 		genderCombo.setValue(rec.getGender());
-		programCombo.setValue(rec.getProgram());
-		firstSemester.setValue(rec.getSemester());
 		
+		for (AcademicProgram acadProgComb : programCombo.getItems()) {
+			if (acadProgComb.getAcademicProgramId() == rec.getProgram().getAcademicProgramId()) {
+				programCombo.getSelectionModel().select(acadProgComb);		
+			}
+		}
+		
+		for (Semester semesterComb : firstSemester.getItems()) {
+			if (semesterComb.getSemsterId() == rec.getSemester().getSemsterId()) {
+				firstSemester.getSelectionModel().select(semesterComb);
+			}
+		}
+		//Shows the previously selected courses with grades in blue color
 		ObservableList<RecommendationCourse> list1 = FXCollections.observableArrayList();
 		RecommendationCourse recCourse = new RecommendationCourse();
-		for (Course course : commDAOs.getCourseDAO().getAllCourses()) {
-			recCourse = new RecommendationCourse(course);
+		List<Integer> rowToSelectCourse = new ArrayList();
+		List<Course> allCourses = commDAOs.getCourseDAO().getAllCourses();
+		for (int i = 0; i < allCourses.size(); i++) {
+			recCourse = new RecommendationCourse(allCourses.get(i));
 			for(RecommendationCourse course1 : rec.getCoursesTaken())
 			{
 				if(recCourse.getName().equals(course1.getName()) && course1.getGrade() != null) {
 					recCourse.setGrade(course1.getGrade());  
-					coursesTaken.getSelectionModel().select(recCourse);
+					rowToSelectCourse.add(i);
 				}
 			}
 			
 			list1.add(recCourse);
 		}
-			
 		coursesTaken.setItems(list1);
+		int[] rowToSelectAsIntArr = new int[rowToSelectCourse.size()];
+		for (int i = 0; i < rowToSelectCourse.size(); i++) {
+			rowToSelectAsIntArr[i] = rowToSelectCourse.get(i);
+		}
+		coursesTaken.getSelectionModel().selectIndices(-1, rowToSelectAsIntArr);
+		
 
+		//Shows the previously selected personal characteristics in blue color
 		ObservableList<PersonalCharacteristic> list2 = FXCollections.observableArrayList();
-		for (PersonalCharacteristic perChar : commDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics()) {
-			for(PersonalCharacteristic perChar1 : rec.getPersonalCharacteristics())
-			{
-				if(perChar.getCharacteristic().equals(perChar1.getCharacteristic())) {  
-					personalCharacteristics.getSelectionModel().select(perChar);
+		PersonalCharacteristic persnChar = new PersonalCharacteristic();
+		List<Integer> rowToSelectPernChar = new ArrayList();
+		List<PersonalCharacteristic> allPersonChar = commDAOs.getPersonalCharacteristicDAO().getAllPersonalCharacteristics();
+		for (int i = 0; i < allPersonChar.size(); i++) {
+			persnChar = allPersonChar.get(i);
+			for(PersonalCharacteristic otherPersnChar : rec.getPersonalCharacteristics()) {
+				if(persnChar.getCharacteristic().equals(otherPersnChar.getCharacteristic())) {  
+					persnChar.setCharacteristic(otherPersnChar.getCharacteristic());
+					rowToSelectPernChar.add(i);
 				}
 			}
-			list2.add(perChar);
+			list2.add(persnChar);
 		}
 		personalCharacteristics.setItems(list2);
+		int[] rowToSelectAsIntArr1 = new int[rowToSelectPernChar.size()];
+		for (int i = 0; i < rowToSelectPernChar.size(); i++) {
+			rowToSelectAsIntArr1[i] = rowToSelectPernChar.get(i);
+		}
+		personalCharacteristics.getSelectionModel().selectIndices(-1, rowToSelectAsIntArr1);
 
-
+		//Shows the previously selected academic characteristics in blue color
 		ObservableList<AcademicCharacteristic> list3 = FXCollections.observableArrayList();
-		for (AcademicCharacteristic acdChar : commDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics()) {
-			for(AcademicCharacteristic acdChar1 : rec.getAcademicCharacteristics())
-			{
-				if(acdChar.getCharacteristic().equals(acdChar1.getCharacteristic())) {  
-					academicCharacteristics.getSelectionModel().select(acdChar);
+		AcademicCharacteristic acadmChar = new AcademicCharacteristic();
+		List<Integer> rowToSelectAcadChar = new ArrayList();
+		List<AcademicCharacteristic> allAcadmChar = commDAOs.getAcademicCharacteristicDAO().getAllAcademicCharacteristics();
+		for (int i = 0; i < allAcadmChar.size(); i++) {
+			acadmChar = allAcadmChar.get(i);
+			for(AcademicCharacteristic otherAcadmChar : rec.getAcademicCharacteristics()) {
+				if(acadmChar.getCharacteristic().equals(otherAcadmChar.getCharacteristic())) { 
+					acadmChar.setCharacteristic(otherAcadmChar.getCharacteristic());
+					rowToSelectAcadChar.add(i);
 				}
 			}
-			list3.add(acdChar);
+			list3.add(acadmChar);
 		}
 		academicCharacteristics.setItems(list3);
+		int[] rowToSelectAsIntArr2 = new int[rowToSelectAcadChar.size()];
+		for (int i = 0; i < rowToSelectAcadChar.size(); i++) {
+			rowToSelectAsIntArr2[i] = rowToSelectAcadChar.get(i);
+		}
+		academicCharacteristics.getSelectionModel().selectIndices(-1, rowToSelectAsIntArr2);
 	}
 	
 	private void onCompile() {

@@ -29,7 +29,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 public class FacultySignatureController implements Initializable {
 	
@@ -45,6 +47,7 @@ public class FacultySignatureController implements Initializable {
 	@FXML TextField programsTextField;
 	@FXML TextField personalCharTextField;
 	@FXML TextField semesterTextField;
+	@FXML Label showMessage;
 	
 	// These instance variables are used to update changes in the faculty's signature
 	@FXML Button saveButton;
@@ -77,6 +80,7 @@ public class FacultySignatureController implements Initializable {
 	
 	@FXML TableView<Semester> semesterTableView;
 	@FXML TableColumn<Semester, String> semesterColumn;
+	
 	
 	
 	
@@ -268,8 +272,9 @@ public class FacultySignatureController implements Initializable {
 	 * @throws SQLException 
 	 */
 	@FXML public void newCourseOp() throws SQLException {
-		
-		Course newCourse = commDAOs.getCourseDAO().addCourses(courseTextField.getText(), "", 0);
+		String course = courseTextField.getText();
+		tableEpmtyFields(course);
+		Course newCourse = commDAOs.getCourseDAO().addCourses(course , "", 0);
 		courseTableView.getItems().add(newCourse);
 	}
 
@@ -279,8 +284,9 @@ public class FacultySignatureController implements Initializable {
 	 * @throws SQLException 
 	 */
 	@FXML public void newAcademicCharOp() throws SQLException {
-		
-		AcademicCharacteristic newAcaChar = commDAOs.getAcademicCharacteristicDAO().addAcademicCharacteristic(academicCharTextField.getText());
+		String acdmChar = academicCharTextField.getText();
+		tableEpmtyFields(acdmChar);
+		AcademicCharacteristic newAcaChar = commDAOs.getAcademicCharacteristicDAO().addAcademicCharacteristic(acdmChar);
 		academicCharTableView.getItems().add(newAcaChar);
 	}
 
@@ -290,8 +296,9 @@ public class FacultySignatureController implements Initializable {
 	 * @throws SQLException 
 	 */
 	@FXML public void newProgramNameOp() throws SQLException {
-		
-		AcademicProgram newProgram = commDAOs.getAcademicaProgramDAO().addAcademicProgram(programsTextField.getText());
+		String progmName = programsTextField.getText();
+		tableEpmtyFields(progmName);
+		AcademicProgram newProgram = commDAOs.getAcademicaProgramDAO().addAcademicProgram(progmName);
 		programTableView.getItems().add(newProgram);
 	}
 
@@ -301,8 +308,9 @@ public class FacultySignatureController implements Initializable {
 	 * @throws SQLException 
 	 */
 	@FXML public void newPersonalCharOp() throws SQLException {
-		
-		PersonalCharacteristic newPrsChar = commDAOs.getPersonalCharacteristicDAO().addPersonalCharacteristic(personalCharTextField.getText());
+		String pernChar = personalCharTextField.getText();
+		tableEpmtyFields(pernChar);
+		PersonalCharacteristic newPrsChar = commDAOs.getPersonalCharacteristicDAO().addPersonalCharacteristic(pernChar);
 		personalCharTableView.getItems().add(newPrsChar);
 	}
 
@@ -312,9 +320,22 @@ public class FacultySignatureController implements Initializable {
 	 * @throws SQLException 
 	 */
 	@FXML public void newSemesterOp() throws SQLException {
-		
-		Semester newSemester = commDAOs.getSemesterDAO().addSemester(semesterTextField.getText());
+		String semester = semesterTextField.getText();
+		tableEpmtyFields(semester);
+		Semester newSemester = commDAOs.getSemesterDAO().addSemester(semester);
 		semesterTableView.getItems().add(newSemester);
+	}
+	
+	/**
+	 * This method prints a message if the user wants to add
+	 * an empty field to the TableView in the FacultySignature page
+	 * @param s
+	 */
+	public void tableEpmtyFields(String s) {
+		if (s.isEmpty()) {
+			showMessage.setText("You shouldn't add an empty field to the table");
+			showMessage.setTextFill(Color.web("red"));
+		}
 	}
 
 	/**
@@ -421,11 +442,23 @@ public class FacultySignatureController implements Initializable {
 	@FXML public void saveButtonOp(ActionEvent event) throws SQLException {
 		
 		Faculty update = commDAOs.getFacultyDAO().getFaculty();
-		update.setFullName(fullNameTextField.getText());
-		update.setTitle(titletextField.getText());
-		update.setSchoolName(schoolAndDepartmentTextField.getText());
-		update.setEmail(emailAddressTextField.getText());
-		update.setPhoneNumber(phoneNumberTextField.getText());
-		commDAOs.getFacultyDAO().updateFaculty(update);
+		
+		String fullName = fullNameTextField.getText();
+		String title = titletextField.getText();
+		String schoolName = schoolAndDepartmentTextField.getText();
+		String email = emailAddressTextField.getText();
+		String phoneNumber = phoneNumberTextField.getText();
+		if(fullName.isEmpty() || title.isEmpty() || schoolName.isEmpty() || 
+				email.isEmpty() || phoneNumber.isEmpty()) {
+			showMessage.setText("Please fill out all the required fields");
+			showMessage.setTextFill(Color.web("red"));
+		} else {
+			update.setFullName(fullName);
+			update.setTitle(title);
+			update.setSchoolName(schoolName);
+			update.setEmail(email);
+			update.setPhoneNumber(phoneNumber);
+			commDAOs.getFacultyDAO().updateFaculty(update);
+		}
 	}
 }

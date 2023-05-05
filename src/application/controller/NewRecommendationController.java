@@ -346,20 +346,17 @@ public class NewRecommendationController implements Initializable{
 		TableViewSelectionModel<PersonalCharacteristic> selectionModel2 = personalCharacteristics.getSelectionModel();
 		TableViewSelectionModel<AcademicCharacteristic> selectionModel3 = academicCharacteristics.getSelectionModel();
 		
+		
 		if(lastName.isEmpty() || firstName.isEmpty() || schName.isEmpty() || year.isEmpty()) {
-			showMessage.setText("Please fill out all the required fields!");
-			showMessage.setTextFill(Color.web("red"));
+			showMessage();
 		} else if (genderCombo.getSelectionModel().isEmpty() || programCombo.getSelectionModel().isEmpty()
 				|| firstSemester.getSelectionModel().isEmpty()) {
-			showMessage.setText("Please fill out all the required fields!");
-			showMessage.setTextFill(Color.web("red"));
+			showMessage();
 		} else if (datePicker.getValue() == null) {
-			showMessage.setText("Please fill out all the required fields!");
-			showMessage.setTextFill(Color.web("red"));
+			showMessage();
 		} else if (selectionModel1.getSelectedCells().isEmpty() || selectionModel2.getSelectedCells().isEmpty() || 
 				selectionModel3.getSelectedCells().isEmpty()) {
-			showMessage.setText("Please fill out all the required fields!");
-			showMessage.setTextFill(Color.web("red"));
+			showMessage();
 		}
 		else {
 			this.onCompile();
@@ -370,6 +367,14 @@ public class NewRecommendationController implements Initializable{
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
 		}
+	}
+	
+	/**
+	 * This method prints a message if the user leaves a field unselected 
+	 */
+	public void showMessage() {
+		showMessage.setText("Please fill out all the required fields!");
+		showMessage.setTextFill(Color.web("red"));
 	}
 
 }

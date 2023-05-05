@@ -115,8 +115,7 @@ public class SearchController implements Initializable {
 		
 		// The user has not selected any rows in the table view
 		if(selectionModel.getSelectedCells().isEmpty()) {
-			showMessage.setText("Please select a field!");
-			showMessage.setTextFill(Color.web("red"));
+			showMessage();
 		} else {
 			Stage stage = (Stage) editRecmButton.getScene().getWindow();
 			stage.close();
@@ -135,8 +134,7 @@ public class SearchController implements Initializable {
 			
 			// The user has not selected any rows in the table view
 			if(selectionModel.getSelectedCells().isEmpty()) {
-				showMessage.setText("Please select a field!");
-				showMessage.setTextFill(Color.web("red"));
+				showMessage();
 			} else {
 				Recommendation recToDel = searchTableView.getSelectionModel().getSelectedItem();
 				commDAOs.getRecommendationDAO().deleteRecommendation(recToDel.getRecommendationId());
@@ -147,6 +145,14 @@ public class SearchController implements Initializable {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	/**
+	 * This method print a message if the user doesn't select any fields in the table
+	 */
+	public void showMessage() {
+		showMessage.setText("Please select a field!");
+		showMessage.setTextFill(Color.web("red"));
 	}
 	
 }

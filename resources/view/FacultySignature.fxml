@@ -105,7 +105,7 @@
                   <TextField fx:id="academicCharTextField" alignment="CENTER" prefHeight="30.0" prefWidth="200.0" promptText="Academic Characteristics" />
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#newAcademicCharOp" prefHeight="30.0" prefWidth="201.0" text="Add" />
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#newAcademicCharOp" prefHeight="30.0" prefWidth="201.0" text="Add" />
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#deleteAcademicCharOp" prefHeight="30.0" prefWidth="201.0" text="Delete" />
          </children>
       </VBox>

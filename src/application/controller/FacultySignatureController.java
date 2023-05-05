@@ -12,6 +12,7 @@ import application.model.AcademicProgram;
 import application.model.Course;
 import application.model.Faculty;
 import application.model.PersonalCharacteristic;
+import application.model.Recommendation;
 import application.model.Semester;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -273,7 +275,7 @@ public class FacultySignatureController implements Initializable {
 	 */
 	@FXML public void newCourseOp() throws SQLException {
 		String course = courseTextField.getText();
-		tableEpmtyFields(course);
+		addShowMessage(course);
 		Course newCourse = commDAOs.getCourseDAO().addCourses(course , "", 0);
 		courseTableView.getItems().add(newCourse);
 	}
@@ -285,7 +287,7 @@ public class FacultySignatureController implements Initializable {
 	 */
 	@FXML public void newAcademicCharOp() throws SQLException {
 		String acdmChar = academicCharTextField.getText();
-		tableEpmtyFields(acdmChar);
+		addShowMessage(acdmChar);
 		AcademicCharacteristic newAcaChar = commDAOs.getAcademicCharacteristicDAO().addAcademicCharacteristic(acdmChar);
 		academicCharTableView.getItems().add(newAcaChar);
 	}
@@ -297,7 +299,7 @@ public class FacultySignatureController implements Initializable {
 	 */
 	@FXML public void newProgramNameOp() throws SQLException {
 		String progmName = programsTextField.getText();
-		tableEpmtyFields(progmName);
+		addShowMessage(progmName);
 		AcademicProgram newProgram = commDAOs.getAcademicaProgramDAO().addAcademicProgram(progmName);
 		programTableView.getItems().add(newProgram);
 	}
@@ -309,7 +311,7 @@ public class FacultySignatureController implements Initializable {
 	 */
 	@FXML public void newPersonalCharOp() throws SQLException {
 		String pernChar = personalCharTextField.getText();
-		tableEpmtyFields(pernChar);
+		addShowMessage(pernChar);
 		PersonalCharacteristic newPrsChar = commDAOs.getPersonalCharacteristicDAO().addPersonalCharacteristic(pernChar);
 		personalCharTableView.getItems().add(newPrsChar);
 	}
@@ -321,7 +323,7 @@ public class FacultySignatureController implements Initializable {
 	 */
 	@FXML public void newSemesterOp() throws SQLException {
 		String semester = semesterTextField.getText();
-		tableEpmtyFields(semester);
+		addShowMessage(semester);
 		Semester newSemester = commDAOs.getSemesterDAO().addSemester(semester);
 		semesterTableView.getItems().add(newSemester);
 	}
@@ -331,7 +333,7 @@ public class FacultySignatureController implements Initializable {
 	 * an empty field to the TableView in the FacultySignature page
 	 * @param s
 	 */
-	public void tableEpmtyFields(String s) {
+	public void addShowMessage(String s) {
 		if (s.isEmpty()) {
 			showMessage.setText("You shouldn't add an empty field to the table");
 			showMessage.setTextFill(Color.web("red"));
@@ -347,6 +349,9 @@ public class FacultySignatureController implements Initializable {
 		semesters = semesterTableView.getItems();
 		
 		semesterSelected = semesterTableView.getSelectionModel().getSelectedItems();
+		if(semesterSelected.isEmpty()) {
+			deleteShowMessage();
+		}
 		semesterSelected.forEach((semester) -> {
 			try {
 				commDAOs.getSemesterDAO().deleteSemester(semester.getSemsterId());
@@ -367,6 +372,9 @@ public class FacultySignatureController implements Initializable {
 		persnChars = personalCharTableView.getItems();
 		
 		persnCharSelected = personalCharTableView.getSelectionModel().getSelectedItems();
+		if(persnCharSelected.isEmpty()) {
+			deleteShowMessage();
+		}
 		persnCharSelected.forEach((characteristic) -> {
 			try {
 				commDAOs.getPersonalCharacteristicDAO().deletePersonalCharacteristic(characteristic.getPersonalCharacteristicId());
@@ -387,6 +395,9 @@ public class FacultySignatureController implements Initializable {
 		acadmProgm = programTableView.getItems();
 		
 		acadProgmSelected = programTableView.getSelectionModel().getSelectedItems();
+		if(acadProgmSelected.isEmpty()) {
+			deleteShowMessage();
+		}
 		acadProgmSelected.forEach((program) -> {
 			try {
 				commDAOs.getAcademicaProgramDAO().deleteAcademicProgram(program.getAcademicProgramId());
@@ -406,6 +417,9 @@ public class FacultySignatureController implements Initializable {
 		acadmChar = academicCharTableView.getItems();
 		
 		acadCharSelected = academicCharTableView.getSelectionModel().getSelectedItems();
+		if(acadCharSelected.isEmpty()) {
+			deleteShowMessage();
+		}
 		acadCharSelected.forEach((characteristic) -> {
 			try {
 				commDAOs.getAcademicCharacteristicDAO().deleteAcademicCharacteristic(characteristic.getAcademicCharacteristicId());
@@ -425,6 +439,9 @@ public class FacultySignatureController implements Initializable {
 		courses = courseTableView.getItems();
 		
 		courseSelected = courseTableView.getSelectionModel().getSelectedItems();
+		if(courseSelected.isEmpty()) {
+			deleteShowMessage();
+		}
 		courseSelected.forEach((course) -> {
 			try {
 				commDAOs.getCourseDAO().deleteCourses(course.getCourseId());
@@ -433,6 +450,16 @@ public class FacultySignatureController implements Initializable {
 				e.printStackTrace();
 			}
 		});
+	}
+	
+	/**
+	 * This method prints a message if the user wants to delete
+	 * a field without selecting it from the TableView in the FacultySignature page
+	 * @param s
+	 */
+	public void deleteShowMessage() {
+		showMessage.setText("You should select a record to delete");
+		showMessage.setTextFill(Color.web("red"));
 	}
 
 	/**

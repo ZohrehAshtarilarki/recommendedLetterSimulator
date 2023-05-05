@@ -56,6 +56,10 @@ public class ResetPasswordController {
 			showMessage.setText("Please fill out all the required fields!");
 			showMessage.setTextFill(Color.web("red"));
 		}
+		else if ((!oldPassw.equals(user.getPassword())) || (!newPassw.equals(confirmPassw))) {
+			showMessage.setText("The provided passwords don't match");
+			showMessage.setTextFill(Color.web("red"));
+		}
 		else if (oldPassw.equals(user.getPassword())) {
 			if(newPassw.equals(confirmPassw) && auth.getIsAuthentication()) {
 				if (user.isFirstLogin()) {
@@ -63,7 +67,7 @@ public class ResetPasswordController {
 				}
 				user.setPassword(newPassw);
 				comDAO.getUserDAO().updateUser(user);
-				
+			} 
 				
 			Stage stage = (Stage) savePasswordButton.getScene().getWindow();
 			stage.close();
@@ -72,7 +76,6 @@ public class ResetPasswordController {
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
 			auth.logout();
-			} 
 		}
 	} 
 
